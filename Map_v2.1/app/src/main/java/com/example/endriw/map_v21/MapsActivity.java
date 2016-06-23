@@ -1,18 +1,25 @@
 package com.example.endriw.map_v21;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -30,17 +37,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Random rand = new Random();
 
+    public String[] teste = {"bora corolho", "eita porra", "Hurgggg", "sabeoqueéissoaqui?"};
+    public DrawerLayout dl;
+    public ListView lv;
+
+
+    public AlertDialog dialog;
+    public AlertDialog.Builder ad;
+
     private GoogleMap mMap;
     private CameraUpdate up;
     private Firebase mRef;
     private String mTexto;
-    private String teste;
+
     private EditText text1;
     private EditText text2;
     private Button buton;
@@ -56,6 +72,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        ArrayList<String> bora = new ArrayList<String>();
+
+        for(int x = 0;x<teste.length;x++) {
+            bora.add(x, teste[x]);
+        }
+        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, bora);
+
+        dl = (DrawerLayout) findViewById(R.id.drawer_layout);
+        lv = (ListView) findViewById(R.id.drawerList);
+
+        lv.setAdapter(adaptBora);
+        for(int x = 0;x<teste.length;x++) {
+            System.out.println(teste[x]);
+            System.out.println(bora.get(x));
+
+            // navList.setAdapter(adapter);
+        }
+        System.out.println(adaptBora);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
+
+                if (parent.getItemAtPosition(pos) == "bora corolho") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("se qué v éss porra véi ?");
+                    ad.show();
+                } else if (parent.getItemAtPosition(pos) == "eita porra") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("ta saino da jaula u muonstro");
+                    ad.show();
+                } else if (parent.getItemAtPosition(pos) == "Hurgggg") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("A qui é bori bilder porra");
+                    ad.show();
+                } else if (parent.getItemAtPosition(pos) == "sabeoqueéissoaqui?") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("Trapéziu des sem dente");
+                    ad.show();
+                }
+
+                dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        super.onDrawerClosed(drawerView);
+
+                    }
+                });
+            }
+        });
+
+
+
+        //aqui termina o codigo da barra de navegação fiotão
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -79,9 +150,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
         SetUpMapIfNeeded();
+        fireB();
     }
 
     public void ClickButton(View view) {
+
+    /*
             mRef = new Firebase("https://fordog.firebaseio.com/dogim");
             mRef.child("latitude").setValue(String.valueOf(text1.getText()));
             mRef.child("longitude").setValue(String.valueOf(text2.getText()));
@@ -90,7 +164,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
             up = CameraUpdateFactory.newLatLngZoom(mLoc, 5);
             mMap.animateCamera(up);
-  }
+  */
+
+        //aqui começa as putaria pra fazer a barra de navegação do canto fiotão
+
+
+
+    }
 
     public void ActionCamera(View view) {
         File direct = new File(Environment.getExternalStorageDirectory()+"/Pictures/findog");
@@ -164,7 +244,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void VaiClick(View view) {
-        System.out.println("deu certo ?");
         mRef = new Firebase("https://fordog.firebaseio.com/");
         mRef.child("dogim").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -185,5 +264,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    public void fireB(){
+        mRef = new Firebase("https://fordog.firebaseio.com/");
+        mRef.child("dogim").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshots) {
+                System.out.println("entrou ");
+                for( DataSnapshot dataSnapshot : dataSnapshots.getChildren() ){
+                    Cachorro cachorro = dataSnapshot.getValue( Cachorro.class );
+                    System.out.println( " Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude() );
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
 }
 
