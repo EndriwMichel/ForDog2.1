@@ -40,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private CameraUpdate up;
     private Firebase mRef;
     private String mTexto;
-
+    private String teste;
     private EditText text1;
     private EditText text2;
     private Button buton;
