@@ -44,10 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Random rand = new Random();
 
-    public String[] teste = {"bora corolho", "eita porra", "Hurgggg", "sabeoqueéissoaqui?"};
+    public String[] teste = {"Cadastrar Lost Dog", "eita porra", "Hurgggg", "sabeoqueéissoaqui?"};
     public DrawerLayout dl;
     public ListView lv;
-
 
     public AlertDialog dialog;
     public AlertDialog.Builder ad;
@@ -62,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button buton;
     private ImageView iv;
 
-
     private ImageButton Cambtn;
     private boolean suces = true;
     private File imageFile;
@@ -72,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        final Intent intent = new Intent(this, CadDog.class);
         ArrayList<String> bora = new ArrayList<String>();
 
         for(int x = 0;x<teste.length;x++) {
@@ -96,10 +94,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
 
-                if (parent.getItemAtPosition(pos) == "bora corolho") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("se qué v éss porra véi ?");
-                    ad.show();
+                if (parent.getItemAtPosition(pos) == "Cadastrar Lost Dog") {
+                    startActivity(intent);
+
                 } else if (parent.getItemAtPosition(pos) == "eita porra") {
                     ad = new AlertDialog.Builder(MapsActivity.this);
                     ad.setMessage("ta saino da jaula u muonstro");
