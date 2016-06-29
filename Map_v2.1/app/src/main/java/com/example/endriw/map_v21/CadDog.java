@@ -10,11 +10,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -24,6 +28,7 @@ public class CadDog extends AppCompatActivity  {
     private String array_spinner[];
     private PopupWindow pup;
 
+    private String[] data = {"Data"};
 
 
     @Override
@@ -33,8 +38,6 @@ public class CadDog extends AppCompatActivity  {
 
 
     }
-
-
     public void CallCalendar(View view) {
         DialogFragment dialogfragment = new DogCalendar();
 

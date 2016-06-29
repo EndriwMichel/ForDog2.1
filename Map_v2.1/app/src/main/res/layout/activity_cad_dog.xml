@@ -6,6 +6,16 @@
         android:layout_height="match_parent"
         android:background="@drawable/back3">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Adiconar foto"
+        android:id="@+id/textView"
+        android:layout_above="@+id/imageButton2"
+        android:layout_centerHorizontal="true"
+ />
+
 
     <ImageButton
             android:layout_width="200dp"
@@ -13,45 +23,19 @@
             android:id="@+id/imageButton2"
             android:src="@android:drawable/ic_input_add"
         android:text="ok"
-        android:layout_above="@+id/editText4"
+        android:layout_above="@+id/DogDate"
         android:layout_centerHorizontal="true" />
 
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/editText4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Data"
-        android:onClick="CallCalendar"
-        android:nestedScrollingEnabled="true"
-        android:layout_centerVertical="true" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Adiconar uma foto"
-        android:id="@+id/textView"
-        android:layout_above="@+id/imageButton2"
-        android:layout_centerHorizontal="true"
-        android:password="false"
-        android:longClickable="false" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText5"
         android:hint="Nome"
-        android:layout_below="@+id/editText4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/DogDate"
+        android:layout_alignLeft="@+id/DogDate"
+        android:layout_alignStart="@+id/DogDate"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -76,22 +60,34 @@
        android:layout_height="wrap_content"
        android:text="Salvar"
        android:id="@+id/btn_salvar"
+       android:onClick="ClickSalvar"
        android:layout_below="@+id/editText6"
        android:layout_toLeftOf="@+id/textView"
-       android:layout_toStartOf="@+id/textView"
-       android:onClick="ClickSalvar"/>
+       android:layout_toStartOf="@+id/textView" />
 
    <Button
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="Cancelar"
        android:id="@+id/btn_cancelar"
-       android:layout_alignTop="@+id/btn_salvar"
-       android:layout_toRightOf="@+id/textView"
-       android:layout_toEndOf="@+id/textView"
        android:onClick="ClickCancelar"
- />
+       android:layout_below="@+id/editText6"
+       android:layout_toRightOf="@+id/textView"
+       android:layout_toEndOf="@+id/textView" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Data"
+        android:id="@+id/DogDate"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/editText6"
+        android:layout_alignStart="@+id/editText6"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="CallCalendar"/>
 
 </RelativeLayout>
 
