@@ -55,17 +55,43 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText6"
-        android:hint="Descrição"
-        android:layout_below="@+id/editText5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="55dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+   <EditText
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/editText6"
+       android:hint="Descrição"
+       android:lines="3"
+       android:minLines="3"
+       android:gravity="top|left"
+       android:maxLines="10"
+       android:scrollbars="vertical"
+       android:layout_below="@+id/editText5"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentEnd="true" />
+
+   <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Salvar"
+       android:id="@+id/btn_salvar"
+       android:layout_below="@+id/editText6"
+       android:layout_toLeftOf="@+id/textView"
+       android:layout_toStartOf="@+id/textView"
+       android:onClick="ClickSalvar"/>
+
+   <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Cancelar"
+       android:id="@+id/btn_cancelar"
+       android:layout_alignTop="@+id/btn_salvar"
+       android:layout_toRightOf="@+id/textView"
+       android:layout_toEndOf="@+id/textView"
+       android:onClick="ClickCancelar"
+ />
+
 
 </RelativeLayout>
 
