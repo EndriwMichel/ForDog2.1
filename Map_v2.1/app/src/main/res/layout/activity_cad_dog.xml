@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
- <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout
+
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back3">
+
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,9 +20,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Adiconar foto"
         android:id="@+id/textView"
-        android:layout_above="@+id/imageButton2"
-        android:layout_centerHorizontal="true"
- />
+
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
     <ImageButton
@@ -23,7 +31,7 @@
             android:id="@+id/imageButton2"
             android:src="@android:drawable/ic_input_add"
         android:text="ok"
-        android:layout_above="@+id/DogDate"
+        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 
 
@@ -34,8 +42,8 @@
         android:id="@+id/editText5"
         android:hint="Nome"
         android:layout_below="@+id/DogDate"
-        android:layout_alignLeft="@+id/DogDate"
-        android:layout_alignStart="@+id/DogDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -82,12 +90,17 @@
         android:text="Data"
         android:id="@+id/DogDate"
         style="@android:style/Widget.Holo.Light.Spinner"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/editText6"
-        android:layout_alignStart="@+id/editText6"
+        android:onClick="CallCalendar"
+        android:layout_below="@+id/imageButton2"
+        android:layout_marginTop="97dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="CallCalendar"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
 
 </RelativeLayout>
 
+    </ScrollView>

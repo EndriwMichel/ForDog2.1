@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -44,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Random rand = new Random();
 
-    public String[] teste = {"Cadastrar Lost Dog", "eita porra", "Hurgggg", "sabeoqueéissoaqui?"};
+    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3", "cadastrar4"};
     public DrawerLayout dl;
     public ListView lv;
 
@@ -271,7 +272,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for( DataSnapshot dataSnapshot : dataSnapshots.getChildren() ){
                     Cachorro cachorro = dataSnapshot.getValue( Cachorro.class );
                     System.out.println( " Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude() );
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                            .position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
 
                 }
