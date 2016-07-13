@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        final Intent intent = new Intent(this, CadDog.class);
+        final Intent intent = new Intent(this, InitialCadDog.class);
         ArrayList<String> bora = new ArrayList<String>();
 
         for(int x = 0;x<teste.length;x++) {

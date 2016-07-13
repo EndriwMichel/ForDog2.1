@@ -11,36 +11,35 @@
         android:layout_height="match_parent"
         android:background="@drawable/back3">
 
-        <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/imageButton2"
-            android:src="@android:drawable/ic_input_add"
-            android:text="ok"
-            android:layout_marginTop="42dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Nome do dog perdido"
-            android:id="@+id/textView2"
-            android:layout_alignTop="@+id/imageButton2"
-            android:layout_toRightOf="@+id/imageButton2"
-            android:layout_toEndOf="@+id/imageButton2" />
+            android:text="Nenhum dog cadastrado"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/nenhumdog"
+            android:enabled="false"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Data do dog perdido"
-            android:id="@+id/textView3"
-            android:layout_below="@+id/textView2"
-            android:layout_toRightOf="@+id/imageButton2"
-            android:layout_toEndOf="@+id/imageButton2" />
+            android:text="aparecer"
+            android:id="@+id/btn_aparece"
+            android:onClick="Aparece"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

@@ -40,6 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CadDog"></activity>
+        <activity android:name=".InitialCadDog"></activity>
     </application>
 
 </manifest>
