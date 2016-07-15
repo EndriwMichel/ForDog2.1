@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -39,13 +41,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Random rand = new Random();
 
-    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3", "cadastrar4"};
+    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+
+    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
+    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
+
     public DrawerLayout dl;
     public ListView lv;
 
@@ -71,7 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        final Intent intent = new Intent(this, InitialCadDog.class);
         ArrayList<String> bora = new ArrayList<String>();
 
         for(int x = 0;x<teste.length;x++) {
@@ -82,16 +88,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dl = (DrawerLayout) findViewById(R.id.drawer_layout);
         lv = (ListView) findViewById(R.id.drawerList);
 
-        lv.setAdapter(adaptBora);
-        for(int x = 0;x<teste.length;x++) {
-            System.out.println(teste[x]);
-            System.out.println(bora.get(x));
+        populateList();
+        ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
 
-            // navList.setAdapter(adapter);
-        }
-        System.out.println(adaptBora);
+        lv.setAdapter(adapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+     /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
 
@@ -122,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
+*/
 
         //aqui termina o codigo da barra de navegação fiotão
 
@@ -136,9 +138,77 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         text2 = (EditText) findViewById(R.id.editText2);
         buton = (Button) findViewById(R.id.button);
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
+
+        final Intent intent  = new Intent(this, InitialCadDog.class);
+
+            ListView lv = (ListView)findViewById(R.id.drawerList);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    ListViewMaps lvm = custom.get(position);
+
+                    if(lvm.getDex() == "Cadastrar Lost Dog"){
+
+                        startActivity(intent);
+                    }
+
+                     else if (parent.getItemAtPosition(position) == "cadastrar2") {
+                        ad = new AlertDialog.Builder(MapsActivity.this);
+                        ad.setMessage("ta saino da jaula u muonstro");
+                        ad.show();
+                    } else if (parent.getItemAtPosition(position) == "cadastrar3") {
+                        ad = new AlertDialog.Builder(MapsActivity.this);
+                        ad.setMessage("A qui é bori bilder porra");
+                        ad.show();
+                    }
+
+                    dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                        @Override
+                        public void onDrawerClosed(View drawerView) {
+                            super.onDrawerClosed(drawerView);
+
+                        }
+                    });
+                }
+            });
+
     }
 
+    private void populateList() {
 
+        for(int x=0;x<vetor.length;x++) {
+
+            custom.add(new ListViewMaps(teste[x], vetor[x]));
+
+        }
+    }
+
+    private class MyListViewMaps extends ArrayAdapter<ListViewMaps> {
+        public MyListViewMaps(){
+            super(MapsActivity.this, R.layout.listviewmaps, custom);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.listviewmaps, parent, false);
+            }
+            ListViewMaps cus = custom.get(position);
+
+            ImageView imgview = (ImageView) itemView.findViewById(R.id.img);
+            imgview.setImageResource(cus.getImg());
+
+            TextView textview = (TextView) itemView.findViewById(R.id.num);
+            textview.setText(cus.getDex());
+
+            return itemView;
+        }
+
+
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
