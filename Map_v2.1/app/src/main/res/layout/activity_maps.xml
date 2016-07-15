@@ -21,36 +21,10 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     tools:layout="@layout/abc_action_bar_view_list_nav_layout" />
 
-    <EditText
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:id="@+id/editText"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:id="@+id/editText2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="ò.ó"
-        android:id="@+id/button"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="ClickButton"/>
-
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/imageButton"
-        android:layout_below="@+id/editText2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:src="@android:drawable/ic_menu_camera"
@@ -87,8 +61,8 @@
         android:id="@+id/doguin"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/find"
-        android:background="@color/HighGren"/>
+        android:src="@drawable/find2"
+        android:background="@drawable/back3"/>
 
     <ListView
         android:id="@+id/drawerList"
@@ -96,7 +70,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_below="@id/doguin"
-        android:background="@color/HighGren"
+        android:background="@drawable/back3"
         android:choiceMode="singleChoice"
             />
 

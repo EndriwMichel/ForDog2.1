@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -134,9 +135,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
 
         mRef = new Firebase("https://fordog.firebaseio.com/");
-        text1 = (EditText) findViewById(R.id.editText);
-        text2 = (EditText) findViewById(R.id.editText2);
-        buton = (Button) findViewById(R.id.button);
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent  = new Intent(this, InitialCadDog.class);
