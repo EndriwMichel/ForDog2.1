@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.util.Base64;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -74,6 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean suces = true;
     private File imageFile;
 
+    private Firebase firebase;
+    private  String base64Image;
+    private byte[] bytes;
+    private byte[] imageAsBytes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
 
         lv.setAdapter(adapter);
+
+        firebase.setAndroidContext(this);
+        firebase = new Firebase("https://naelsorest.firebaseio.com");
 
      /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -215,6 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected void onResume() {
         super.onResume();
+        imagemFireBase();
         SetUpMapIfNeeded();
         fireB();
     }
@@ -294,7 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ImageView image = (ImageView) v.findViewById(R.id.image1);
 
                     Bitmap bmp = BitmapFactory.decodeFile("/sdcard/Pictures/findog/dogphoto.png");
-                    image.setImageBitmap(bmp);
+                    image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
 
                     // LatLng ll = marker.getPosition();
 
@@ -354,5 +363,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    public void imagemFireBase(){
+        firebase.child("imagem").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                base64Image = (String) dataSnapshot.getValue();
+                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
+
+               // imageButton.setImageBitmap(
+                 //       BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)
+                //);
+                System.out.println("Downloaded image with length: " + imageAsBytes.length);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
+    }
 }
 
