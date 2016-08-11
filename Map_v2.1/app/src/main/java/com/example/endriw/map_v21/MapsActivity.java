@@ -223,7 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected void onResume() {
         super.onResume();
-        imagemFireBase();
+       // imagemFireBase();
         SetUpMapIfNeeded();
         fireB();
     }
@@ -363,7 +363,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void imagemFireBase(){
+   /* public void imagemFireBase(){
         firebase.child("imagem").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -383,6 +383,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-    }
+    }*/
 }
 

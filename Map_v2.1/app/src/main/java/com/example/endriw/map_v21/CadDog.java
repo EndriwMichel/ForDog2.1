@@ -41,7 +41,7 @@ public class CadDog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cad_dog);
         dogFoto = (ImageButton)findViewById(R.id.dogFoto);
-        mRef = new Firebase("https://fordog.firebaseio.com/");
+        mRef = new Firebase("https://naelsorest.firebaseio.com/");
 
     }
 
@@ -91,8 +91,8 @@ public class CadDog extends AppCompatActivity {
         String stHash = stDogData + stDogDesc + stDogData;
         int key = stHash.hashCode();
         //        String ftDogfoto = elementoData.getText().toString();
-
-        gravaFirebase(key, stDogNome, stDogDesc, stDogData, "", "");
+        String email = "coloca aqui a funcao que pega o email";
+        gravaFirebase("", key, stDogNome, stDogDesc, stDogData, "", "");
     }
 
 
@@ -100,19 +100,30 @@ public class CadDog extends AppCompatActivity {
         this.finish();
     }
 
-    public void gravaFirebase(int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude) {
+    public void gravaFirebase(String email, int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude) {
         //mRef.child(key).setValue(valor);
 
         if (latitude == "")
             //pega a location com o helper do endriw
-            if (longitude == "")
-                //pega a location com o helper do endriw
+        if (longitude == "")
+            //pega a location com o helper do endriw
 
-        mRef.child(String.valueOf(key)).child("latitude").setValue("13");
-        mRef.child(String.valueOf(key)).child("longitude").setValue("13");
-        mRef.child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-        mRef.child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-        mRef.child(String.valueOf(key)).child("dogData").setValue(dogData);
+        email = (email != "") ? email : "email";
+
+        //int lostDog = 1;
+        //if( lostDog == 1 ){
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
+        //} else {
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
+        //}
     }
 
     public void GetImage(View view) {
