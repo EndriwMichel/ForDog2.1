@@ -1,6 +1,5 @@
 package com.example.endriw.map_v21;
 
-
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,8 +18,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Base64;
 
 import com.firebase.client.Firebase;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class CadDog extends AppCompatActivity {
@@ -30,8 +33,11 @@ public class CadDog extends AppCompatActivity {
     private PopupWindow pup;
     private Firebase mRef;
     private ImageButton dogFoto;
+    private String base64Image;
+    private byte[] bytes;
 
-    private final static int SELECT_PHOTO = 0;
+    private static int RESULT_LOAD_IMG = 1;
+    String imgDecodableString;
 
     private String[] data = {"Data"};
 
@@ -80,7 +86,7 @@ public class CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
-        //ImageButton  elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
+        ImageButton  elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
         TextView elementoData = (TextView) findViewById(R.id.dogDate);
         TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
         TextView elementoNome = (TextView) findViewById(R.id.dogNome);
@@ -92,7 +98,8 @@ public class CadDog extends AppCompatActivity {
         int key = stHash.hashCode();
         //        String ftDogfoto = elementoData.getText().toString();
         String email = "coloca aqui a funcao que pega o email";
-        gravaFirebase("", key, stDogNome, stDogDesc, stDogData, "", "");
+        gravaFirebase("", key, stDogNome, stDogDesc, stDogData, "", "", "");
+
     }
 
 
@@ -100,7 +107,7 @@ public class CadDog extends AppCompatActivity {
         this.finish();
     }
 
-    public void gravaFirebase(String email, int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude) {
+    public void gravaFirebase(String email, int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude, String dogFoto) {
         //mRef.child(key).setValue(valor);
 
         if (latitude == "")
@@ -117,45 +124,66 @@ public class CadDog extends AppCompatActivity {
             mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
             mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
             mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
+            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
         //} else {
             mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
             mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
             mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
             mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
             mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
+            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
         //}
     }
 
     public void GetImage(View view) {
 
-        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        photoPickerIntent.setType("image/*");
-        photoPickerIntent.addCategory(i.CATEGORY_OPENABLE);
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
 
-        // Here we need to check if the activity that was triggers was the Image Gallery.
-        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
-        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
-        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK && data != null) {
-            // Let's read picked image data - its URI
-            Uri pickedImage = data.getData();
-            // Let's read picked image path using content resolver
-            String[] filePath = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-            dogFoto.setImageBitmap(bitmap);
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
 
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                cursor.close();
+                dogFoto = (ImageButton)findViewById(R.id.dogFoto);
+                // Set the Image in ImageView after decoding the String
+                dogFoto.setImageBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString));
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                bytes = baos.toByteArray();
+                base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }
