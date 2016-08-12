@@ -1,6 +1,9 @@
 package com.example.endriw.map_v21;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -29,6 +34,13 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,12 +52,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Random rand = new Random();
 
@@ -75,18 +90,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private File imageFile;
 
     private Firebase firebase;
-    private  String base64Image;
+    private String base64Image;
     private byte[] bytes;
     private byte[] imageAsBytes;
 
+    private static final int REQUEST_CODE_EMAIL = 1;
 
+    //adenilda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        getEmail();
+
         ArrayList<String> bora = new ArrayList<String>();
 
-        for(int x = 0;x<teste.length;x++) {
+        for (int x = 0; x < teste.length; x++) {
             bora.add(x, teste[x]);
         }
         ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, bora);
@@ -145,54 +165,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mRef = new Firebase("https://fordog.firebaseio.com/");
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
-        final Intent intent  = new Intent(this, InitialCadDog.class);
+        final Intent intent = new Intent(this, InitialCadDog.class);
 
-            ListView lv = (ListView)findViewById(R.id.drawerList);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView lv = (ListView) findViewById(R.id.drawerList);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    ListViewMaps lvm = custom.get(position);
+                ListViewMaps lvm = custom.get(position);
 
-                    if(lvm.getDex() == "Cadastrar Lost Dog"){
+                if (lvm.getDex() == "Cadastrar Lost Dog") {
 
-                        startActivity(intent);
-                    }
-
-                     else if (parent.getItemAtPosition(position) == "cadastrar2") {
-                        ad = new AlertDialog.Builder(MapsActivity.this);
-                        ad.setMessage("ta saino da jaula u muonstro");
-                        ad.show();
-                    } else if (parent.getItemAtPosition(position) == "cadastrar3") {
-                        ad = new AlertDialog.Builder(MapsActivity.this);
-                        ad.setMessage("A qui é bori bilder porra");
-                        ad.show();
-                    }
-
-                    dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                        @Override
-                        public void onDrawerClosed(View drawerView) {
-                            super.onDrawerClosed(drawerView);
-
-                        }
-                    });
+                    startActivity(intent);
+                } else if (parent.getItemAtPosition(position) == "cadastrar2") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("ta saino da jaula u muonstro");
+                    ad.show();
+                } else if (parent.getItemAtPosition(position) == "cadastrar3") {
+                    ad = new AlertDialog.Builder(MapsActivity.this);
+                    ad.setMessage("A qui é bori bilder porra");
+                    ad.show();
                 }
-            });
+
+                dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        super.onDrawerClosed(drawerView);
+
+                    }
+                });
+            }
+        });
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //mGoogleapiClient.connect();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //  mGoogleapiClient.disconnect();
+
+    }
+
+
     private void populateList() {
 
-        for(int x=0;x<vetor.length;x++) {
+        for (int x = 0; x < vetor.length; x++) {
 
             custom.add(new ListViewMaps(teste[x], vetor[x]));
 
         }
     }
 
+
     private class MyListViewMaps extends ArrayAdapter<ListViewMaps> {
-        public MyListViewMaps(){
+        public MyListViewMaps() {
             super(MapsActivity.this, R.layout.listviewmaps, custom);
         }
 
@@ -219,39 +253,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-   }
+    }
 
     protected void onResume() {
         super.onResume();
-       // imagemFireBase();
+        // imagemFireBase();
         SetUpMapIfNeeded();
         fireB();
     }
 
-    public void ClickButton(View view) {
-
-    /*
-            mRef = new Firebase("https://fordog.firebaseio.com/dogim");
-            mRef.child("latitude").setValue(String.valueOf(text1.getText()));
-            mRef.child("longitude").setValue(String.valueOf(text2.getText()));
-            LatLng mLoc = new LatLng(Integer.parseInt(String.valueOf(text1.getText())), Integer.parseInt(String.valueOf(text2.getText())));
-            mMap.addMarker(new MarkerOptions().position(mLoc).title(String.valueOf(iv)));
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
-            up = CameraUpdateFactory.newLatLngZoom(mLoc, 5);
-            mMap.animateCamera(up);
-  */
-
-        //aqui começa as putaria pra fazer a barra de navegação do canto fiotão
-
-
-
-    }
-
     public void ActionCamera(View view) {
-        File direct = new File(Environment.getExternalStorageDirectory()+"/Pictures/findog");
+        File direct = new File(Environment.getExternalStorageDirectory() + "/Pictures/findog");
         // File direct2 = new File("/sdcard/");
 
-        if(!direct.exists()) {
+        if (!direct.exists()) {
 
             suces = direct.mkdir();
 
@@ -259,8 +274,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
             startActivity(i);
-        }
-        else {
+        } else {
 
             //  File picsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
             imageFile = new File(Environment.getExternalStoragePublicDirectory("/Pictures/findog"), "dogphoto.png");
@@ -270,9 +284,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        File imgFile = new  File("/sdcard//Pictures/findog/dogphoto.png");
+        File imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
 
-        if(imgFile.exists()){
+        if (imgFile.exists()) {
 
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             iv.setImageBitmap(myBitmap);
@@ -285,7 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
-        if(mMap != null) {
+        if (mMap != null) {
 
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
@@ -324,9 +338,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
                 System.out.println("entrou ");
-                for( DataSnapshot dataSnapshot : dataSnapshots.getChildren() ){
-                    Cachorro cachorro = dataSnapshot.getValue( Cachorro.class );
-                    System.out.println( " Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude() );
+                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                    Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
+                    System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
 
@@ -340,15 +354,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void fireB(){
+    public void fireB() {
         mRef = new Firebase("https://fordog.firebaseio.com/");
         mRef.child("dogim").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshots) {
                 System.out.println("entrou ");
-                for( DataSnapshot dataSnapshot : dataSnapshots.getChildren() ){
-                    Cachorro cachorro = dataSnapshot.getValue( Cachorro.class );
-                    System.out.println( " Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude() );
+                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+                    Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
+                    System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
                     mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                             .position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
@@ -362,6 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
 
    /* public void imagemFireBase(){
         firebase.child("imagem").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -384,5 +399,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
     }*/
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Toast.makeText(this, "Connected !!",
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "Suspended !!",
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Connected Failed!!",
+                Toast.LENGTH_LONG).show();
+    }
+
+
+    public void getEmail() {
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
+        startActivityForResult(intent, REQUEST_CODE_EMAIL);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
+            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+            System.out.println(accountName);
+        }
+    }
 }
 
