@@ -95,6 +95,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private byte[] imageAsBytes;
 
     private static final int REQUEST_CODE_EMAIL = 1;
+    private TextView textEmail;
 
     //adenilda
     @Override
@@ -420,6 +421,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void getEmail() {
+        textEmail = (TextView)findViewById(R.id.textEmail);
         Intent intent = AccountPicker.newChooseAccountIntent(null, null,
                 new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
         startActivityForResult(intent, REQUEST_CODE_EMAIL);
@@ -428,7 +430,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-            System.out.println(accountName);
+            textEmail.setText(accountName);
         }
     }
 }
