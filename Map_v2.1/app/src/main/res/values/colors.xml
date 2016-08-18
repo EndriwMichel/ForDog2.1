@@ -8,4 +8,10 @@
     <color name="Black">#000000</color>
     <color name="HighGren">#3CA585</color>
     <color name="White">#FFFF</color>
+    <color name="GreenBtn">#00cc99</color>
+    <color name="GreenBg">#ccfff2</color>
+    <color name="GreenBg2"> #ccffff</color>
+    <color name="GreenBtn2">#e6ffff</color>
+    <color name="GreenBg3">#00BFA5</color>
+    <color name="GreenBg4">#1DE9B6</color>
 </resources>

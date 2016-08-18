@@ -172,7 +172,8 @@ public class CadDog extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 bytes = baos.toByteArray();
                 base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 

@@ -3,15 +3,16 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/GreenBg4">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back3"
         android:orientation="vertical">
 
         <TextView
+            style="@android:style/Widget.Holo.Light.TextView"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,18 +23,20 @@
 
 
         <ImageButton
+            android:background="@drawable/round_button"
+            style="@android:style/Widget.Holo.Light.ImageButton"
             android:id="@+id/dogFoto"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true"
-            android:src="@android:drawable/ic_input_add"
+            android:src="@drawable/dogavatar2_trans"
             android:text="ok"
             android:onClick="GetImage"/>
 
 
         <EditText
-
+            style="@android:style/Widget.Holo.Light.EditText"
             android:id="@+id/dogNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,6 +49,7 @@
             android:layout_alignParentEnd="true" />
 
         <EditText
+            style="@android:style/Widget.Holo.Light.EditText"
             android:id="@+id/dogDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,11 +66,12 @@
             android:layout_alignParentEnd="true" />
 
         <Button
+
+            style="@android:style/Widget.Holo.Light.Button"
             android:id="@+id/btn_salvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/textView"
-            android:layout_toStartOf="@+id/textView"
             android:onClick="ClickSalvar"
             android:text="Salvar"
             android:layout_alignBottom="@+id/btn_cancelar"
@@ -74,6 +79,8 @@
             android:layout_below="@+id/dogDesc" />
 
         <Button
+
+            style="@android:style/Widget.Holo.Light.Button"
             android:id="@+id/btn_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,12 +92,12 @@
             android:layout_below="@+id/dogDesc" />
 
         <TextView
+            style="@android:style/Widget.Holo.Light.EditText"
             android:id="@+id/dogDate"
-            style="@android:style/Widget.Holo.Light.Spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="CallCalendar"
-            android:text="Data"
+            android:hint="Data"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/dogNome"
