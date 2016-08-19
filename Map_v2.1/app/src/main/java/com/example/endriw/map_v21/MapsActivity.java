@@ -382,7 +382,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
    /* public void imagemFireBase(){
-        firebase.child("imagem").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.child("vaanhalen00@gmail@com").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 base64Image = (String) dataSnapshot.getValue();

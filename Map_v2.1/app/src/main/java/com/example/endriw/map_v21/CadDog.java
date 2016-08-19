@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class CadDog extends AppCompatActivity {
     private ImageButton dogFoto;
     private String base64Image;
     private byte[] bytes;
+
+    private BitmapDrawable bitmapDrawable;
     //private String accountName;
 
     private static int RESULT_LOAD_IMG = 1;
@@ -174,9 +178,13 @@ public class CadDog extends AppCompatActivity {
                         imgDecodableString = cursor.getString(columnIndex);
                         cursor.close();
                         dogFoto = (ImageButton) findViewById(R.id.dogFoto);
+                      //  ImageView ivew;
+                       // ivew = (ImageView)findViewById(R.id.imageView);
                         // Set the Image in ImageView after decoding the String
-                        dogFoto.setImageBitmap(BitmapFactory
-                                .decodeFile(imgDecodableString));
+                    //    ivew.setImageBitmap(BitmapFactory
+                      //          .decodeFile(imgDecodableString));
+                        bitmapDrawable = new BitmapDrawable(getResources(), imgDecodableString);
+                        dogFoto.setBackground(bitmapDrawable);
 
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
