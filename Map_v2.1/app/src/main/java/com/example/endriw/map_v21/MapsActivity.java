@@ -356,17 +356,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void fireB() {
-        mRef = new Firebase("https://fordog.firebaseio.com/");
-        mRef.child("dogim").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef = new Firebase("https://naelsorest.firebaseio.com/");
+
+        mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshots) {
-                System.out.println("entrou ");
-                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                    Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                    System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
-                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                            .position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
+            public void onDataChange(DataSnapshot data) {
+                for (DataSnapshot dataSnapshot : data.getChildren()) {
+
+                    Emails email = dataSnapshot.getValue(Emails.class);
+                    String stEmail = email.getEmail();
+
+                    mRef.child(stEmail).child("lostDog").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshots) {
+
+                            //usando um a um/
+                            for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+
+                                Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
+                                System.out.println("getLatitude cachorro: " + cachorro.getLatitude());
+                                System.out.println("getLongitude cachorro: " + cachorro.getLongitude());
+                                System.out.println("getDogData cachorro: " + cachorro.getDogData());
+                                System.out.println("getDogDesc cachorro: " + cachorro.getDogDesc());
+                                System.out.println("getDogFoto cachorro: " + cachorro.getDogFoto());
+                                System.out.println("getDogNome cachorro: " + cachorro.getDogNome());
+
+                                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
+                                                                  .fromResource(R.drawable.marker)
+                                               ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
 
                 }
             }
