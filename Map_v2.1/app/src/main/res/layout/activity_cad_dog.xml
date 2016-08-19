@@ -23,6 +23,7 @@
 
 
         <ImageButton
+
             android:background="@drawable/round_button"
             style="@android:style/Widget.Holo.Light.ImageButton"
             android:id="@+id/dogFoto"
@@ -30,7 +31,6 @@
             android:layout_height="200dp"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/dogavatar2_trans"
             android:text="ok"
             android:onClick="GetImage"/>
 

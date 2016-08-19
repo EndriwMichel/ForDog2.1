@@ -64,10 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Random rand = new Random();
 
-    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3", "Teste"};
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
+    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse, R.drawable.dogavatar};
 
     public DrawerLayout dl;
     public ListView lv;
@@ -93,6 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String base64Image;
     private byte[] bytes;
     private byte[] imageAsBytes;
+
+    public static  String accountName;
 
     private static final int REQUEST_CODE_EMAIL = 1;
     private TextView textEmail;
@@ -429,8 +431,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
-            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+           accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             textEmail.setText(accountName);
+
         }
     }
 }

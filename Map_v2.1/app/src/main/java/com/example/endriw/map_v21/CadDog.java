@@ -1,5 +1,6 @@
 package com.example.endriw.map_v21;
 
+import android.accounts.AccountManager;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import android.util.Base64;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
 
 import java.io.ByteArrayOutputStream;
 
@@ -35,9 +38,12 @@ public class CadDog extends AppCompatActivity {
     private ImageButton dogFoto;
     private String base64Image;
     private byte[] bytes;
+    //private String accountName;
 
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
+
+    private static final int REQUEST_CODE_EMAIL = 1;
 
     private String[] data = {"Data"};
 
@@ -46,7 +52,7 @@ public class CadDog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cad_dog);
-        dogFoto = (ImageButton)findViewById(R.id.dogFoto);
+        dogFoto = (ImageButton) findViewById(R.id.dogFoto);
         mRef = new Firebase("https://naelsorest.firebaseio.com/");
 
     }
@@ -86,7 +92,7 @@ public class CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
-        ImageButton  elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
+        ImageButton elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
         TextView elementoData = (TextView) findViewById(R.id.dogDate);
         TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
         TextView elementoNome = (TextView) findViewById(R.id.dogNome);
@@ -97,8 +103,8 @@ public class CadDog extends AppCompatActivity {
         String stHash = stDogData + stDogDesc + stDogData;
         int key = stHash.hashCode();
         //        String ftDogfoto = elementoData.getText().toString();
-        String email = "coloca aqui a funcao que pega o email";
-        gravaFirebase("", key, stDogNome, stDogDesc, stDogData, "", "", "");
+        String email = MapsActivity.accountName.replace(".", "@");
+        gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, "", "", "");
 
     }
 
@@ -112,26 +118,28 @@ public class CadDog extends AppCompatActivity {
 
         if (latitude == "")
             //pega a location com o helper do endriw
-        if (longitude == "")
-            //pega a location com o helper do endriw
+            if (longitude == "")
+                //pega a location com o helper do endriw
 
-        email = (email != "") ? email : "email";
+                email = (email != "") ? email : "email";
+
+        mRef.child("emails").child(String.valueOf(email.hashCode())).child("email").setValue(email);
 
         //int lostDog = 1;
         //if( lostDog == 1 ){
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
-            mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
         //} else {
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
-            mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
         //}
     }
 
@@ -143,48 +151,52 @@ public class CadDog extends AppCompatActivity {
         // Start the Intent
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        try {
-            // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
 
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                try {
+                    // When an Image is picked
+                    if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                            && null != data) {
+                        // Get the Image from data
 
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                dogFoto = (ImageButton)findViewById(R.id.dogFoto);
-                // Set the Image in ImageView after decoding the String
-                dogFoto.setImageBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString));
+                        // Get the cursor
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        // Move to first row
+                        cursor.moveToFirst();
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imgDecodableString = cursor.getString(columnIndex);
+                        cursor.close();
+                        dogFoto = (ImageButton) findViewById(R.id.dogFoto);
+                        // Set the Image in ImageView after decoding the String
+                        dogFoto.setImageBitmap(BitmapFactory
+                                .decodeFile(imgDecodableString));
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                bytes = baos.toByteArray();
-                base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                        resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        bytes = baos.toByteArray();
+                        base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
 
-            } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
-        }
+                    } else {
+                        Toast.makeText(this, "You haven't picked Image",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                            .show();
+                }
     }
 }
