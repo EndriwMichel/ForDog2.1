@@ -23,16 +23,17 @@
 
 
         <ImageButton
-            android:background="@drawable/round_button"
+            android:layout_gravity="left"
+            android:onClick="GetImage"
             style="@android:style/Widget.Holo.Light.ImageButton"
             android:id="@+id/dogFoto"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
             android:layout_below="@+id/textView"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/dogavatar2_trans"
-            android:text="ok"
-            android:onClick="GetImage"/>
+            android:drawablePadding="10dp"
+            android:layout_centerHorizontal="true" />
 
 
         <EditText
@@ -104,7 +105,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
 
     </RelativeLayout>
 

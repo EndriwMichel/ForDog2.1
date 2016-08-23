@@ -4,12 +4,31 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
 
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back3">
+        android:background="@drawable/back3"
+        android:weightSum="1">
+      <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="198dp"
+            android:id="@+id/ListDog"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.61" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aparecer"
+            android:id="@+id/btn_aparece"
+            android:onClick="Aparece"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,27 +42,8 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="aparecer"
-            android:id="@+id/btn_aparece"
-            android:onClick="Aparece"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/DogList"
-            android:layout_gravity="start"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>

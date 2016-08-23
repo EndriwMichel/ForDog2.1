@@ -20,37 +20,44 @@ import java.util.List;
 public class InitialCadDog extends AppCompatActivity {
 
     public TextView txt_nenhum;
-    public ListView lv;
 
+    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
     private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
-    private String[] vetor2 = new String[]{"dog1", "dog2", "dog3"};
+
+    public ListView lv;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_cadog);
 
-       lv = (ListView) findViewById(R.id.DogList);
+        ArrayList<String> bora = new ArrayList<String>();
+
+        for (int x = 0; x < teste.length; x++) {
+            bora.add(x, teste[x]);
+        }
+        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, bora);
+
+        lv = (ListView) findViewById(R.id.ListDog);
 
         populateList();
 
-        ArrayAdapter<ListViewMaps> adapter = new MyListAdapter();
+        ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
 
         lv.setAdapter(adapter);
     }
 
     private void populateList() {
 
-        for(int x=0;x<vetor.length;x++) {
+        for (int x = 0; x < vetor.length; x++) {
 
-            custom.add(new ListViewMaps(vetor2[x], vetor[x]));
+            custom.add(new ListViewMaps(teste[x], vetor[x]));
 
         }
     }
 
-
-    private class MyListAdapter extends ArrayAdapter<ListViewMaps> {
-        public MyListAdapter() {
+    private class MyListViewMaps extends ArrayAdapter<ListViewMaps> {
+        public MyListViewMaps() {
             super(InitialCadDog.this, R.layout.listviewmaps, custom);
         }
 
@@ -60,7 +67,6 @@ public class InitialCadDog extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.listviewmaps, parent, false);
             }
-
             ListViewMaps cus = custom.get(position);
 
             ImageView imgview = (ImageView) itemView.findViewById(R.id.img);
@@ -69,9 +75,10 @@ public class InitialCadDog extends AppCompatActivity {
             TextView textview = (TextView) itemView.findViewById(R.id.num);
             textview.setText(cus.getDex());
 
-
             return itemView;
         }
+
+
     }
 
 
