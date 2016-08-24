@@ -381,11 +381,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 System.out.println("getDogData cachorro: " + cachorro.getDogData());
                                 System.out.println("getDogDesc cachorro: " + cachorro.getDogDesc());
                                 System.out.println("getDogFoto cachorro: " + cachorro.getDogFoto());
+                                base64Image = (String) cachorro.getDogFoto();
+                                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
                                 System.out.println("getDogNome cachorro: " + cachorro.getDogNome());
 
                                 mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
                                                                   .fromResource(R.drawable.marker)
                                                ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                    mRef.child(stEmail).child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshots) {
+
+                            //usando um a um/
+                            for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
+
+                                Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
+                                System.out.println("getLatitude cachorro: " + cachorro.getLatitude());
+                                System.out.println("getLongitude cachorro: " + cachorro.getLongitude());
+                                System.out.println("getDogData cachorro: " + cachorro.getDogData());
+                                System.out.println("getDogDesc cachorro: " + cachorro.getDogDesc());
+                                System.out.println("getDogFoto cachorro: " + cachorro.getDogFoto());
+                                base64Image = (String) cachorro.getDogFoto();
+                                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
+                                System.out.println("getDogNome cachorro: " + cachorro.getDogNome());
+
+                                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
+                                        .fromResource(R.drawable.marker)
+                                ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
                             }
                         }
 
@@ -406,27 +436,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-   /* public void imagemFireBase(){
-        firebase.child("vaanhalen00@gmail@com").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                base64Image = (String) dataSnapshot.getValue();
-                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
+    public void imagemFireBase(){
+
+   //     base64Image = (String) dataSnapshot.getValue();
+           //     imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
 
                // imageButton.setImageBitmap(
                  //       BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)
                 //);
-                System.out.println("Downloaded image with length: " + imageAsBytes.length);
+            //    System.out.println("Downloaded image with length: " + imageAsBytes.length);
 
-            }
+         //   }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-
-        });
-    }*/
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
