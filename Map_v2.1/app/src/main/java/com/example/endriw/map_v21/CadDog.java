@@ -101,6 +101,7 @@ public class CadDog extends AppCompatActivity {
         TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
         TextView elementoNome = (TextView) findViewById(R.id.dogNome);
 
+
         String stDogNome = elementoNome.getText().toString();
         String stDogDesc = elementoDesc.getText().toString();
         String stDogData = elementoData.getText().toString();
@@ -195,6 +196,7 @@ public class CadDog extends AppCompatActivity {
                         bytes = baos.toByteArray();
                         base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
+                        baos.close();
 
                     } else {
                         Toast.makeText(this, "You haven't picked Image",

@@ -56,7 +56,9 @@ import java.io.FileDescriptor;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -91,8 +93,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Firebase firebase;
     private String base64Image;
+    private String[] base64vet;
+
+    private Map<String, String> mapa = new HashMap<>();
+
+    private String[] Desclost;
+    private String[] Descown;
+
     private byte[] bytes;
     private byte[] imageAsBytes;
+
+    public int CountFb;
 
     public static  String accountName;
 
@@ -319,14 +330,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     TextView tlng = (TextView) v.findViewById(R.id.txt_lng);
                     ImageView image = (ImageView) v.findViewById(R.id.image1);
 
-                    Bitmap bmp = BitmapFactory.decodeFile("/sdcard/Pictures/findog/dogphoto.png");
-                    image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        //Bitmap bmp = BitmapFactory.decodeFile("/sdcard/Pictures/findog/dogphoto.png");
 
-                    // LatLng ll = marker.getPosition();
+                            imageAsBytes = Base64.decode(mapa.get(marker.getTitle()).getBytes(), Base64.DEFAULT);
+                            image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
 
-                    tx.setText(marker.getTitle());
-                    //tlat.setText(String.valueOf("My position: "+ll.latitude+" : "));
-                    // tlng.setText(String.valueOf(ll.longitude));
+                            // LatLng ll = marker.getPosition();
+
+                            tx.setText(marker.getTitle());
+                            //tlat.setText(String.valueOf("My position: "+ll.latitude+" : "));
+                            // tlng.setText(String.valueOf(ll.longitude));
 
                     return v;
                 }
@@ -346,7 +359,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
-
                 }
             }
 
@@ -359,7 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void fireB() {
         mRef = new Firebase("https://naelsorest.firebaseio.com/");
-
+        CountFb = 0;
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot data) {
@@ -370,24 +382,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     mRef.child(stEmail).child("lostDog").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshots) {
 
-                            //usando um a um/
+                        public void onDataChange(DataSnapshot dataSnapshots) {
+                            int x =0;
+                            CountFb += dataSnapshots.getChildrenCount();
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                                System.out.println("getLatitude cachorro: " + cachorro.getLatitude());
-                                System.out.println("getLongitude cachorro: " + cachorro.getLongitude());
-                                System.out.println("getDogData cachorro: " + cachorro.getDogData());
-                                System.out.println("getDogDesc cachorro: " + cachorro.getDogDesc());
-                                System.out.println("getDogFoto cachorro: " + cachorro.getDogFoto());
-                                base64Image = (String) cachorro.getDogFoto();
-                                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
-                                System.out.println("getDogNome cachorro: " + cachorro.getDogNome());
+                                mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
-                                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
-                                                                  .fromResource(R.drawable.marker)
-                                               ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                                mMap.addMarker(new MarkerOptions()
+                                                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                                                   .position(new LatLng(Integer.parseInt(cachorro.getLatitude()),
+                                                                 Integer.parseInt(cachorro.getLongitude())))
+                                                   .title(cachorro.getDogHash())
+                                              );
+                                   x++;
+
                             }
                         }
 
@@ -399,23 +410,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mRef.child(stEmail).child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshots) {
-
-                            //usando um a um/
+                            int x = 0;
+                            CountFb += dataSnapshots.getChildrenCount();
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                                System.out.println("getLatitude cachorro: " + cachorro.getLatitude());
-                                System.out.println("getLongitude cachorro: " + cachorro.getLongitude());
-                                System.out.println("getDogData cachorro: " + cachorro.getDogData());
-                                System.out.println("getDogDesc cachorro: " + cachorro.getDogDesc());
-                                System.out.println("getDogFoto cachorro: " + cachorro.getDogFoto());
-                                base64Image = (String) cachorro.getDogFoto();
-                                imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
-                                System.out.println("getDogNome cachorro: " + cachorro.getDogNome());
+                                mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
                                 mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.marker)
-                                ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                                ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(cachorro.getDogHash()));
+                            x++;
                             }
                         }
 
