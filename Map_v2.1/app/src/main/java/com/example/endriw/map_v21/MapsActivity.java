@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,8 +37,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.common.api.GoogleApiClient.*;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -44,6 +48,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,ConnectionCallbacks, OnConnectionFailedListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     Random rand = new Random();
 
@@ -64,10 +70,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public DrawerLayout dl;
     public ListView lv;
 
+    private double latitude;
+    private double longitude;
+    private LatLng UserPosition;
+
     public AlertDialog dialog;
     public AlertDialog.Builder ad;
 
     private GoogleMap mMap;
+    private GoogleMap mMapUser;
     private CameraUpdate up;
     private Firebase mRef;
     private String mTexto;
@@ -100,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE_EMAIL = 1;
     private TextView textEmail;
 
-    public static GoogleApiClient mGoogleapiClient;
+    private GoogleApiClient mGoogleapiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,14 +226,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onStart() {
         super.onStart();
         mGoogleapiClient.connect();
-        System.out.println("conectou fiote");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        stopLocationUpdates();
           mGoogleapiClient.disconnect();
-        System.out.println("não rolou");
     }
 
 
@@ -234,7 +244,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-
 
     private class MyListViewMaps extends ArrayAdapter<ListViewMaps> {
         public MyListViewMaps() {
@@ -437,25 +446,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
 
-    public void imagemFireBase(){
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
-   //     base64Image = (String) dataSnapshot.getValue();
-           //     imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
+        LatLng UserPosition = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(UserPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .setTitle("Bora salva uns dog caraio !");
+        System.out.println(latitude+":"+longitude);
 
-               // imageButton.setImageBitmap(
-                 //       BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)
-                //);
-            //    System.out.println("Downloaded image with length: " + imageAsBytes.length);
-
-         //   }
     }
 
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(Bundle bundle) {
         Toast.makeText(this, "Connected !!",
                 Toast.LENGTH_LONG).show();
+
+        startLocationUpdates();
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        UserPosition = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(UserPosition)
+                                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                                        .setTitle("Bora salva uns dog caraio !");
+       mMapUser.moveCamera(CameraUpdateFactory.newLatLng(UserPosition));
     }
 
     @Override
@@ -466,6 +486,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        System.out.println("não rolou");
         Toast.makeText(this, "Connected Failed!!",
                 Toast.LENGTH_LONG).show();
     }
@@ -485,5 +506,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
+    protected void startLocationUpdates(){
+        Log.d("TAG","startLocationUpdates");
+
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(2500);//1s
+        mLocationRequest.setFastestInterval(2500);//1s
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleapiClient,mLocationRequest,this);
+    }
+    protected void stopLocationUpdates(){
+        Log.d("TAG", "stopLocationUpdates");
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleapiClient, this);
+    }
+
 }
 
