@@ -18,8 +18,8 @@ public class dogFirebase {
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue(latitude);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue(longitude);
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(dogFoto);
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogHash").setValue(String.valueOf(key));
         mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogCel").setValue( dogcel );
@@ -31,8 +31,8 @@ public class dogFirebase {
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue(latitude);
+        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue(longitude);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogFoto").setValue(dogFoto);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogHash").setValue(String.valueOf(key));
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogCel").setValue( dogcel );

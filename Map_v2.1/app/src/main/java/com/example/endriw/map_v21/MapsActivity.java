@@ -70,8 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public DrawerLayout dl;
     public ListView lv;
 
-    private double latitude;
-    private double longitude;
+    public static double latitude;
+    public static double longitude;
     private LatLng UserPosition;
 
     public AlertDialog dialog;
@@ -106,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public int CountFb;
 
-    public static  String accountName;
+    public static String accountName;
 
     private static final int REQUEST_CODE_EMAIL = 1;
     private TextView textEmail;
@@ -142,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lv.setAdapter(adapter);
 
         firebase.setAndroidContext(this);
-        firebase = new Firebase("https://naelsorest.firebaseio.com");
+        firebase = new Firebase("https://dog-603e7.firebaseio.com/");
 
      /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -184,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Firebase.setAndroidContext(this);
 
-        mRef = new Firebase("https://fordog.firebaseio.com/");
+        mRef = new Firebase("https://dog-603e7.firebaseio.com");
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent = new Intent(this, InitialCadDog.class);
@@ -361,7 +361,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
                     Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
                     System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(String.valueOf(iv)));
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(cachorro.getLatitude()), Double.parseDouble(cachorro.getLongitude()))).title(String.valueOf(iv)));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
                 }
             }
@@ -374,7 +374,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void fireB() {
-        mRef = new Firebase("https://naelsorest.firebaseio.com/");
+        mRef = new Firebase("https://dog-603e7.firebaseio.com/");
         CountFb = 0;
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -397,8 +397,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 mMap.addMarker(new MarkerOptions()
                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                                                   .position(new LatLng(Integer.parseInt(cachorro.getLatitude()),
-                                                                 Integer.parseInt(cachorro.getLongitude())))
+                                                   .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
+                                                                 Double.parseDouble(cachorro.getLongitude())))
                                                    .title(cachorro.getDogHash())
                                               );
                                    x++;
@@ -423,7 +423,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.marker)
-                                ).position(new LatLng(Integer.parseInt(cachorro.getLatitude()), Integer.parseInt(cachorro.getLongitude()))).title(cachorro.getDogHash()));
+                                ).position(new LatLng(Double.parseDouble(cachorro.getLatitude()), Double.parseDouble(cachorro.getLongitude()))).title(cachorro.getDogHash()));
                             x++;
                             }
                         }
@@ -447,7 +447,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
 
-        latitude = location.getLatitude();
+    /*    latitude = location.getLatitude();
         longitude = location.getLongitude();
 
         LatLng UserPosition = new LatLng(latitude, longitude);
@@ -455,7 +455,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
                 .setTitle("Bora salva uns dog caraio !");
         System.out.println(latitude+":"+longitude);
-
+*/
     }
 
 
@@ -473,7 +473,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(UserPosition)
                                           .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
                                         .setTitle("Bora salva uns dog caraio !");
-       mMapUser.moveCamera(CameraUpdateFactory.newLatLng(UserPosition));
+       mMap.moveCamera(CameraUpdateFactory.newLatLng(UserPosition));
     }
 
     @Override

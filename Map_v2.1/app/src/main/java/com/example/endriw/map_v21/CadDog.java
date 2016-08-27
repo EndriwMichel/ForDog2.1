@@ -36,6 +36,9 @@ public class CadDog extends AppCompatActivity {
     private String base64Image;
     private byte[] bytes;
 
+    private String latitude = String.valueOf(MapsActivity.latitude);
+    private String longitude= String.valueOf(MapsActivity.longitude);
+
     private BitmapDrawable bitmapDrawable;
     //private String accountName;
 
@@ -104,7 +107,7 @@ public class CadDog extends AppCompatActivity {
 
         String email = MapsActivity.accountName.replace(".", "@");
         dogFirebase fireData = new dogFirebase();
-        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, "", "", base64Image, "Cel", "Porte", "Cor");
+        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", "Porte", "Cor");
 
     }
 
