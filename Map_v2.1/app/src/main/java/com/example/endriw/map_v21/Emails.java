@@ -17,4 +17,5 @@ public class Emails {
     public String getEmail() {
         return email;
     }
+
 }
