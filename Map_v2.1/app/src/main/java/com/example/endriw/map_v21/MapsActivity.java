@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.client.collection.LLRBNode;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
@@ -45,6 +47,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -97,9 +100,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] base64vet;
 
     private Map<String, String> mapa = new HashMap<>();
+    HashMap<String, String> markerUser = new HashMap<String, String>();
 
-    private String[] Desclost;
-    private String[] Descown;
+    private Marker dogs;
+    private Marker user;
+
+    String id = null;
 
     private byte[] bytes;
     private byte[] imageAsBytes;
@@ -275,9 +281,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected void onResume() {
         super.onResume();
-        // imagemFireBase();
+
         SetUpMapIfNeeded();
         fireB();
+
     }
 
     public void ActionCamera(View view) {
@@ -320,6 +327,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mMap != null) {
 
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
                 @Override
                 public View getInfoWindow(Marker marker) {
                     return null;
@@ -327,50 +335,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public View getInfoContents(Marker marker) {
+                    String m = markerUser.get(marker.getId());
 
-                    View v = getLayoutInflater().inflate(R.layout.info_window, null);
-                    TextView tx = (TextView) v.findViewById(R.id.txt_view);
-                    TextView tlat = (TextView) v.findViewById(R.id.txt_lat);
-                    TextView tlng = (TextView) v.findViewById(R.id.txt_lng);
-                    ImageView image = (ImageView) v.findViewById(R.id.image1);
+                    if(m.equals("dogs")) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tx = (TextView) v.findViewById(R.id.txt_view);
+                        ImageView image = (ImageView) v.findViewById(R.id.image1);
 
                         //Bitmap bmp = BitmapFactory.decodeFile("/sdcard/Pictures/findog/dogphoto.png");
 
-                            imageAsBytes = Base64.decode(mapa.get(marker.getTitle()).getBytes(), Base64.DEFAULT);
-                            image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        imageAsBytes = Base64.decode(mapa.get(marker.getTitle()).getBytes(), Base64.DEFAULT);
+                        image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
 
-                            // LatLng ll = marker.getPosition();
+                        // LatLng ll = marker.getPosition();
 
-                            tx.setText(marker.getTitle());
-                            //tlat.setText(String.valueOf("My position: "+ll.latitude+" : "));
-                            // tlng.setText(String.valueOf(ll.longitude));
+                        tx.setText(marker.getTitle());
+                        //tlat.setText(String.valueOf("My position: "+ll.latitude+" : "));
+                        // tlng.setText(String.valueOf(ll.longitude));
+                        return v;
+                    }else if (m.equals("user")){
+                        View v = getLayoutInflater().inflate(R.layout.user_info_window, null);
+                        TextView tx = (TextView) v.findViewById(R.id.user_txt_view);
+                        tx.setText("Você está aqui");
+                        return v;
+                    }
 
-                    return v;
+                        return null;
+
                 }
             });
         }
 
-    }
-
-    public void VaiClick(View view) {
-        mRef = new Firebase("https://fordog.firebaseio.com/");
-        mRef.child("dogim").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshots) {
-                System.out.println("entrou ");
-                for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
-                    Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                    System.out.println(" Latitudes " + cachorro.getLatitude() + " Longitudes " + cachorro.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(cachorro.getLatitude()), Double.parseDouble(cachorro.getLongitude()))).title(String.valueOf(iv)));
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(mLoc));
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
     }
 
     public void fireB() {
@@ -388,20 +383,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
 
                         public void onDataChange(DataSnapshot dataSnapshots) {
-                            int x =0;
+
                             CountFb += dataSnapshots.getChildrenCount();
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
                                 mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
-                                mMap.addMarker(new MarkerOptions()
+                                dogs = mMap.addMarker(new MarkerOptions()
                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                                    .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                                  Double.parseDouble(cachorro.getLongitude())))
                                                    .title(cachorro.getDogHash())
                                               );
-                                   x++;
+
+                                id = dogs.getId();
+                                markerUser.put(id, "dogs");
 
                             }
                         }
@@ -414,17 +411,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mRef.child(stEmail).child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshots) {
-                            int x = 0;
+
                             CountFb += dataSnapshots.getChildrenCount();
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
                                 mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
-                                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
+                                dogs = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.marker)
                                 ).position(new LatLng(Double.parseDouble(cachorro.getLatitude()), Double.parseDouble(cachorro.getLongitude()))).title(cachorro.getDogHash()));
-                            x++;
+                                id = dogs.getId();
+                                markerUser.put(id, "dogs");
                             }
                         }
 
@@ -464,16 +462,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Connected !!",
                 Toast.LENGTH_LONG).show();
 
-        startLocationUpdates();
-
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        UserPosition = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(UserPosition)
-                                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                                        .setTitle("Bora salva uns dog caraio !");
-       mMap.moveCamera(CameraUpdateFactory.newLatLng(UserPosition));
+        AddUserMarker();
     }
 
     @Override
@@ -516,6 +505,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void stopLocationUpdates(){
         Log.d("TAG", "stopLocationUpdates");
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleapiClient, this);
+    }
+
+    public void AddUserMarker(){
+        startLocationUpdates();
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        UserPosition = new LatLng(latitude, longitude);
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(UserPosition, 15);
+        user = mMap.addMarker(new MarkerOptions().position(UserPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        mMap.animateCamera(update);
+
+        id = user.getId();
+        markerUser.put(id, "user");
     }
 
 }

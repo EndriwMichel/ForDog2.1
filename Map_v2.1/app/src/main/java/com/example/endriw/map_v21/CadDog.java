@@ -16,8 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Base64;
@@ -30,8 +33,15 @@ import java.io.ByteArrayOutputStream;
 public class CadDog extends AppCompatActivity {
 
     public Toolbar toolbar;
-    private String array_spinner[];
-    private PopupWindow pup;
+    private String dogCor[] = new String[]{"Preto", "Branco", "Marrom", "Preto/Branco", "Marrom/Branco", "Marrom/Preto", "Outra cor"};
+    private String dogPorte[] = new String[]{"Grande", "Médio", "Pequeno"};
+
+    ArrayAdapter<String> dogCor_adapter;
+    ArrayAdapter<String> dogPorte_adapter;
+
+    private Spinner sp_cor;
+    private Spinner sp_porte;
+
     private ImageButton dogFoto;
     private String base64Image;
     private byte[] bytes;
@@ -55,6 +65,16 @@ public class CadDog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cad_dog);
         dogFoto = (ImageButton) findViewById(R.id.dogFoto);
+        sp_cor = (Spinner) findViewById(R.id.dogCor);
+        sp_porte = (Spinner) findViewById(R.id.dogPorte);
+        dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogCor);
+        dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogPorte);
+        sp_cor.setAdapter(dogCor_adapter);
+        sp_porte.setAdapter(dogPorte_adapter);
+
+    //    String cor = sp_cor.getSelectedItem().toString();
+      //  String porte = sp_porte.getSelectedItem().toString();
+   //     System.out.println(cor+" : "+porte);
     }
 
     @Override

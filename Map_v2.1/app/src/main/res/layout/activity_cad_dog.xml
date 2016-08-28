@@ -49,22 +49,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <EditText
-            style="@android:style/Widget.Holo.Light.EditText"
-            android:id="@+id/dogDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:gravity="top|left"
-            android:hint="Descrição"
-            android:lines="3"
-            android:maxLines="10"
-            android:minLines="3"
-            android:scrollbars="vertical"
-            android:layout_below="@+id/dogDate"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
         <Button
 
@@ -77,7 +61,7 @@
             android:text="Salvar"
             android:layout_alignBottom="@+id/btn_cancelar"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/dogDesc" />
+            android:layout_below="@+id/dogPorte" />
 
         <Button
 
@@ -90,7 +74,7 @@
             android:onClick="ClickCancelar"
             android:text="Cancelar"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/dogDesc" />
+            android:layout_below="@+id/dogPorte" />
 
         <TextView
             style="@android:style/Widget.Holo.Light.EditText"
@@ -106,6 +90,37 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dogCor"
+            android:spinnerMode="dialog"
+            android:layout_below="@+id/dogDate"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dogPorte"
+            android:spinnerMode="dialog"
+            android:layout_below="@+id/dogCor"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Dog Desc"
+            android:id="@+id/dogDesc"
+            android:layout_below="@+id/dog"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
+
 
 </ScrollView>
