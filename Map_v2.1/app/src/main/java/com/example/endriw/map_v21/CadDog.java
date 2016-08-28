@@ -1,6 +1,5 @@
 package com.example.endriw.map_v21;
 
-import android.accounts.AccountManager;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,15 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Base64;
 
 import com.firebase.client.Firebase;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.common.AccountPicker;
 
 import java.io.ByteArrayOutputStream;
 
@@ -36,10 +32,12 @@ public class CadDog extends AppCompatActivity {
     public Toolbar toolbar;
     private String array_spinner[];
     private PopupWindow pup;
-    private Firebase mRef;
     private ImageButton dogFoto;
     private String base64Image;
     private byte[] bytes;
+
+    private String latitude = String.valueOf(MapsActivity.latitude);
+    private String longitude= String.valueOf(MapsActivity.longitude);
 
     private BitmapDrawable bitmapDrawable;
     //private String accountName;
@@ -57,15 +55,12 @@ public class CadDog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cad_dog);
         dogFoto = (ImageButton) findViewById(R.id.dogFoto);
-        mRef = new Firebase("https://naelsorest.firebaseio.com/");
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.caddog_menu, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -96,56 +91,29 @@ public class CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
+        //elementos
         ImageButton elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
         TextView elementoData = (TextView) findViewById(R.id.dogDate);
         TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
         TextView elementoNome = (TextView) findViewById(R.id.dogNome);
 
-
+        //valores
         String stDogNome = elementoNome.getText().toString();
         String stDogDesc = elementoDesc.getText().toString();
         String stDogData = elementoData.getText().toString();
         String stHash = stDogData + stDogDesc + stDogData;
         int key = stHash.hashCode();
-        //        String ftDogfoto = elementoData.getText().toString();
+
+
         String email = MapsActivity.accountName.replace(".", "@");
-        gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, "", "", "");
+        dogFirebase fireData = new dogFirebase();
+        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", "Porte", "Cor");
 
     }
 
 
     public void ClickCancelar(View view) {
         this.finish();
-    }
-
-    public void gravaFirebase(String email, int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude, String dogFoto) {
-        //mRef.child(key).setValue(valor);
-
-        if (latitude == "")
-            //pega a location com o helper do endriw
-            if (longitude == "")
-                //pega a location com o helper do endriw
-
-                email = (email != "") ? email : "email";
-
-        mRef.child("emails").child(String.valueOf(email.hashCode())).child("email").setValue(email);
-
-        //int lostDog = 1;
-        //if( lostDog == 1 ){
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue("13");
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue("13");
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
-        //} else {
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue("15");
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue("15");
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogFoto").setValue(base64Image);
-        //}
     }
 
     public void GetImage(View view) {

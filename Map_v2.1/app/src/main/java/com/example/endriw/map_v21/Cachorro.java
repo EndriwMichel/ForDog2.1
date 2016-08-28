@@ -15,18 +15,26 @@ public class Cachorro {
     private String dogFoto;
     private String dogNome;
     private String dogHash;
+    private String dogCor;
+    private String dogPorte;
+    private String dogRaca;
+    private String dogCel;
 
     public Cachorro(){
     }
 
-    public Cachorro(String latitude, String longitude, String dogData, String dogDesc, String dogFoto, String dogNome, String dogHash){
-        this.latitude = latitude;
+    public Cachorro(String latitude, String longitude, String dogData, String dogDesc, String dogFoto, String dogNome, String dogHash, String dogCor, String dogRaca, String dogPorte, String dogCel){
+        this.latitude  = latitude;
         this.longitude = longitude;
-        this.dogData = dogData;
-        this.dogDesc = dogDesc;
-        this.dogFoto = dogFoto;
-        this.dogNome = dogNome;
-        this.dogHash = dogHash;
+        this.dogData   = dogData;
+        this.dogDesc   = dogDesc;
+        this.dogFoto   = dogFoto;
+        this.dogNome   = dogNome;
+        this.dogHash   = dogHash;
+        this.dogCor    = dogCor;
+        this.dogPorte  = dogPorte;
+        this.dogRaca    = dogRaca;
+        this.dogCel    = dogCel;
     }
 
 
@@ -56,5 +64,21 @@ public class Cachorro {
 
     public String getDogHash() {
         return dogHash;
+    }
+
+    public String getDogCor() {
+        return dogCor;
+    }
+
+    public String getDogPorte() {
+        return dogPorte;
+    }
+
+    public String getDogRaca() {
+        return dogRaca;
+    }
+
+    public String getDogCel() {
+        return dogCel;
     }
 }
