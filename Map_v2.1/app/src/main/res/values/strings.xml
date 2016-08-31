@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Map_v2.1</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="DogCor">
+        <item>Preto</item>
+        <item>Branco</item>
+        <item>Marrom</item>
+        <item>Preto/Branco</item>
+        <item>Marrom/Branco</item>
+        <item>Marrom/Branco</item>
+        <item>Outra Cor</item>
+    </string-array>
+    <string-array name="DogPorte">
+        <item>Grande</item>
+        <item>Médio</item>
+        <item>Pequeno</item>
+    </string-array>
 </resources>

@@ -91,9 +91,9 @@
             android:layout_alignParentEnd="true" />
 
         <Spinner
-            style="@android:style/Widget.Holo.Light.Spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/dogCor"
             android:spinnerMode="dialog"
             android:layout_below="@+id/dogDate"
@@ -101,9 +101,9 @@
             android:layout_alignParentEnd="true" />
 
         <Spinner
-            style="@android:style/Widget.Holo.Light.Spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/dogPorte"
             android:spinnerMode="dialog"
             android:layout_below="@+id/dogCor"

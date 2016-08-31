@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -67,14 +68,83 @@ public class CadDog extends AppCompatActivity {
         dogFoto = (ImageButton) findViewById(R.id.dogFoto);
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
-        dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogCor);
-        dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogPorte);
-        sp_cor.setAdapter(dogCor_adapter);
-        sp_porte.setAdapter(dogPorte_adapter);
 
-    //    String cor = sp_cor.getSelectedItem().toString();
-      //  String porte = sp_porte.getSelectedItem().toString();
-   //     System.out.println(cor+" : "+porte);
+     /*   ArrayAdapter<CharSequence> dogCor_adapter = ArrayAdapter.createFromResource(this,
+                R.array.DogCor, android.R.layout.simple_spinner_item);
+        dogCor_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogPorte);
+
+        sp_cor.setAdapter(dogCor_adapter);
+        sp_porte.setAdapter(dogPorte_adapter);*/
+        sp_cor = (Spinner) findViewById(R.id.dogCor);
+        sp_porte = (Spinner) findViewById(R.id.dogPorte);
+
+        ArrayAdapter<String> dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        //------------------------------------------------------------------------------------------------------------
+        ArrayAdapter<String> dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+
+        dogCor_adapter.add("Preto");
+        dogCor_adapter.add("Branco");
+        dogCor_adapter.add("Marrom");
+        dogCor_adapter.add("Preto/Branco");
+        dogCor_adapter.add("Preto/Marrom");
+        dogCor_adapter.add("Marrom/Branco");
+        dogCor_adapter.add("selecione uma cor");
+
+        dogPorte_adapter.add("Grande");
+        dogPorte_adapter.add("Médio");
+        dogPorte_adapter.add("Pequeno");
+        dogPorte_adapter.add("selecione o porte");
+
+        sp_cor.setAdapter(dogCor_adapter);
+        sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
+
+        sp_porte.setAdapter(dogPorte_adapter);
+        sp_porte.setSelection(dogPorte_adapter.getCount());
+
+
     }
 
     @Override
@@ -127,7 +197,11 @@ public class CadDog extends AppCompatActivity {
 
         String email = MapsActivity.accountName.replace(".", "@");
         dogFirebase fireData = new dogFirebase();
-        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", "Porte", "Cor");
+        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+
+        Toast.makeText(this, "Cadastro efetuado",
+                Toast.LENGTH_LONG).show();
+        this.finish();
 
     }
 
