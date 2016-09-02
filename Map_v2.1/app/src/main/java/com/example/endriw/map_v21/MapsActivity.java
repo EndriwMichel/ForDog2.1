@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Random rand = new Random();
 
-    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3", "Teste"};
+    public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Opções do usuario", "Sair"};
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
     private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse, R.drawable.dogavatar};
@@ -194,6 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent = new Intent(this, InitialCadDog.class);
+        final Intent intent_user = new Intent(this, UserOptions.class);
 
         ListView lv = (ListView) findViewById(R.id.drawerList);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -203,13 +204,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 ListViewMaps lvm = custom.get(position);
 
-                if (lvm.getDex() == "Cadastrar Lost Dog") {
-
+                if (lvm.getDex() == "Cadastrar um cachorro perdido") {
                     startActivity(intent);
-                } else if (parent.getItemAtPosition(position) == "cadastrar2") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("ta saino da jaula u muonstro");
-                    ad.show();
+                } else if (lvm.getDex() == "Opções do usuario") {
+                    startActivity(intent_user);
                 } else if (parent.getItemAtPosition(position) == "cadastrar3") {
                     ad = new AlertDialog.Builder(MapsActivity.this);
                     ad.setMessage("A qui é bori bilder porra");

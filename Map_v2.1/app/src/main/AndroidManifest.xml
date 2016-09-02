@@ -44,6 +44,7 @@
         </activity>
         <activity android:name=".CadDog"></activity>
         <activity android:name=".InitialCadDog"></activity>
+        <activity android:name=".UserOptions"></activity>
     </application>
 
 </manifest>
