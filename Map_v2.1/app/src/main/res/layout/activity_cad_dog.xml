@@ -21,7 +21,6 @@
             android:text="Adiconar foto"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
         <ImageButton
             android:layout_gravity="left"
             android:onClick="GetImage"

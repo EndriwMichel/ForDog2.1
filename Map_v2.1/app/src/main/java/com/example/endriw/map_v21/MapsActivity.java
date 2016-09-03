@@ -2,6 +2,7 @@ package com.example.endriw.map_v21;
 
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -73,6 +74,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public DrawerLayout dl;
     public ListView lv;
 
+    private ProgressDialog progress;
+
     public static double latitude;
     public static double longitude;
     private LatLng UserPosition;
@@ -86,8 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Firebase mRef;
     private String mTexto;
 
-    private EditText text1;
-    private EditText text2;
     private Button buton;
     private ImageView iv;
 
@@ -182,8 +183,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 */
-
-        //aqui termina o codigo da barra de navegação fiotão
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -367,6 +366,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void fireB() {
+
+        progress = ProgressDialog.show(this, "Exemplo", "Carregando mapa...", false, true);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+        //começa o run--------------------------------------------------------------------------
+
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
         CountFb = 0;
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -438,7 +446,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+            //aqui termina o run------------------------------------------------------------------
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progress.dismiss();
+                    }
+                });
+
+            }
+        }).start();
+
     }
+
 
     @Override
     public void onLocationChanged(Location location) {

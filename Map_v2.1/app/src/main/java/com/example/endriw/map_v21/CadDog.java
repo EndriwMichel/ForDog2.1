@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,7 +44,7 @@ public class CadDog extends AppCompatActivity {
     private Spinner sp_cor;
     private Spinner sp_porte;
 
-    private ImageButton dogFoto;
+    private ImageView dogFoto;
     private String base64Image;
     private byte[] bytes;
 
@@ -64,8 +65,9 @@ public class CadDog extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cad_dog);
-        dogFoto = (ImageButton) findViewById(R.id.dogFoto);
+        setContentView(R.layout.layout_cad_dog);
+
+        dogFoto = (ImageView) findViewById(R.id.dogFoto);
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
 
@@ -87,7 +89,7 @@ public class CadDog extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione uma cor");
                     ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
@@ -109,7 +111,7 @@ public class CadDog extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione o porte");
                     ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
@@ -182,7 +184,7 @@ public class CadDog extends AppCompatActivity {
     public void ClickSalvar(View view) {
 
         //elementos
-        ImageButton elementoFoto = (ImageButton) findViewById(R.id.dogFoto);
+        ImageView elementoFoto = (ImageView) findViewById(R.id.dogFoto);
         TextView elementoData = (TextView) findViewById(R.id.dogDate);
         TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
         TextView elementoNome = (TextView) findViewById(R.id.dogNome);
@@ -240,14 +242,16 @@ public class CadDog extends AppCompatActivity {
                         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                         imgDecodableString = cursor.getString(columnIndex);
                         cursor.close();
-                        dogFoto = (ImageButton) findViewById(R.id.dogFoto);
+                        dogFoto = (ImageView) findViewById(R.id.dogFoto);
                       //  ImageView ivew;
                        // ivew = (ImageView)findViewById(R.id.imageView);
                         // Set the Image in ImageView after decoding the String
                     //    ivew.setImageBitmap(BitmapFactory
                       //          .decodeFile(imgDecodableString));
                         bitmapDrawable = new BitmapDrawable(getResources(), imgDecodableString);
-                        dogFoto.setBackground(bitmapDrawable);
+
+                       // dogFoto.setBackground(bitmapDrawable);
+                        dogFoto.setImageDrawable(bitmapDrawable);
 
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString, options);
