@@ -12,6 +12,7 @@
         android:background="@drawable/back3"
         android:weightSum="1">
       <ListView
+            style="@style/activated"
             android:layout_width="wrap_content"
             android:layout_height="198dp"
             android:id="@+id/ListDog"

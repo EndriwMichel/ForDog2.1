@@ -4,22 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class InitialCadDog extends AppCompatActivity {
+public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
 
     public TextView txt_nenhum;
+
+    ActionMode mActionMode;
 
     public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
@@ -36,15 +42,16 @@ public class InitialCadDog extends AppCompatActivity {
         for (int x = 0; x < teste.length; x++) {
             bora.add(x, teste[x]);
         }
-        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, bora);
+        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
         lv = (ListView) findViewById(R.id.ListDog);
 
         populateList();
 
         ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
-
+        lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
         lv.setAdapter(adapter);
+        lv.setOnItemLongClickListener(this);
     }
 
     private void populateList() {
@@ -54,6 +61,51 @@ public class InitialCadDog extends AppCompatActivity {
             custom.add(new ListViewMaps(teste[x], vetor[x]));
 
         }
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        // Inflate a menu resource providing context menu items
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.caddog_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_addog:
+                int position = 0;
+                lv.getItemAtPosition(position);
+                Toast.makeText(this, "Shared! position:" + position, Toast.LENGTH_SHORT).show();
+                mode.finish(); // Action picked, so close the CAB
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        mActionMode = null;
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        // if actionmode is null "not started"
+        if (mActionMode != null) {
+            return false;
+        }
+
+        // Start the CAB
+        mActionMode = this.startActionMode(this);
+        view.setSelected(true);
+        return true;
     }
 
     private class MyListViewMaps extends ArrayAdapter<ListViewMaps> {
@@ -80,7 +132,6 @@ public class InitialCadDog extends AppCompatActivity {
 
 
     }
-
 
 
     @Override
@@ -114,4 +165,5 @@ public class InitialCadDog extends AppCompatActivity {
         txt_nenhum = (TextView) findViewById(R.id.nenhumdog);
         txt_nenhum.setVisibility(view.VISIBLE);
     }
+
 }
