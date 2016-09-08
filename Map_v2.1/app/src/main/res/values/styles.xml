@@ -8,6 +8,8 @@
         <item name="android:textColorPrimary">@color/Black</item>
     </style>
     <style name="AppTheme2" parent="android:Theme.Light"/>
-    <style name="activated" parent="AppTheme2"/>
 
+    <style name="activated" parent="AppTheme">
+    <item name="android:background">?android:attr/activatedBackgroundIndicator</item>
+</style>
 </resources>

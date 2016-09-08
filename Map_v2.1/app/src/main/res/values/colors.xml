@@ -14,4 +14,6 @@
     <color name="GreenBtn2">#e6ffff</color>
     <color name="GreenBg3">#00BFA5</color>
     <color name="GreenBg4">#1DE9B6</color>
+    <color name="pressed_color">#4d90fe</color>
+    <color name="default_color">#ffffff</color>
 </resources>

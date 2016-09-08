@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -24,9 +25,9 @@ import java.util.List;
 public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
 
     public TextView txt_nenhum;
-
+    static View v;
     ActionMode mActionMode;
-
+    private int itemPosition;
     public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
     private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
@@ -42,7 +43,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         for (int x = 0; x < teste.length; x++) {
             bora.add(x, teste[x]);
         }
-        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
+//        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
         lv = (ListView) findViewById(R.id.ListDog);
 
@@ -67,7 +68,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         // Inflate a menu resource providing context menu items
         MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.caddog_menu, menu);
+        inflater.inflate(R.menu.inital_menu, menu);
         return true;
     }
 
@@ -79,15 +80,17 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_addog:
-                int position = 0;
-                lv.getItemAtPosition(position);
-                Toast.makeText(this, "Shared! position:" + position, Toast.LENGTH_SHORT).show();
+            case R.id.action_delete:
+
+                Toast.makeText(this, "Shared! position:" + itemPosition, Toast.LENGTH_SHORT).show();
                 mode.finish(); // Action picked, so close the CAB
+                v.setSelected(false);
                 return true;
             default:
-                return false;
+               // return false;
         }
+        v.setSelected(false);
+        return false;
     }
 
     @Override
@@ -101,10 +104,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         if (mActionMode != null) {
             return false;
         }
-
+        v = view;
         // Start the CAB
+        itemPosition = position;
         mActionMode = this.startActionMode(this);
-        view.setSelected(true);
+        v.setSelected(true);
         return true;
     }
 
