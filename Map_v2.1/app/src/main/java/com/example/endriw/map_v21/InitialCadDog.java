@@ -18,25 +18,37 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
 
+    private Firebase mRef;
     public TextView txt_nenhum;
     static View v;
     ActionMode mActionMode;
     private int itemPosition;
-    public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+
+    // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+    public String [] teste = new String[0];
+
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
+    //private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
+    private int[] vetor = new int[0];
 
     public ListView lv;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_cadog);
+
+        mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
         ArrayList<String> bora = new ArrayList<String>();
 
@@ -53,6 +65,8 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
         lv.setAdapter(adapter);
         lv.setOnItemLongClickListener(this);
+
+        FireB();
     }
 
     private void populateList() {
@@ -81,7 +95,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-
+                // Aqui vai a função de deletar do firebase
                 Toast.makeText(this, "Shared! position:" + itemPosition, Toast.LENGTH_SHORT).show();
                 mode.finish(); // Action picked, so close the CAB
                 v.setSelected(false);
@@ -168,6 +182,52 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
         txt_nenhum = (TextView) findViewById(R.id.nenhumdog);
         txt_nenhum.setVisibility(view.VISIBLE);
+    }
+
+
+
+
+    public void FireB(){
+
+        mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+
+        mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               // for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                 //   Emails email = data.getValue(Emails.class);
+                 //   String stEmail = email.getEmail();
+
+                    mRef.child("endriwmichel@gmail@com").child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int x = 1;
+                            System.out.println("quantidade: " + dataSnapshot.getChildrenCount());
+
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                                Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+                                System.out.println(cachorro.getDogNome());
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+              //  }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
 }
