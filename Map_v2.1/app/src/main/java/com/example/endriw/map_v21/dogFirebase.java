@@ -41,4 +41,10 @@ public class dogFirebase {
 
     }
 
+    public void deleteDog(String email, int key, Firebase mRef) {
+
+        mRef.child(email).child(String.valueOf(key)).removeValue();
+
+    }
+
 }
