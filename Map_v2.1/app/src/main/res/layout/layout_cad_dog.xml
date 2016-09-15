@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Nome do dog"
+                android:hint="Nome"
                 android:id="@+id/user_apelido"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -81,18 +86,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:background="@color/GreenBtn2"
-        android:gravity="center">
+        android:gravity="center"
+        android:weightSum="1">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancelar"
             android:onClick="ClickCancelar"
+            android:layout_weight="0.25"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Salvar"
-            android:onClick="ClickSalvar"/>
+            android:onClick="ClickSalvar"
+            android:layout_weight="0.25" />
     </LinearLayout>
     </LinearLayout>
 
@@ -107,3 +115,4 @@
         android:src="@android:drawable/ic_menu_gallery" />
 
 </android.support.design.widget.CoordinatorLayout>
+    </ScrollView>

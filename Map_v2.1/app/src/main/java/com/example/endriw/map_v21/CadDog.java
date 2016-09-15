@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +31,7 @@ import android.util.Base64;
 import com.firebase.client.Firebase;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Field;
 
 
 public class CadDog extends AppCompatActivity {
@@ -79,6 +81,19 @@ public class CadDog extends AppCompatActivity {
 
         sp_cor.setAdapter(dogCor_adapter);
         sp_porte.setAdapter(dogPorte_adapter);*/
+
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ex) {
+            // Ignore
+        }
+
+
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
 
@@ -127,6 +142,7 @@ public class CadDog extends AppCompatActivity {
 
         //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
 
+        dogCor_adapter.add("Selecione a cor");
         dogCor_adapter.add("Preto");
         dogCor_adapter.add("Branco");
         dogCor_adapter.add("Marrom");
@@ -135,6 +151,7 @@ public class CadDog extends AppCompatActivity {
         dogCor_adapter.add("Marrom/Branco");
         dogCor_adapter.add("selecione uma cor");
 
+        dogPorte_adapter.add("Selecione o porte");
         dogPorte_adapter.add("Grande");
         dogPorte_adapter.add("Médio");
         dogPorte_adapter.add("Pequeno");
@@ -151,7 +168,7 @@ public class CadDog extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.caddog_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_dog, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
