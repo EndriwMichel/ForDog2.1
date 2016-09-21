@@ -54,6 +54,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import android.content.Intent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -222,7 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         });
-
+//--------------------------------------------------------------------------------------------------------------
     }
 
     @Override
@@ -318,8 +319,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void SetUpMapIfNeeded() {
-
+        final Intent intent_info  = new Intent(this, InfoWindowPhoto.class);
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                startActivity(intent_info);
+            }
+        });
 
         if (mMap != null) {
 

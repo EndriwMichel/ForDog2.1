@@ -35,12 +35,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     ActionMode mActionMode;
     private int itemPosition;
 
-    // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
-    public String [] teste = new String[0];
+     public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+    //public String [] teste = new String[0];
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    //private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
-    private int[] vetor = new int[0];
+    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
+   // private int[] vetor = new int[0];
 
     public ListView lv;
 
@@ -49,24 +49,24 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         setContentView(R.layout.activity_initial_cadog);
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+        FireB();
 
-        ArrayList<String> bora = new ArrayList<String>();
+  /*      ArrayList<String> bora = new ArrayList<String>();
 
         for (int x = 0; x < teste.length; x++) {
             bora.add(x, teste[x]);
-        }
+        }*/
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
         lv = (ListView) findViewById(R.id.ListDog);
 
-        populateList();
+//        populateList();
 
         ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
         lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
         lv.setAdapter(adapter);
         lv.setOnItemLongClickListener(this);
 
-        FireB();
     }
 
     private void populateList() {
@@ -186,7 +186,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
 
 
-
     public void FireB(){
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
@@ -203,7 +202,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            int x = 1;
+                            int x = 0;
                             System.out.println("quantidade: " + dataSnapshot.getChildrenCount());
 
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
@@ -211,7 +210,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                                 Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
                                 System.out.println(cachorro.getDogNome());
 
-
+                                teste[x] = cachorro.getDogNome();
+                                vetor[x] = R.drawable.bone;
+                                custom.add(new ListViewMaps(teste[x], vetor[x]));
                             }
                         }
 
