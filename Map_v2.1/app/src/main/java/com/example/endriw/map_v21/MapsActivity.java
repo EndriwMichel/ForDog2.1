@@ -48,6 +48,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -92,6 +93,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Button buton;
     private ImageView iv;
+
+    private CircleOptions circle;
+    private Circle cir;
 
     private ImageButton Cambtn;
     private boolean suces = true;
@@ -223,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         });
-//--------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     }
 
     @Override
@@ -321,6 +325,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void SetUpMapIfNeeded() {
         final Intent intent_info  = new Intent(this, InfoWindowPhoto.class);
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                cir.remove();
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                circle = new CircleOptions()
+                        .center(new LatLng(65.9667, -18.5333))
+                        .radius(200)
+                        .strokeWidth(1)
+                        .fillColor(Color.argb(20, 50, 0, 255));
+                cir = mMap.addCircle(circle);
+                cir.setVisible(true);
+                return false;
+            }
+        });
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
