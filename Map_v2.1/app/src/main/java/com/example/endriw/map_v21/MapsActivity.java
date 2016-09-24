@@ -68,6 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Random rand = new Random();
 
+    private List<Circle> cirList = new ArrayList<Circle>();
+
     public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Opções do usuario", "Sair"};
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
@@ -75,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public DrawerLayout dl;
     public ListView lv;
-
+    public String hashPhoto;
     private ProgressDialog progress;
 
     public static double latitude;
@@ -89,9 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMapUser;
     private CameraUpdate up;
     private Firebase mRef;
-    private String mTexto;
 
-    private Button buton;
     private ImageView iv;
 
     private CircleOptions circle;
@@ -101,6 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean suces = true;
     private File imageFile;
 
+    public String nick;
+
     private Firebase firebase;
     private String base64Image;
     private String[] base64vet;
@@ -108,13 +110,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Map<String, String> mapa = new HashMap<>();
     HashMap<String, String> markerUser = new HashMap<String, String>();
 
+    private Map<String, String> cirMap = new HashMap<String, String>();
+
     private Marker dogs;
     private Marker user;
 
     String id = null;
 
     private byte[] bytes;
-    private byte[] imageAsBytes;
+    public byte[] imageAsBytes;
 
     public int CountFb;
 
@@ -329,7 +333,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                cir.remove();
+
+                /*if(cir!=null){
+                    cir.remove();
+                    cir = null;
+                    System.out.println("valor de cir:"+cir);
+                }*/
+                if(cir!=null) {
+                    for (Circle circle : cirList) {
+                        circle.remove();
+                    }
+                    cirList.clear();
+                }
             }
         });
 
@@ -337,13 +352,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                circle = new CircleOptions()
-                        .center(new LatLng(65.9667, -18.5333))
-                        .radius(200)
-                        .strokeWidth(1)
-                        .fillColor(Color.argb(20, 50, 0, 255));
-                cir = mMap.addCircle(circle);
-                cir.setVisible(true);
+                if(cir!=null) {
+                    for (Circle circle : cirList) {
+                        circle.remove();
+                    }
+                    cirList.clear();
+                }
+
+                    circle = new CircleOptions()
+                            .center(marker.getPosition())
+                            .radius(500)
+                            .strokeWidth(1)
+                            .fillColor(Color.argb(20, 50, 0, 255));
+                    cir = mMap.addCircle(circle);
+                   // cir.setVisible(true);
+                cirList.add(cir);
+                System.out.println("id cir: "+cir.getId());
+
+                cirMap.put(marker.getId(), cir.getId());
                 return false;
             }
         });
@@ -351,6 +377,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+                //aqui
+                intent_info.putExtra("DogFoto", imageAsBytes);
                 startActivity(intent_info);
             }
         });
@@ -373,16 +401,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         TextView tx = (TextView) v.findViewById(R.id.txt_view);
                         ImageView image = (ImageView) v.findViewById(R.id.image1);
 
-                        //Bitmap bmp = BitmapFactory.decodeFile("/sdcard/Pictures/findog/dogphoto.png");
-
-                        imageAsBytes = Base64.decode(mapa.get(marker.getTitle()).getBytes(), Base64.DEFAULT);
+                        imageAsBytes = Base64.decode(mapa.get(marker.getId()).getBytes(), Base64.DEFAULT);
                         image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
 
-                        // LatLng ll = marker.getPosition();
+                       // Intent intent = new Intent(null, InfoWindowPhoto.class);
+                       // intent.putExtra("DogFoto", imageAsBytes);
 
                         tx.setText(marker.getTitle());
-                        //tlat.setText(String.valueOf("My position: "+ll.latitude+" : "));
-                        // tlng.setText(String.valueOf(ll.longitude));
                         return v;
                     }else if (m.equals("user")){
                         View v = getLayoutInflater().inflate(R.layout.user_info_window, null);
@@ -428,15 +453,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                                mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
                                 dogs = mMap.addMarker(new MarkerOptions()
                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                                    .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                                  Double.parseDouble(cachorro.getLongitude())))
-                                                   .title(cachorro.getDogHash())
+                                                   .title(cachorro.getDogNome())
                                               );
-
+                                mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
                                 id = dogs.getId();
                                 markerUser.put(id, "dogs");
 
@@ -456,11 +480,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
-                                mapa.put(cachorro.getDogHash(), (String) cachorro.getDogFoto() );
 
-                                dogs = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.marker)
-                                ).position(new LatLng(Double.parseDouble(cachorro.getLatitude()), Double.parseDouble(cachorro.getLongitude()))).title(cachorro.getDogHash()));
+                                dogs = mMap.addMarker(new MarkerOptions().
+                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                                        .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
+                                                Double.parseDouble(cachorro.getLongitude())))
+                                        .title(cachorro.getDogNome()));
+
+                                mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
                                 id = dogs.getId();
                                 markerUser.put(id, "dogs");
                             }
