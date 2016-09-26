@@ -1,5 +1,7 @@
 package com.example.endriw.map_v21;
 
+import android.widget.ImageView;
+
 /**
  * Created by Endriw on 14/07/2016.
  */
@@ -18,6 +20,8 @@ public class ListViewMaps {
     public ListViewMaps() {
 
     }
+
+
 
     public String getDex() {
         return dex;

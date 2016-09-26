@@ -214,7 +214,7 @@ public class CadDog extends AppCompatActivity {
         int key = stHash.hashCode();
 
 
-        String email = MapsActivity.accountName.replace(".", "@");
+        String email = MapsActivity.accountName.replace(".", "?");
         dogFirebase fireData = new dogFirebase();
         fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 

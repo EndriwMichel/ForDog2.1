@@ -1,9 +1,12 @@
 package com.example.endriw.map_v21;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -29,18 +34,23 @@ import java.util.List;
 
 public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
 
+    public String nomeTeste;
+    public int imgTeste;
+    public ImageView[] image;
+    public byte[] imageAsBytes;
+
     private Firebase mRef;
     public TextView txt_nenhum;
     static View v;
     ActionMode mActionMode;
     private int itemPosition;
 
-     public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
-    //public String [] teste = new String[0];
+    // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+    public String [] teste = new String[1];
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse};
-   // private int[] vetor = new int[0];
+    private int[] vetor = new int[]{R.drawable.bone};//, R.drawable.dogbone, R.drawable.doghouse};
+  //  private int[] vetor = new int[1];
 
     public ListView lv;
 
@@ -49,7 +59,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         setContentView(R.layout.activity_initial_cadog);
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
-        FireB();
+//        FireB();
 
   /*      ArrayList<String> bora = new ArrayList<String>();
 
@@ -60,22 +70,16 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
         lv = (ListView) findViewById(R.id.ListDog);
 
-//        populateList();
 
-        ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
-        lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-        lv.setAdapter(adapter);
+
         lv.setOnItemLongClickListener(this);
 
+     //   populateList();
     }
 
-    private void populateList() {
-
-        for (int x = 0; x < vetor.length; x++) {
-
-            custom.add(new ListViewMaps(teste[x], vetor[x]));
-
-        }
+    protected void onResume() {
+        super.onResume();
+        FireB();
     }
 
     @Override
@@ -190,38 +194,70 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
+        mRef.child("endriwmichel@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+                    System.out.println(cachorro.getDogNome());
+
+                    nomeTeste = cachorro.getDogNome();//cachorro.getDogNome();
+                    System.out.println("Value Event: "+nomeTeste);
+
+                    for (int x = 0; x < teste.length; x++) {
+
+                        teste[x] = cachorro.getDogNome();
+                        System.out.println("vetor teste: "+teste[x]);
+                        custom.add(new ListViewMaps(teste[x], vetor[x]));
+
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+/*
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               // for (DataSnapshot data : dataSnapshot.getChildren()) {
+                // for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                 //   Emails email = data.getValue(Emails.class);
-                 //   String stEmail = email.getEmail();
+                //   Emails email = data.getValue(Emails.class);
+                //   String stEmail = email.getEmail();
 
-                    mRef.child("endriwmichel@gmail@com").child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
+                mRef.child("endriwmichel@gmail@com").child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
 
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int x = 0;
-                            System.out.println("quantidade: " + dataSnapshot.getChildrenCount());
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int x = 0;
+                        x = Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()));
 
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        System.out.println("quantidade: " + dataSnapshot.getChildrenCount());
 
-                                Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-                                System.out.println(cachorro.getDogNome());
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                                teste[x] = cachorro.getDogNome();
-                                vetor[x] = R.drawable.bone;
-                                custom.add(new ListViewMaps(teste[x], vetor[x]));
-                            }
-                        }
+                            Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+                            nomeTeste = String.valueOf(cachorro.getDogNome());//cachorro.getDogNome();
+                            System.out.println("single value: "+nomeTeste);
 
                         }
-                    });
-              //  }
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+                //  }
+
             }
 
             @Override
@@ -229,6 +265,21 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
             }
         });
+        for (int x = 0; x < vetor.length; x++) {
+            System.out.println("olha o dogo ai: "+nomeTeste);
+
+        }
+    */}
+
+    private void populateList() {
+
+        for (int x = 0; x < vetor.length; x++) {
+            System.out.println("olha o dogo ai: "+nomeTeste);
+            teste[x] = nomeTeste;
+            vetor[x] = R.drawable.bone;
+            custom.add(new ListViewMaps(teste[x], vetor[x]));
+
+        }
     }
 
 }

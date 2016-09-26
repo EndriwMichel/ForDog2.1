@@ -351,13 +351,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                String m = markerUser.get(marker.getId());
+                if(m.equals("dogs")) {
 
-                if(cir!=null) {
-                    for (Circle circle : cirList) {
-                        circle.remove();
+                    if (cir != null) {
+                        for (Circle circle : cirList) {
+                            circle.remove();
+                        }
+                        cirList.clear();
                     }
-                    cirList.clear();
-                }
 
                     circle = new CircleOptions()
                             .center(marker.getPosition())
@@ -365,11 +367,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .strokeWidth(1)
                             .fillColor(Color.argb(20, 50, 0, 255));
                     cir = mMap.addCircle(circle);
-                   // cir.setVisible(true);
-                cirList.add(cir);
-                System.out.println("id cir: "+cir.getId());
+                    // cir.setVisible(true);
+                    cirList.add(cir);
+                    System.out.println("id cir: " + cir.getId());
 
-                cirMap.put(marker.getId(), cir.getId());
+                    cirMap.put(marker.getId(), cir.getId());
+                }else if(m.equals("user")){
+                    System.out.println("oi eu sou o usuario!");
+                }
                 return false;
             }
         });
