@@ -36,7 +36,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     public String nomeTeste;
     public int imgTeste;
-    public ImageView[] image;
+    public ImageView imagemteste;
+    public ImageView imagemteste2;
+    public ImageView[] image = new ImageView[1];
     public byte[] imageAsBytes;
 
     private Firebase mRef;
@@ -49,8 +51,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public String [] teste = new String[1];
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
+
     private int[] vetor = new int[]{R.drawable.bone};//, R.drawable.dogbone, R.drawable.doghouse};
-  //  private int[] vetor = new int[1];
+   // private int[] vetor = new int[1];
 
     public ListView lv;
 
@@ -69,12 +72,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
         lv = (ListView) findViewById(R.id.ListDog);
-
+        imagemteste = (ImageView)findViewById(R.id.imagemTeste);
 
 
         lv.setOnItemLongClickListener(this);
 
-     //   populateList();
+       // populateList();
     }
 
     protected void onResume() {
@@ -209,10 +212,20 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                     for (int x = 0; x < teste.length; x++) {
 
                         teste[x] = cachorro.getDogNome();
+
+                        imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
+                       // image[x].setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        imagemteste.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+//                        imagemteste2.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        image[x] = imagemteste;
                         System.out.println("vetor teste: "+teste[x]);
-                        custom.add(new ListViewMaps(teste[x], vetor[x]));
+                        custom.add(new ListViewMaps(teste[x], image[x]));
 
                     }
+
+                    ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
+                    lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
+                    lv.setAdapter(adapter);
 
                 }
             }
@@ -221,62 +234,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
             }
         });
-
-/*
-        mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                //   Emails email = data.getValue(Emails.class);
-                //   String stEmail = email.getEmail();
-
-                mRef.child("endriwmichel@gmail@com").child("ownDog").addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int x = 0;
-                        x = Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()));
-
-                        System.out.println("quantidade: " + dataSnapshot.getChildrenCount());
-
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
-                            Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-
-                            nomeTeste = String.valueOf(cachorro.getDogNome());//cachorro.getDogNome();
-                            System.out.println("single value: "+nomeTeste);
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
-                //  }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-        for (int x = 0; x < vetor.length; x++) {
-            System.out.println("olha o dogo ai: "+nomeTeste);
-
-        }
-    */}
+    }
 
     private void populateList() {
 
         for (int x = 0; x < vetor.length; x++) {
-            System.out.println("olha o dogo ai: "+nomeTeste);
-            teste[x] = nomeTeste;
-            vetor[x] = R.drawable.bone;
+
             custom.add(new ListViewMaps(teste[x], vetor[x]));
 
         }

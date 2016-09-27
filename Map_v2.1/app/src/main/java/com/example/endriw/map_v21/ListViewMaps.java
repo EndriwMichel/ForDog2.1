@@ -21,6 +21,9 @@ public class ListViewMaps {
 
     }
 
+    public ListViewMaps(String dex, ImageView imageView) {
+
+    }
 
 
     public String getDex() {
