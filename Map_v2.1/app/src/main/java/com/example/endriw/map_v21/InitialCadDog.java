@@ -1,10 +1,13 @@
 package com.example.endriw.map_v21;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ActionMode;
@@ -51,15 +54,17 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public String [] teste = new String[1];
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-
+    public String [] teste2 = new String[1];
     private int[] vetor = new int[]{R.drawable.bone};//, R.drawable.dogbone, R.drawable.doghouse};
    // private int[] vetor = new int[1];
 
     public ListView lv;
 
+    private LinearLayoutManager lLayout;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_initial_cadog);
+        setContentView(R.layout.listviewinitial);
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 //        FireB();
@@ -71,11 +76,19 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         }*/
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
-        lv = (ListView) findViewById(R.id.ListDog);
+       // lv = (ListView) findViewById(R.id.ListDog);
         imagemteste = (ImageView)findViewById(R.id.imagemTeste);
 
+        //-------------------------------------------------------Recycler---------------------------------------------
 
         lv.setOnItemLongClickListener(this);
+        rView = (RecyclerView)findViewById(R.id.recycler_view);
+        rView.setLayoutManager(lLayout);
+
+        RecyclerInitial rcAdapter = new RecyclerInitial(InitialCadDog.this, rowListItem);
+        rView.setAdapter(rcAdapter);
+        //-------------------------------------------------------Recycler---------------------------------------------
+       // lv.setOnItemLongClickListener(this);
 
        // populateList();
     }
@@ -192,7 +205,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     }
 
 
-
     public void FireB(){
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
@@ -207,28 +219,30 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                     System.out.println(cachorro.getDogNome());
 
                     nomeTeste = cachorro.getDogNome();//cachorro.getDogNome();
-                    System.out.println("Value Event: "+nomeTeste);
+                    System.out.println("Value Event: " + nomeTeste);
 
                     for (int x = 0; x < teste.length; x++) {
 
                         teste[x] = cachorro.getDogNome();
-
                         imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
-                       // image[x].setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                        imagemteste.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-//                        imagemteste2.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        // image[x].setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                    //    imagemteste.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                    //    imagemteste2.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+
                         image[x] = imagemteste;
-                        System.out.println("vetor teste: "+teste[x]);
                         custom.add(new ListViewMaps(teste[x], image[x]));
 
-                    }
+                        System.out.println("vetor teste: " + teste[x]);
+                        System.out.println("vetor image: " + image[x]);
 
-                    ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
+                    }
+               /*     ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
                     lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
                     lv.setAdapter(adapter);
-
+*/
                 }
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
@@ -243,6 +257,13 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             custom.add(new ListViewMaps(teste[x], vetor[x]));
 
         }
+    }
+
+    private List<ItemObjectInitial> getAllItemList(){
+
+    //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
+//        allItems.add(new ItemObject("Peter James", "Vildansvagen 19, Lund Sweden", R.drawable.face));
+        return allItems;
     }
 
 }
