@@ -44,6 +44,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public ImageView[] image = new ImageView[1];
     public byte[] imageAsBytes;
 
+    public RecyclerView rView;
+
+    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
+    public Bitmap[] bitarray = new Bitmap[1];
+
     private Firebase mRef;
     public TextView txt_nenhum;
     static View v;
@@ -52,9 +57,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
     public String [] teste = new String[1];
-
-    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
     public String [] teste2 = new String[1];
+    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
+
     private int[] vetor = new int[]{R.drawable.bone};//, R.drawable.dogbone, R.drawable.doghouse};
    // private int[] vetor = new int[1];
 
@@ -81,7 +86,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
         //-------------------------------------------------------Recycler---------------------------------------------
 
-        lv.setOnItemLongClickListener(this);
+        List<ItemObjectInitial> rowListItem = getAllItemList();
+        lLayout = new LinearLayoutManager(InitialCadDog.this);
+
         rView = (RecyclerView)findViewById(R.id.recycler_view);
         rView.setLayoutManager(lLayout);
 
@@ -236,6 +243,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                         System.out.println("vetor image: " + image[x]);
 
                     }
+                   // allItems.add(new ItemObjectInitial(nomeTeste, nomeTeste, R.drawable.user_ico));
                /*     ArrayAdapter<ListViewMaps> adapter = new MyListViewMaps();
                     lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
                     lv.setAdapter(adapter);
@@ -263,6 +271,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
 //        allItems.add(new ItemObject("Peter James", "Vildansvagen 19, Lund Sweden", R.drawable.face));
+        allItems.add(new ItemObjectInitial(nomeTeste, nomeTeste, R.drawable.user_ico));
         return allItems;
     }
 
