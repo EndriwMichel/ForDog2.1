@@ -26,6 +26,7 @@ public class RecyclerInitial extends RecyclerView.Adapter<RecyclerInitialHolders
 
     @Override
     public void onBindViewHolder(RecyclerInitialHolders holder, int position) {
+
         holder.personName.setText(itemList.get(position).getName());
         holder.personAddress.setText(itemList.get(position).getAddress());
         holder.personPhoto.setImageResource(itemList.get(position).getPhotoId());

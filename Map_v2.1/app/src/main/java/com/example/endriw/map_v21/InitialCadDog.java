@@ -30,13 +30,14 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
-
+    private int count;
     public String nomeTeste;
     public int imgTeste;
     public ImageView imagemteste;
@@ -82,7 +83,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
        // lv = (ListView) findViewById(R.id.ListDog);
-        imagemteste = (ImageView)findViewById(R.id.imagemTeste);
+       // imagemteste = (ImageView)findViewById(R.id.imagemTeste);
 
         //-------------------------------------------------------Recycler---------------------------------------------
 
@@ -216,17 +217,16 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-        mRef.child("endriwmichel@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
+                    count = (int) dataSnapshot.getChildrenCount();
                     Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
                     System.out.println(cachorro.getDogNome());
 
                     nomeTeste = cachorro.getDogNome();//cachorro.getDogNome();
-                    System.out.println("Value Event: " + nomeTeste);
 
                     for (int x = 0; x < teste.length; x++) {
 
@@ -238,9 +238,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
                         image[x] = imagemteste;
                         custom.add(new ListViewMaps(teste[x], image[x]));
-
-                        System.out.println("vetor teste: " + teste[x]);
-                        System.out.println("vetor image: " + image[x]);
 
                     }
                    // allItems.add(new ItemObjectInitial(nomeTeste, nomeTeste, R.drawable.user_ico));
@@ -269,9 +266,10 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     private List<ItemObjectInitial> getAllItemList(){
 
-    //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
-//        allItems.add(new ItemObject("Peter James", "Vildansvagen 19, Lund Sweden", R.drawable.face));
-        allItems.add(new ItemObjectInitial(nomeTeste, nomeTeste, R.drawable.user_ico));
+   //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
+
+               allItems.add(new ItemObjectInitial("xxx", "xxx", R.drawable.user_ico));
+
         return allItems;
     }
 
