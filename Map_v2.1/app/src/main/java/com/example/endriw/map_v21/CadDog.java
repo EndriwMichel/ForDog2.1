@@ -43,6 +43,9 @@ public class CadDog extends AppCompatActivity {
     ArrayAdapter<String> dogCor_adapter;
     ArrayAdapter<String> dogPorte_adapter;
 
+    TextView elementoData;
+    TextView elementoDesc;
+    TextView elementoNome;
     private Spinner sp_cor;
     private Spinner sp_porte;
 
@@ -72,6 +75,8 @@ public class CadDog extends AppCompatActivity {
         dogFoto = (ImageView) findViewById(R.id.dogFoto);
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
+        elementoData = (TextView) findViewById(R.id.dogDate);
+        elementoNome = (TextView) findViewById(R.id.dogNome);
 
      /*   ArrayAdapter<CharSequence> dogCor_adapter = ArrayAdapter.createFromResource(this,
                 R.array.DogCor, android.R.layout.simple_spinner_item);
@@ -200,11 +205,6 @@ public class CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
-        //elementos
-        ImageView elementoFoto = (ImageView) findViewById(R.id.dogFoto);
-        TextView elementoData = (TextView) findViewById(R.id.dogDate);
-        TextView elementoDesc = (TextView) findViewById(R.id.dogDesc);
-        TextView elementoNome = (TextView) findViewById(R.id.dogNome);
 
         //valores
         String stDogNome = elementoNome.getText().toString();

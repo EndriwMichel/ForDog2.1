@@ -98,7 +98,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         rView.setAdapter(rcAdapter);
         */
         //-------------------------------------------------------Recycler---------------------------------------------
-       // lv.setOnItemLongClickListener(this);
+        lv.setOnItemLongClickListener(this);
 
        // populateList();
     }
