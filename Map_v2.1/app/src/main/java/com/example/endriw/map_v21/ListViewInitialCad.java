@@ -1,15 +1,17 @@
 package com.example.endriw.map_v21;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Endriw on 18/08/2016.
  */
 public class ListViewInitialCad {
 
     private String dex;
-    private int img;
+    private Bitmap img;
 
 
-    public ListViewInitialCad(String dex, int img){
+    public ListViewInitialCad(String dex, Bitmap img){
         super();
         this.dex = dex;
         this.img = img;
@@ -27,11 +29,11 @@ public class ListViewInitialCad {
         this.dex = dex;
     }
 
-    public int getImg() {
+    public Bitmap getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(Bitmap img) {
         this.img = img;
     }
 

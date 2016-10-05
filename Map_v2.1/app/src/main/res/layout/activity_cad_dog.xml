@@ -70,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/textView"
             android:layout_toRightOf="@+id/textView"
-            android:onClick="ClickCancelar"
             android:text="Cancelar"
             android:layout_centerVertical="true"
             android:layout_below="@+id/dogPorte" />

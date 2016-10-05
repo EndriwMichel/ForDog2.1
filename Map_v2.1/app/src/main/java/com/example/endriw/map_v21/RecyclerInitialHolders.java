@@ -28,6 +28,8 @@ public class RecyclerInitialHolders extends RecyclerView.ViewHolder{
         personAddress = (TextView)itemView.findViewById(R.id.person_address);
         personPhoto = (ImageView)itemView.findViewById(R.id.circleView);
 
+        final InitialCadDog ic = new InitialCadDog();
+
         Picasso.with(mContext)
                 .load("https://firebasestorage.googleapis.com/v0/b/dog-603e7.appspot.com/o/%C3%ADndice.png?alt=media&token=2a65cdd1-84ba-4e31-94aa-0cc7c5b62221")
                 .resize(200, 200)
@@ -40,12 +42,17 @@ public class RecyclerInitialHolders extends RecyclerView.ViewHolder{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                int x = 1;
+                    System.out.println("valor de x: "+x);
 
                         Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+                    System.out.println(cachorro.getDogNome());
+                    ic.teste[x] = cachorro.getDogNome();
+                    ic.teste2[x] = cachorro.getDogData();
 
-                    personName.setText(cachorro.getDogNome());
-                    personAddress.setText(cachorro.getDogData());
-
+                    personName.setText(ic.teste[x]);
+                    personAddress.setText(ic.teste2[x]);
+                x=+1;
                 }
             }
 

@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Nome"
-                android:id="@+id/user_apelido"/>
+                android:id="@+id/dogNome"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

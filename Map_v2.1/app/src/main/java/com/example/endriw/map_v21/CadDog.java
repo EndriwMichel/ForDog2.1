@@ -208,13 +208,13 @@ public class CadDog extends AppCompatActivity {
 
         //valores
         String stDogNome = elementoNome.getText().toString();
-        String stDogDesc = elementoDesc.getText().toString();
+        String stDogDesc = "bora";
         String stDogData = elementoData.getText().toString();
         String stHash = stDogData + stDogDesc + stDogData;
         int key = stHash.hashCode();
 
 
-        String email = MapsActivity.accountName.replace(".", "?");
+        String email = MapsActivity.accountName.replace(".", "@");
         dogFirebase fireData = new dogFirebase();
         fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 
