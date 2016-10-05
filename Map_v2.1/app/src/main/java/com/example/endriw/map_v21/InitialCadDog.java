@@ -56,13 +56,19 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     ActionMode mActionMode;
     private int itemPosition;
     private int x = 0;
+
     // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
+
     public String [] teste = new String[4];
     public String [] teste2 = new String[4];
-//    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
+
+    //    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
+
     private List<ListViewInitialCad> custom = new ArrayList<ListViewInitialCad>();
 
-    private int[] vetor = new int[]{R.drawable.bone};//, R.drawable.dogbone, R.drawable.doghouse};
+    private int[] vetor = new int[]{R.drawable.bone};
+
+    //, R.drawable.dogbone, R.drawable.doghouse};
    // private int[] vetor = new int[1];
 
     public ListView lv;
@@ -76,28 +82,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
 
-  /*      ArrayList<String> bora = new ArrayList<String>();
-
-        for (int x = 0; x < teste.length; x++) {
-            bora.add(x, teste[x]);
-        }*/
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
         lv = (ListView) findViewById(R.id.ListDog);
-        imagemteste = (ImageView)findViewById(R.id.imagemTeste);
-        FireB();
-        //-------------------------------------------------------Recycler---------------------------------------------
-/*
-        List<ItemObjectInitial> rowListItem = getAllItemList();
-        lLayout = new LinearLayoutManager(InitialCadDog.this);
-
-        rView = (RecyclerView)findViewById(R.id.recycler_view);
-        rView.setLayoutManager(lLayout);
-
-        RecyclerInitial rcAdapter = new RecyclerInitial(InitialCadDog.this, rowListItem);
-        rView.setAdapter(rcAdapter);
-        */
-        //-------------------------------------------------------Recycler---------------------------------------------
         lv.setOnItemLongClickListener(this);
 
        // populateList();
@@ -105,6 +92,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     protected void onResume() {
         super.onResume();
+        custom.clear();
         FireB();
     }
 
@@ -208,12 +196,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         return true;
     }
 
-    public void Aparece(View view) {
+/*    public void Aparece(View view) {
 
         txt_nenhum = (TextView) findViewById(R.id.nenhumdog);
         txt_nenhum.setVisibility(view.VISIBLE);
     }
-
+*/
 
     public void FireB(){
 
@@ -228,22 +216,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                     Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
                     System.out.println("dogNome: "+cachorro.getDogNome());
 
-
-                        teste[x] = cachorro.getDogNome();
+                    teste[x] = cachorro.getDogNome();
                     imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
-                    // image[x].setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                        imagemteste.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                    //    imagemteste2.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-
-                        bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                    bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
                     custom.add(new ListViewInitialCad(teste[x], bitarray[x]));
-                        System.out.println("vetor teste: "+teste[x]);
-                        System.out.println("vetor bit: "+bitarray[x]);
 
-                x=+1;
-                    System.out.println("valor de x: "+x);
-                   // allItems.add(new ItemObjectInitial(nomeTeste, nomeTeste, R.drawable.user_ico));
                     ArrayAdapter<ListViewInitialCad> adapter = new MyListViewMaps();
                     lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
                     lv.setAdapter(adapter);
@@ -258,15 +236,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         });
     }
 
-  /*  private void populateList() {
-
-        for (int x = 0; x < vetor.length; x++) {
-
-            custom.add(new ListViewMaps(teste[x], vetor[x]));
-
-        }
-    }
-*/
     private List<ItemObjectInitial> getAllItemList(){
 
    //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
