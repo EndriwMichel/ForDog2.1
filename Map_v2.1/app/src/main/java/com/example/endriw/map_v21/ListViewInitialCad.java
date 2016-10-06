@@ -8,12 +8,14 @@ import android.graphics.Bitmap;
 public class ListViewInitialCad {
 
     private String dex;
+    private String hash;
     private Bitmap img;
 
 
-    public ListViewInitialCad(String dex, Bitmap img){
+    public ListViewInitialCad(String dex, String hash, Bitmap img){
         super();
         this.dex = dex;
+        this.hash = hash;
         this.img = img;
     }
 
@@ -37,4 +39,11 @@ public class ListViewInitialCad {
         this.img = img;
     }
 
+    public String getHash(){
+        return hash;
+    }
+
+    public void setHash(String hash){
+        this.hash = hash;
+    }
 }

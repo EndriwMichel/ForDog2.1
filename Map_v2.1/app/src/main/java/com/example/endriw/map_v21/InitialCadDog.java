@@ -42,9 +42,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     public int imgTeste;
     public ImageView imagemteste;
     public ImageView imagemteste2;
-    public ImageView[] image = new ImageView[4];
     public byte[] imageAsBytes;
-
     public RecyclerView rView;
 
     List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
@@ -56,11 +54,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     ActionMode mActionMode;
     private int itemPosition;
     private int x = 0;
-
+    ArrayAdapter<ListViewInitialCad> adapter;
     // public String[] teste = {"Cadastrar Lost Dog", "cadastrar2", "cadastrar3"};
 
     public String [] teste = new String[4];
-    public String [] teste2 = new String[4];
+    public String [] teste_hash = new String[4];
 
     //    private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
 
@@ -83,6 +81,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
 
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
+
 
         lv = (ListView) findViewById(R.id.ListDog);
         lv.setOnItemLongClickListener(this);
@@ -121,6 +120,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             default:
                // return false;
         }
+
         v.setSelected(false);
         return false;
     }
@@ -138,6 +138,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         }
         v = view;
         // Start the CAB
+     //   System.out.println("context: "+lv.getSelectedItem().toString());
         itemPosition = position;
         mActionMode = this.startActionMode(this);
         v.setSelected(true);
@@ -163,9 +164,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             TextView textview = (TextView) itemView.findViewById(R.id.num);
             textview.setText(cus.getDex());
 
+            TextView textView_hash = (TextView) itemView.findViewById(R.id.hash);
+            textView_hash.setText(cus.getHash());
+
             return itemView;
         }
-
 
     }
 
@@ -216,17 +219,19 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                     Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
                     System.out.println("dogNome: "+cachorro.getDogNome());
 
+                    teste_hash[x] = cachorro.getDogHash();
                     teste[x] = cachorro.getDogNome();
                     imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
                     bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                    custom.add(new ListViewInitialCad(teste[x], bitarray[x]));
+                    custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x]));
 
-                    ArrayAdapter<ListViewInitialCad> adapter = new MyListViewMaps();
-                    lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-                    lv.setAdapter(adapter);
+             //       x=+x;
 
                 }
+                adapter = new MyListViewMaps();
+                lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
+                lv.setAdapter(adapter);
             }
 
             @Override
@@ -234,15 +239,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
             }
         });
-    }
-
-    private List<ItemObjectInitial> getAllItemList(){
-
-   //    List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
-
-            allItems.add(new ItemObjectInitial(teste[1], teste2[1], R.drawable.user_ico));
-
-        return allItems;
     }
 
 }
