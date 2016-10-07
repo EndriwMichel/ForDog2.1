@@ -37,11 +37,10 @@ import java.util.List;
 
 
 public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
+
     private int count;
     public String nomeTeste;
-    public int imgTeste;
-    public ImageView imagemteste;
-    public ImageView imagemteste2;
+    public String itemHash;
     public byte[] imageAsBytes;
     public RecyclerView rView;
 
@@ -113,7 +112,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
-                Toast.makeText(this, "Shared! position:" + itemPosition, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Shared! position:" + itemHash, Toast.LENGTH_SHORT).show();
                 mode.finish(); // Action picked, so close the CAB
                 v.setSelected(false);
                 return true;
@@ -139,6 +138,8 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         v = view;
         // Start the CAB
      //   System.out.println("context: "+lv.getSelectedItem().toString());
+        TextView hash = (TextView)view.findViewById(R.id.hash);
+        itemHash = hash.getText().toString();
         itemPosition = position;
         mActionMode = this.startActionMode(this);
         v.setSelected(true);
