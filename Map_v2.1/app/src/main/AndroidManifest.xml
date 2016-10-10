@@ -47,6 +47,7 @@
         <activity android:name=".UserOptions"></activity>
         <activity android:name=".InfoWindowPhoto"></activity>
         <activity android:name=".UpdateMaps"></activity>
+        <activity android:name=".Update_CadDog"></activity>
     </application>
 
 </manifest>

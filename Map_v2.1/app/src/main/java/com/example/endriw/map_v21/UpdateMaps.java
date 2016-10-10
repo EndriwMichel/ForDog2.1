@@ -124,6 +124,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void SetUpMapIfNeeded() {
+        final Intent intent_info  = new Intent(this, Update_CadDog.class);
         if(mMap == null){
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.upMap)).getMap();
         }
@@ -144,7 +145,14 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                 return v;
             }
         });
-    }
+    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            intent_info.putExtra("hash", hashzin);
+            startActivity(intent_info);
+        }
+    });
+        }
     }
 
     public void fireB() {

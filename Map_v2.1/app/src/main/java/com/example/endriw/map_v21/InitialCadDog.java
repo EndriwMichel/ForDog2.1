@@ -76,8 +76,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     public ListView lv;
 
-    private LinearLayoutManager lLayout;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_cadog);
