@@ -78,15 +78,6 @@ public class CadDog extends AppCompatActivity {
         elementoData = (TextView) findViewById(R.id.dogDate);
         elementoNome = (TextView) findViewById(R.id.dogNome);
 
-     /*   ArrayAdapter<CharSequence> dogCor_adapter = ArrayAdapter.createFromResource(this,
-                R.array.DogCor, android.R.layout.simple_spinner_item);
-        dogCor_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, dogPorte);
-
-        sp_cor.setAdapter(dogCor_adapter);
-        sp_porte.setAdapter(dogPorte_adapter);*/
-
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
@@ -208,15 +199,14 @@ public class CadDog extends AppCompatActivity {
 
         //valores
         String stDogNome = elementoNome.getText().toString();
-        String stDogDesc = "bora";
         String stDogData = elementoData.getText().toString();
-        String stHash = stDogData + stDogDesc + stDogData;
+        String stHash = stDogData + stDogNome + stDogData;
         int key = stHash.hashCode();
 
 
         String email = MapsActivity.accountName.replace(".", "@");
         dogFirebase fireData = new dogFirebase();
-        fireData.gravaFirebase(email, key, stDogNome, stDogDesc, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+        fireData.gravaOwn(email, key, stDogNome,  stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 
         Toast.makeText(this, "Cadastro efetuado",
                 Toast.LENGTH_LONG).show();

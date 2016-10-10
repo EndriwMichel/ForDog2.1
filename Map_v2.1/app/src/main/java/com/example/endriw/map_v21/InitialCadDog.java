@@ -1,5 +1,6 @@
 package com.example.endriw.map_v21;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -32,18 +34,22 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
+public class InitialCadDog extends AppCompatActivity implements ActionMode.Callback, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
     private int count;
+    private static int conta;
     public String nomeTeste;
     public String itemHash;
     public byte[] imageAsBytes;
     public RecyclerView rView;
-
+    private ProgressDialog progress;
     List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
     public Bitmap[] bitarray = new Bitmap[4];
 
@@ -79,11 +85,24 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
 
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ex) {
+            // Ignore
+        }
+
+
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
 
         lv = (ListView) findViewById(R.id.ListDog);
         lv.setOnItemLongClickListener(this);
+        lv.setOnItemClickListener(this);
 
        // populateList();
     }
@@ -112,7 +131,10 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
-                Toast.makeText(this, "Shared! position:" + itemHash, Toast.LENGTH_SHORT).show();
+                dogFirebase fireData = new dogFirebase();
+                fireData.deleteDog("vaanhalen00@gmail@com", "ownDog", itemHash, mRef);
+                Toast.makeText(this, "Deleted! position:" + itemHash, Toast.LENGTH_SHORT).show();
+                custom.clear();
                 mode.finish(); // Action picked, so close the CAB
                 v.setSelected(false);
                 return true;
@@ -136,14 +158,28 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             return false;
         }
         v = view;
+
         // Start the CAB
-     //   System.out.println("context: "+lv.getSelectedItem().toString());
         TextView hash = (TextView)view.findViewById(R.id.hash);
         itemHash = hash.getText().toString();
         itemPosition = position;
         mActionMode = this.startActionMode(this);
         v.setSelected(true);
         return true;
+    }
+
+    public void CadDog(View view) {
+        final Intent intent  = new Intent(this, CadDog.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Intent intent  = new Intent(this, UpdateMaps.class);
+        TextView hash = (TextView)view.findViewById(R.id.hash);
+        intent.putExtra("foto", imageAsBytes);
+        intent.putExtra("hash", hash.getText().toString());
+        startActivity(intent);
     }
 
     private class MyListViewMaps extends ArrayAdapter<ListViewInitialCad> {
@@ -183,13 +219,14 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final Intent intent  = new Intent(this, CadDog.class);
+      //  final Intent intent  = new Intent(this, CadDog.class);
         int id = item.getItemId();
 
-        if(id == R.id.action_addog){
+      /*  if(id == R.id.action_addog){
           startActivity(intent);
         }
-        else if(id == R.id.action_help){
+        else */
+        if(id == R.id.action_help){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Cadastre um cão !" +
                     "Utilize esta tela para cadastrar, alterar ou remover um cachorro perdido !");
@@ -207,39 +244,57 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     }
 */
 
-    public void FireB(){
-
-        mRef = new Firebase("https://dog-603e7.firebaseio.com/");
-
-        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+    public void FireB() {
+        progress = ProgressDialog.show(this, "Por favor aguarde!", "Carregando dogs...", false, true);
+        new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void run() {
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    count = (int) dataSnapshot.getChildrenCount();
-                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-                    System.out.println("dogNome: "+cachorro.getDogNome());
+                //começa o run--------------------------------------------------------------------------
 
-                    teste_hash[x] = cachorro.getDogHash();
-                    teste[x] = cachorro.getDogNome();
-                    imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
-                    bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                    custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x]));
+                mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-             //       x=+x;
+                mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                }
-                adapter = new MyListViewMaps();
-                lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-                lv.setAdapter(adapter);
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            count = (int) dataSnapshot.getChildrenCount();
+                            conta = count;
+                            Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+                            System.out.println("dogNome: " + cachorro.getDogNome());
+
+                            teste_hash[x] = cachorro.getDogHash();
+                            teste[x] = cachorro.getDogNome();
+                            imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
+                            bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+
+                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x]));
+
+                            //       x=+x;
+
+                        }
+                        adapter = new MyListViewMaps();
+                        lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
+                        lv.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+                //aqui termina o run------------------------------------------------------------------
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progress.dismiss();
+                    }
+                });
+
             }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        }).start();
     }
 
 }

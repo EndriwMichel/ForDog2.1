@@ -7,7 +7,7 @@ import com.firebase.client.Firebase;
  */
 public class dogFirebase {
 
-    public void gravaFirebase(String email, int key, String dogNome, String dogDesc, String dogData, String latitude, String longitude,
+    public void gravaOwn(String email, int key, String dogNome, String dogData, String latitude, String longitude,
                               String dogFoto, String dogcel, String dogPorte, String dogCor) {
         Firebase mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
@@ -15,21 +15,8 @@ public class dogFirebase {
 
         mRef.child("emails").child(String.valueOf(email.hashCode())).child("email").setValue(email);
 
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue(latitude);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue(longitude);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(dogFoto);
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogHash").setValue(String.valueOf(key));
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogCel").setValue( dogcel );
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogPorte").setValue( dogPorte );
-        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogCor").setValue( dogCor );
-
-
         //onwDog
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogNome").setValue(dogNome);
-        mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("latitude").setValue(latitude);
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("longitude").setValue(longitude);
@@ -40,10 +27,29 @@ public class dogFirebase {
         mRef.child(email).child("ownDog").child(String.valueOf(key)).child("dogCor").setValue( dogCor );
 
     }
+    public void gravaLost(String email, int key, String dogDesc, String dogData, String latitude, String longitude,
+                              String dogFoto, String dogcel, String dogPorte, String dogCor) {
 
-    public void deleteDog(String email, int key, Firebase mRef) {
+        Firebase mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+        email = (email != "") ? email : "email";
 
-        mRef.child(email).child(String.valueOf(key)).removeValue();
+        mRef.child("emails").child(String.valueOf(email.hashCode())).child("email").setValue(email);
+
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogDesc").setValue(dogDesc);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogData").setValue(dogData);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("latitude").setValue(latitude);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("longitude").setValue(longitude);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogFoto").setValue(dogFoto);
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogHash").setValue(String.valueOf(key));
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogCel").setValue( dogcel );
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogPorte").setValue( dogPorte );
+        mRef.child(email).child("lostDog").child(String.valueOf(key)).child("dogCor").setValue( dogCor );
+
+    }
+
+    public void deleteDog(String email, String dog, String key, Firebase mRef) {
+
+        mRef.child(email).child(dog).child(key).removeValue();
 
     }
 

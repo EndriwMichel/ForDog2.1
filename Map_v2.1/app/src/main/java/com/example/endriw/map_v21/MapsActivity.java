@@ -543,9 +543,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(Bundle bundle) {
-        Toast.makeText(this, "Connected !!",
+ /*       Toast.makeText(this, "Connected !!",
                 Toast.LENGTH_LONG).show();
-
+*/
         AddUserMarker();
     }
 

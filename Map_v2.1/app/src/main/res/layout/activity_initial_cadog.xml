@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:id="@+id/InitialViewA">
 
       <ListView
             android:layout_width="match_parent"
-            android:layout_height="583dp"
+            android:layout_height="389dp"
             android:id="@+id/ListDog"
           />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:onClick="CadDog"
+            app:layout_anchor="@id/InitialViewA"
+            app:layout_anchorGravity="bottom|right|end"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_gravity="right" />
 
     </LinearLayout>
 </ScrollView>

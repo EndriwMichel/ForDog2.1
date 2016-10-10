@@ -14,11 +14,11 @@
         android:orderInCategory="200"
         android:title="Search"
         app:showAsAction="ifRoom"></item>
-    <item
+<!--    <item
         android:id="@+id/action_addog"
         android:icon="@drawable/addog"
         android:orderInCategory="400"
         android:title="Addog"
         app:showAsAction="always"></item>
-
+-->
 </menu>
