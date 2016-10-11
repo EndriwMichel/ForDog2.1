@@ -61,11 +61,14 @@ public class Update_CadDog extends AppCompatActivity {
 
     private String latitude = String.valueOf(MapsActivity.latitude);
     private String longitude= String.valueOf(MapsActivity.longitude);
+    ArrayAdapter<String> dogCor_adapter;
+    ArrayAdapter<String> dogPorte_adapter;
 
     private BitmapDrawable bitmapDrawable;
     private Firebase mRef;
-    private LatLng position;
-    private GoogleMap mMap;
+    private String corzinha = "teste";
+    private String portezinho = "teste";
+
     //private String accountName;
 
     private static int RESULT_LOAD_IMG = 1;
@@ -103,78 +106,13 @@ public class Update_CadDog extends AppCompatActivity {
 
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
-
-        ArrayAdapter<String> dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-                View v = super.getView(position, convertView, parent);
-                if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione uma cor");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
-                }
-
-                return v;
-            }
-
-            @Override
-            public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
-            }
-
-        };
-
-        //------------------------------------------------------------------------------------------------------------
-        ArrayAdapter<String> dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-                View v = super.getView(position, convertView, parent);
-                if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione o porte");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
-                }
-
-                return v;
-            }
-
-            @Override
-            public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
-            }
-
-        };
-
-        //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-
-        dogCor_adapter.add("Selecione a cor");
-        dogCor_adapter.add("Preto");
-        dogCor_adapter.add("Branco");
-        dogCor_adapter.add("Marrom");
-        dogCor_adapter.add("Preto/Branco");
-        dogCor_adapter.add("Preto/Marrom");
-        dogCor_adapter.add("Marrom/Branco");
-        dogCor_adapter.add("selecione uma cor");
-
-        dogPorte_adapter.add("Selecione o porte");
-        dogPorte_adapter.add("Grande");
-        dogPorte_adapter.add("Médio");
-        dogPorte_adapter.add("Pequeno");
-        dogPorte_adapter.add("selecione o porte");
-
-        sp_cor.setAdapter(dogCor_adapter);
-        sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
-
-        sp_porte.setAdapter(dogPorte_adapter);
-        sp_porte.setSelection(dogPorte_adapter.getCount());
+        fireB();
 
     }
 
     protected void onResume() {
         super.onResume();
-        fireB();
+        ListItem();
     }
 
     @Override
@@ -235,6 +173,8 @@ public class Update_CadDog extends AppCompatActivity {
         Toast.makeText(this, "foi uma....!!",
                 Toast.LENGTH_LONG).show();
         Toast.makeText(this, "PARMEJIANA MULEKE !!!!....!!",
+                Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "KKKKKKKKKKKKKKKKKK !!!!....!!",
                 Toast.LENGTH_LONG).show();
     }
 
@@ -324,13 +264,37 @@ public class Update_CadDog extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshots) {
                             System.out.println("valor de hashzin drentro: " + hashzin);
 
-                            ownCachorro cachorro = dataSnapshots.getValue(ownCachorro.class);
+                            final ownCachorro cachorro = dataSnapshots.getValue(ownCachorro.class);
 
                             elementoNome.setText(cachorro.getDogNome());
                             elementoData.setText(cachorro.getDogData());
+                            corzinha = cachorro.getDogCor();
+                            portezinho = cachorro.getDogPorte();
+                            ListItem();
 
+                            dogCor_adapter.add("Selecione a cor");
+                            dogCor_adapter.add("Preto");
+                            dogCor_adapter.add("Branco");
+                            dogCor_adapter.add("Marrom");
+                            dogCor_adapter.add("Preto/Branco");
+                            dogCor_adapter.add("Preto/Marrom");
+                            dogCor_adapter.add("Marrom/Branco");
+                            dogCor_adapter.add(corzinha);
+
+                            dogPorte_adapter.add("Selecione o porte");
+                            dogPorte_adapter.add("Grande");
+                            dogPorte_adapter.add("Médio");
+                            dogPorte_adapter.add("Pequeno");
+                            dogPorte_adapter.add(portezinho);
+
+                            sp_cor.setAdapter(dogCor_adapter);
+                            sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
+
+                            sp_porte.setAdapter(dogPorte_adapter);
+                            sp_porte.setSelection(dogPorte_adapter.getCount());
 
                         }
+
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
@@ -345,6 +309,53 @@ public class Update_CadDog extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void ListItem() {
+        dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setText(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        //------------------------------------------------------------------------------------------------------------
+        dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setText(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
     }
 
 }

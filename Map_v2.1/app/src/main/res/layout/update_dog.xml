@@ -115,4 +115,5 @@
             android:src="@android:drawable/ic_menu_gallery" />
 
     </android.support.design.widget.CoordinatorLayout>
+
 </ScrollView>

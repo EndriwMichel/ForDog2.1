@@ -100,8 +100,8 @@ public class CadDog extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione uma cor");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                    ((TextView)v.findViewById(android.R.id.text2)).setText("Selecione uma cor");
+                    ((TextView)v.findViewById(android.R.id.text2)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
                 return v;
@@ -122,8 +122,8 @@ public class CadDog extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("Selecione o porte");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                    ((TextView)v.findViewById(android.R.id.text2)).setText("Selecione o porte");
+                    ((TextView)v.findViewById(android.R.id.text2)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
                 return v;

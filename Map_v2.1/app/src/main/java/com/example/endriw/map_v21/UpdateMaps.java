@@ -150,6 +150,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
         public void onInfoWindowClick(Marker marker) {
             intent_info.putExtra("hash", hashzin);
             startActivity(intent_info);
+
         }
     });
         }
