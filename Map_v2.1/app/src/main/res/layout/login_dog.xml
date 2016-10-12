@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,22 +11,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/ViewA">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:src="@drawable/dogavatar2_trans"
-                        android:id="@+id/dogFoto"/>
+                    android:gravity="center"
+                    android:textSize="30dp"
+                    android:text="Login"/>
 
-                </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -38,9 +31,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Nome"
-                        android:id="@+id/UpDogNome"
-                        android:descendantFocusability="blocksDescendants"/>
+                        android:hint="Email"
+                        android:id="@+id/userEmail"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -51,37 +43,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:id="@+id/UpDogDate"
+                        android:id="@+id/userSenha"
                         android:inputType="text"
-                        android:hint="Data"
-                        android:onClick="CallCalendar"
-                        android:descendantFocusability="blocksDescendants"/>
+                        android:hint="Senha"
+                        android:onClick="CallCalendar"/>
 
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:spinnerMode="dialog"
-                    android:id="@+id/dogCor">
-                </Spinner>
-
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:spinnerMode="dialog"
-                    android:id="@+id/dogPorte">
-                </Spinner>
-
-
-            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -106,16 +76,4 @@
             </LinearLayout>
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:onClick="GetImage"
-            app:layout_anchor="@id/ViewA"
-            app:layout_anchorGravity="bottom|right|end"
-            android:src="@android:drawable/ic_menu_gallery" />
-
     </android.support.design.widget.CoordinatorLayout>
-
-</ScrollView>

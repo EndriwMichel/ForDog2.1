@@ -145,13 +145,13 @@ public class CadDog extends AppCompatActivity {
         dogCor_adapter.add("Preto/Branco");
         dogCor_adapter.add("Preto/Marrom");
         dogCor_adapter.add("Marrom/Branco");
-        dogCor_adapter.add("selecione uma cor");
+        dogCor_adapter.add("Selecione uma cor");
 
         dogPorte_adapter.add("Selecione o porte");
         dogPorte_adapter.add("Grande");
         dogPorte_adapter.add("Médio");
         dogPorte_adapter.add("Pequeno");
-        dogPorte_adapter.add("selecione o porte");
+        dogPorte_adapter.add("Selecione o porte");
 
         sp_cor.setAdapter(dogCor_adapter);
         sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
@@ -196,22 +196,40 @@ public class CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
-
         //valores
         String stDogNome = elementoNome.getText().toString();
         String stDogData = elementoData.getText().toString();
         String stHash = stDogData + stDogNome + stDogData;
         int key = stHash.hashCode();
 
+        if(bitmapDrawable == null){
+            Toast.makeText(this, "Por favor adicione uma imagem !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(stDogNome.equals(null) || stDogNome.equals("".trim())){
+            Toast.makeText(this, "Por favor cadastre um nome !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(stDogData.equals(null) || stDogData.equals("".trim())){
+            Toast.makeText(this, "Por favor cadastre uma data !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(sp_cor.getSelectedItem().equals("Selecione uma cor")){
+            Toast.makeText(this, "Por favor selecione uma cor !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(sp_porte.getSelectedItem().equals("Selecione o porte")){
+            Toast.makeText(this, "Por favor selecione um porte !",
+                    Toast.LENGTH_SHORT).show();
+        }
 
-        String email = MapsActivity.accountName.replace(".", "@");
-        dogFirebase fireData = new dogFirebase();
-        fireData.gravaOwn(email, key, stDogNome,  stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+        else{
 
-        Toast.makeText(this, "Cadastro efetuado",
-                Toast.LENGTH_LONG).show();
-        this.finish();
 
+            String email = MapsActivity.accountName.replace(".", "@");
+            dogFirebase fireData = new dogFirebase();
+            fireData.gravaOwn(email, key, stDogNome, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+
+            Toast.makeText(this, "Cadastro efetuado",
+                    Toast.LENGTH_LONG).show();
+            this.finish();
+        }
     }
 
 

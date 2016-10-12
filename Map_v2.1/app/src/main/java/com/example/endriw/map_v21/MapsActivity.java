@@ -134,6 +134,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+    /*    Intent intentSplash = new Intent(this, MapsActivity.class);
+        startActivity(intentSplash);
+        finish();
+*/
         mGoogleapiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

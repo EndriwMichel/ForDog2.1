@@ -140,7 +140,9 @@ public class Update_CadDog extends AppCompatActivity {
 
 
     public void CallCalendar(View view) {
-        DialogFragment dialogfragment = new DogCalendar();
+    //    TextView text = (TextView) view.findViewById(R.id.UpDogDate);
+       // text.setText("");
+        DialogFragment dialogfragment = new UpDateDogCalendar();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             dialogfragment.show(getFragmentManager(), "Dog Calendar !!");
@@ -150,10 +152,29 @@ public class Update_CadDog extends AppCompatActivity {
 
     public void ClickSalvar(View view) {
 
+        String stDogNome = elementoNome.getText().toString();
+        String stDogData = elementoData.getText().toString();
+
+        if(bitmapDrawable == null){
+            Toast.makeText(this, "Por favor adicione uma imagem !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(stDogNome.equals(null) || stDogNome.equals("".trim())){
+            Toast.makeText(this, "Por favor cadastre um nome !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(stDogData.equals(null) || stDogData.equals("".trim())){
+            Toast.makeText(this, "Por favor cadastre uma data !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(sp_cor.getSelectedItem().equals("Selecione uma cor")){
+            Toast.makeText(this, "Por favor selecione uma cor !",
+                    Toast.LENGTH_SHORT).show();
+        }else if(sp_porte.getSelectedItem().equals("Selecione o porte")){
+            Toast.makeText(this, "Por favor selecione um porte !",
+                    Toast.LENGTH_SHORT).show();
+        }
+
        //UPDATE----------------------------------------------------------------------------------------------------
 
-    /*    String stDogNome = elementoNome.getText().toString();
-        String stDogData = elementoData.getText().toString();
+    /*
         String stHash = stDogData + stDogNome + stDogData;
         int key = stHash.hashCode();
 
@@ -161,7 +182,7 @@ public class Update_CadDog extends AppCompatActivity {
         dogFirebase fireData = new dogFirebase();
         fireData.gravaOwn(email, key, stDogNome,  stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 
-        Toast.makeText(this, "Cadastro efetuado",
+        Toast.makeText(this, "Cadastro alterado",
                 Toast.LENGTH_LONG).show();
         this.finish();
 */

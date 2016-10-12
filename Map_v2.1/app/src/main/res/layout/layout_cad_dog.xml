@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Nome"
-                android:id="@+id/dogNome"/>
+                android:id="@+id/dogNome"
+                android:descendantFocusability="blocksDescendants"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -53,7 +54,8 @@
                 android:id="@+id/dogDate"
                 android:inputType="text"
                 android:hint="Data"
-                android:onClick="CallCalendar"/>
+                android:onClick="CallCalendar"
+                android:descendantFocusability="blocksDescendants"/>
 
         </android.support.design.widget.TextInputLayout>
 
