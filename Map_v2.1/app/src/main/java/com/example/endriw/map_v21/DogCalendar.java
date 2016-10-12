@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-/**
- * Created by Endriw on 28/06/2016.
- */
 public class DogCalendar extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     @Override
@@ -34,7 +31,7 @@ public class DogCalendar extends DialogFragment implements DatePickerDialog.OnDa
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
         EditText data = (EditText) getActivity().findViewById(R.id.dogDate);
-
+        data.setText("");
         data.setText(dayOfMonth + " / " + (monthOfYear+1) + " / " + year);
 
     }

@@ -3,6 +3,8 @@ package com.example.endriw.map_v21;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -103,7 +105,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
         Bundle extras = getIntent().getExtras();
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
         hashzin = extras.getString("hash");
-        imageAsBytes = extras.getByteArray("foto");
+        //imageAsBytes = extras.getByteArray("foto");
         SetUpMapIfNeeded();
       /*  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.upMap);
         mapFragment.getMapAsync(this);
@@ -124,7 +126,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void SetUpMapIfNeeded() {
-        final Intent intent_info  = new Intent(this, Update_CadDog.class);
+        final Intent intent_info  = new Intent(UpdateMaps.this, Update_CadDog.class);
         if(mMap == null){
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.upMap)).getMap();
         }
@@ -148,11 +150,50 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
         @Override
         public void onInfoWindowClick(Marker marker) {
+            intent_info.setFlags(intent_info.FLAG_ACTIVITY_CLEAR_TOP);
             intent_info.putExtra("hash", hashzin);
             startActivity(intent_info);
 
         }
+
     });
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                marker.setSnippet("Escolha um novo ponto !");
+                }
+
+                @Override
+                public void onMarkerDragEnd(final Marker marker) {
+                    System.out.println("Posição mudada para:"+marker.getPosition().longitude+" : "+marker.getPosition().latitude);
+
+                    //------------------------------------------alertDialog------------------------------
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateMaps.this);
+                    builder.setMessage("Deseja alterar a localização do dog ?");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(UpdateMaps.this, "salvar firebase latitude e longitude",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        marker.remove();
+                        fireB();
+                        }
+                    });
+                builder.create();
+                }
+            });
+                //----------------------------------------------------------------------------------------
+
         }
     }
 
@@ -176,7 +217,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                             CountFb += dataSnapshots.getChildrenCount();
 
                                 ownCachorro cachorro = dataSnapshots.getValue(ownCachorro.class);
-
+                            imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
                       //      System.out.println("oi? :"+cachorro.getLatitude()+" : "+cachorro.getLongitude()+" nome: "+cachorro.getDogNome());
                             position = new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                     Double.parseDouble(cachorro.getLongitude()));
@@ -185,6 +226,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                             .position(position)
                                             .title(cachorro.getDogNome())
+                                            .draggable(true)
                                              );
                             mMap.animateCamera(update);
 
@@ -208,7 +250,11 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
-    }
+     }
 
+    public void UpdatePosition(){
+
+    }
 }
+
 

@@ -58,6 +58,7 @@ public class Update_CadDog extends AppCompatActivity {
     private ImageView dogFoto;
     private String base64Image;
     private byte[] bytes;
+    public byte[] imageAsBytes;
 
     private String latitude = String.valueOf(MapsActivity.latitude);
     private String longitude= String.valueOf(MapsActivity.longitude);
@@ -270,6 +271,10 @@ public class Update_CadDog extends AppCompatActivity {
                             elementoData.setText(cachorro.getDogData());
                             corzinha = cachorro.getDogCor();
                             portezinho = cachorro.getDogPorte();
+                            imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
+
+                            dogFoto.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+
                             ListItem();
 
                             dogCor_adapter.add("Selecione a cor");
