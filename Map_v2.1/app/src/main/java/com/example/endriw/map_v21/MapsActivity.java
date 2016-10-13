@@ -3,6 +3,7 @@ package com.example.endriw.map_v21;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -309,6 +310,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
             startActivity(i);
+
         } else {
 
             //  File picsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -323,10 +325,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (imgFile.exists()) {
 
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            iv.setImageBitmap(myBitmap);
+       //     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+       //     iv.setImageBitmap(myBitmap);
+
 
         }
+
+        final Intent intentCad = new Intent(this, CadDog.class);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+        builder.setMessage("Deseja cadastrarum novo dog ?");
+        builder.setPositiveButton("sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(intentCad);
+            }
+        });
+        builder.show();
 
     }
 

@@ -189,7 +189,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                         fireB();
                         }
                     });
-                builder.create();
+                builder.show();
                 }
             });
                 //----------------------------------------------------------------------------------------
