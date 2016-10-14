@@ -53,4 +53,14 @@ public class dogFirebase {
 
     }
 
+        public void updateDog(Firebase mRef, String email, String hash, String chave, String valor) {
+            mRef.child(email).child("ownDog").child(hash).child(chave).setValue(valor);
+        }
+
+      /*  Exemplo update:
+        GravaFirebase gravaFireBase = new GravaFireBase();
+        gravaFireBase.updateDog( mRef, emails, hash, "latitude", "12" );
+        gravaFireBase.updateDog( mRef, emails, hash, "longitude", "12" );
+        */
+
 }

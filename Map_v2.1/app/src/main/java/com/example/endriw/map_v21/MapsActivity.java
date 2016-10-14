@@ -358,6 +358,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     cir = null;
                     System.out.println("valor de cir:"+cir);
                 }*/
+
                 if(cir!=null) {
                     for (Circle circle : cirList) {
                         circle.remove();

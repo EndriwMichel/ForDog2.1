@@ -171,18 +171,21 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                 @Override
                 public void onMarkerDragEnd(final Marker marker) {
                     System.out.println("Posição mudada para:"+marker.getPosition().longitude+" : "+marker.getPosition().latitude);
-
+                    final String upLatitude = String.valueOf(marker.getPosition().latitude);
+                    final String upLongitude = String.valueOf(marker.getPosition().longitude);
                     //------------------------------------------alertDialog------------------------------
                     AlertDialog.Builder builder = new AlertDialog.Builder(UpdateMaps.this);
                     builder.setMessage("Deseja alterar a localização do dog ?");
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(UpdateMaps.this, "salvar firebase latitude e longitude",
-                                    Toast.LENGTH_SHORT).show();
+                            String email = MapsActivity.accountName.replace(".", "@");
+                            dogFirebase dogfire = new dogFirebase();
+                            dogfire.updateDog(mRef, email, hashzin, "latitude", upLatitude);
+                            dogfire.updateDog(mRef, email, hashzin, "longitude", upLongitude);
                         }
                     });
-                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         marker.remove();

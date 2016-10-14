@@ -1,6 +1,7 @@
 package com.example.endriw.map_v21;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -67,8 +68,8 @@ public class Update_CadDog extends AppCompatActivity {
 
     private BitmapDrawable bitmapDrawable;
     private Firebase mRef;
-    private String corzinha = "teste";
-    private String portezinho = "teste";
+    private String elementoCor = "teste";
+    private String elementoPorte = "teste";
 
     //private String accountName;
 
@@ -170,23 +171,35 @@ public class Update_CadDog extends AppCompatActivity {
         }else if(sp_porte.getSelectedItem().equals("Selecione o porte")){
             Toast.makeText(this, "Por favor selecione um porte !",
                     Toast.LENGTH_SHORT).show();
+        }else {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(Update_CadDog.this);
+            builder.setMessage("Tem certeza que deseja alterar o cadastro ?");
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String email = MapsActivity.accountName.replace(".", "@");
+                    dogFirebase dogfire = new dogFirebase();
+
+                    dogfire.updateDog(mRef, email, hashzin, "dogFoto", base64Image);
+                    dogfire.updateDog(mRef, email, hashzin, "dogNome", elementoNome.getText().toString());
+                    dogfire.updateDog(mRef, email, hashzin, "dogData", elementoData.getText().toString());
+                    dogfire.updateDog(mRef, email, hashzin, "dogCor", sp_cor.getSelectedItem().toString());
+                    dogfire.updateDog(mRef, email, hashzin, "dogPorte", sp_porte.getSelectedItem().toString());
+                    Toast();
+                }
+            });
+            builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
         }
 
        //UPDATE----------------------------------------------------------------------------------------------------
 
-    /*
-        String stHash = stDogData + stDogNome + stDogData;
-        int key = stHash.hashCode();
-
-        String email = MapsActivity.accountName.replace(".", "@");
-        dogFirebase fireData = new dogFirebase();
-        fireData.gravaOwn(email, key, stDogNome,  stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
-
-        Toast.makeText(this, "Cadastro alterado",
-                Toast.LENGTH_LONG).show();
-        this.finish();
-*/
-        Toast.makeText(this, "Eder eu sei que você tentou salvar dados....!!",
+      /*  Toast.makeText(this, "Eder eu sei que você tentou salvar dados....!!",
                 Toast.LENGTH_LONG).show();
         Toast.makeText(this, "Mas....!!",
                 Toast.LENGTH_LONG).show();
@@ -198,6 +211,8 @@ public class Update_CadDog extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         Toast.makeText(this, "KKKKKKKKKKKKKKKKKK !!!!....!!",
                 Toast.LENGTH_LONG).show();
+   */
+
     }
 
 
@@ -290,8 +305,8 @@ public class Update_CadDog extends AppCompatActivity {
 
                             elementoNome.setText(cachorro.getDogNome());
                             elementoData.setText(cachorro.getDogData());
-                            corzinha = cachorro.getDogCor();
-                            portezinho = cachorro.getDogPorte();
+                            elementoCor = cachorro.getDogCor();
+                            elementoPorte = cachorro.getDogPorte();
                             imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
 
                             dogFoto.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
@@ -305,13 +320,13 @@ public class Update_CadDog extends AppCompatActivity {
                             dogCor_adapter.add("Preto/Branco");
                             dogCor_adapter.add("Preto/Marrom");
                             dogCor_adapter.add("Marrom/Branco");
-                            dogCor_adapter.add(corzinha);
+                            dogCor_adapter.add(elementoCor);
 
                             dogPorte_adapter.add("Selecione o porte");
                             dogPorte_adapter.add("Grande");
                             dogPorte_adapter.add("Médio");
                             dogPorte_adapter.add("Pequeno");
-                            dogPorte_adapter.add(portezinho);
+                            dogPorte_adapter.add(elementoPorte);
 
                             sp_cor.setAdapter(dogCor_adapter);
                             sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
@@ -382,6 +397,19 @@ public class Update_CadDog extends AppCompatActivity {
         };
 
         //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+    }
+
+    public void Toast(){
+        UpdateMaps um = new UpdateMaps();
+        Toast.makeText(this, "Cadastro alterado!", Toast.LENGTH_SHORT).show();
+        this.finish();
+        um.finish();
+    }
+
+    public void Finish(){
+        UpdateMaps um = new UpdateMaps();
+        this.finish();
+        um.finish();
     }
 
 }
