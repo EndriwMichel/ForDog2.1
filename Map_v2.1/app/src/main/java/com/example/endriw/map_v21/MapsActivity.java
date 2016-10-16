@@ -58,6 +58,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import android.content.Intent;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMapUser;
     private CameraUpdate up;
     private Firebase mRef;
+    Bitmap myBitmap;
 
     private ImageView iv;
 
@@ -318,27 +320,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
             startActivity(i);
-
         }
 
         File imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
 
         if (imgFile.exists()) {
 
-       //     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
        //     iv.setImageBitmap(myBitmap);
 
 
         }
 
-        final Intent intentCad = new Intent(this, CadDog.class);
+        final Intent intentCad = new Intent(this, LostDog.class);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
         builder.setMessage("Deseja cadastrarum novo dog ?");
         builder.setPositiveButton("sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytearray = stream.toByteArray();
+
+                intentCad.putExtra("latitude", latitude);
+                intentCad.putExtra("longitude", longitude);
+                intentCad.putExtra("bitmap", bytearray);
                 startActivity(intentCad);
+            }
+        });
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
         builder.show();
@@ -483,7 +498,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                                    .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                                  Double.parseDouble(cachorro.getLongitude())))
-                                                   .title(cachorro.getDogNome())
+                                                   .title(cachorro.getDogDesc())
                                               );
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
                                 id = dogs.getId();

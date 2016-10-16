@@ -156,10 +156,7 @@ public class Update_CadDog extends AppCompatActivity {
         String stDogNome = elementoNome.getText().toString();
         String stDogData = elementoData.getText().toString();
 
-        if(bitmapDrawable == null){
-            Toast.makeText(this, "Por favor adicione uma imagem !",
-                    Toast.LENGTH_SHORT).show();
-        }else if(stDogNome.equals(null) || stDogNome.equals("".trim())){
+        if(stDogNome.equals(null) || stDogNome.equals("".trim())){
             Toast.makeText(this, "Por favor cadastre um nome !",
                     Toast.LENGTH_SHORT).show();
         }else if(stDogData.equals(null) || stDogData.equals("".trim())){
@@ -308,6 +305,7 @@ public class Update_CadDog extends AppCompatActivity {
                             elementoCor = cachorro.getDogCor();
                             elementoPorte = cachorro.getDogPorte();
                             imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
+                            base64Image = Base64.encodeToString(imageAsBytes, Base64.DEFAULT);
 
                             dogFoto.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
 

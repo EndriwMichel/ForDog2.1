@@ -20,6 +20,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -43,7 +44,7 @@ public class CadDog extends AppCompatActivity {
     ArrayAdapter<String> dogCor_adapter;
     ArrayAdapter<String> dogPorte_adapter;
 
-    TextView elementoData;
+    Button elementoData;
     TextView elementoDesc;
     TextView elementoNome;
     private Spinner sp_cor;
@@ -75,7 +76,7 @@ public class CadDog extends AppCompatActivity {
         dogFoto = (ImageView) findViewById(R.id.dogFoto);
         sp_cor = (Spinner) findViewById(R.id.dogCor);
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
-        elementoData = (TextView) findViewById(R.id.dogDate);
+        elementoData = (Button) findViewById(R.id.dogDate);
         elementoNome = (TextView) findViewById(R.id.dogNome);
 
         try {

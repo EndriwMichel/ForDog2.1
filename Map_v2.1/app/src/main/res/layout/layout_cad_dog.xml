@@ -34,7 +34,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <EditText
+                style="@android:style/Widget.Holo.Light.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -47,12 +49,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
+            <Button
+                style="@android:style/Widget.Holo.Light.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:id="@+id/dogDate"
-                android:inputType="text"
+                android:inputType="date"
                 android:hint="Data"
                 android:onClick="CallCalendar"
                 android:descendantFocusability="blocksDescendants"/>
