@@ -28,7 +28,6 @@ public class UserOptions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.options_user);
 
-        userSpinner = (Spinner)findViewById(R.id.UserSpinner);
         aSwitch = (Switch)findViewById(R.id.dogSwitch);
         apelido = (TextView)findViewById(R.id.user_apelido);
         numero = (TextView)findViewById(R.id.user_numero);
@@ -36,11 +35,6 @@ public class UserOptions extends AppCompatActivity {
         tx_email = (TextView)findViewById(R.id.user_email);
         tx_email.setText("Olá "+email);
 
-        if(!aSwitch.isChecked()){
-            userSpinner.setEnabled(false);
-        }else{
-            userSpinner.setEnabled(false);
-        }
 
         //Codigo Spinner-----------------------------------------------------------------------------------------------------
             delay_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {

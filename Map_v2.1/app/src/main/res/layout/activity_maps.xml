@@ -51,8 +51,8 @@
         android:id="@+id/doguin"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/find2"
-        android:background="@android:color/white"/>
+        android:src="@drawable/dog_icon2"
+        android:background="@color/HighGren"/>
 
     <ListView
         android:id="@+id/drawerList"

@@ -1,6 +1,7 @@
 package com.example.endriw.map_v21;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -210,6 +211,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final Intent intent = new Intent(this, InitialCadDog.class);
         final Intent intent_user = new Intent(this, UserOptions.class);
+        final Intent intent_lost = new Intent(this, InitialLostDog.class);
 
         ListView lv = (ListView) findViewById(R.id.drawerList);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -223,10 +225,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startActivity(intent);
                 } else if (lvm.getDex() == "Opções do usuario") {
                     startActivity(intent_user);
-                } else if (parent.getItemAtPosition(position) == "cadastrar3") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("A qui é bori bilder porra");
-                    ad.show();
+                } else if (lvm.getDex() == "Listar meus cachorros encontrados") {
+                    startActivity(intent_lost);
+                }else if(lvm.getDex() == "Sair"){
+                    try {
+                        this.finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
                 }
 
                 dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -319,48 +325,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             imageFile = new File(Environment.getExternalStoragePublicDirectory("/Pictures/findog"), "dogphoto.png");
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-            startActivity(i);
+            startActivityForResult(i, 2);
+
         }
 
         File imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
 
         if (imgFile.exists()) {
 
+
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-       //     iv.setImageBitmap(myBitmap);
+           //     iv.setImageBitmap(myBitmap);
 
+            final Intent intentCad = new Intent(this, LostDog.class);
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+            builder.setMessage("Deseja cadastrarum novo dog ?");
+            builder.setPositiveButton("sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] bytearray = stream.toByteArray();
+
+                    intentCad.putExtra("latitude", latitude);
+                    intentCad.putExtra("longitude", longitude);
+                    intentCad.putExtra("bitmap", bytearray);
+                    startActivity(intentCad);
+                }
+            });
+            builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        this.finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                }
+            });
+            builder.show();
         }
 
-        final Intent intentCad = new Intent(this, LostDog.class);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-        builder.setMessage("Deseja cadastrarum novo dog ?");
-        builder.setPositiveButton("sim", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] bytearray = stream.toByteArray();
 
-                intentCad.putExtra("latitude", latitude);
-                intentCad.putExtra("longitude", longitude);
-                intentCad.putExtra("bitmap", bytearray);
-                startActivity(intentCad);
-            }
-        });
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.show();
 
     }
 
-    public void SetUpMapIfNeeded() {
+
+        public void SetUpMapIfNeeded() {
         final Intent intent_info  = new Intent(this, InfoWindowPhoto.class);
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
@@ -495,7 +510,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
                                 dogs = mMap.addMarker(new MarkerOptions()
-                                                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                                                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.purppet))
                                                    .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                                  Double.parseDouble(cachorro.getLongitude())))
                                                    .title(cachorro.getDogDesc())
@@ -522,7 +537,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
                                 dogs = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.redpet))
                                         .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                 Double.parseDouble(cachorro.getLongitude())))
                                         .title(cachorro.getDogNome()));
