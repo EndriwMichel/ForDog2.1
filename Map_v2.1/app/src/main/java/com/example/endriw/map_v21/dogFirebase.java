@@ -47,6 +47,15 @@ public class dogFirebase {
 
     }
 
+    public void graveUser(String email, String dogNick, String dogCel, String dogNotify){
+        Firebase mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+        email = (email != "") ? email : "email";
+
+        mRef.child(email).child("userDog").child("dogCel").setValue(dogCel);
+        mRef.child(email).child("userDog").child("dogNick").setValue(dogNick);
+        mRef.child(email).child("userDog").child("dogNotify").setValue(dogNotify);
+    }
+
     public void deleteDog(String email, String dog, String key, Firebase mRef) {
 
         mRef.child(email).child(dog).child(key).removeValue();

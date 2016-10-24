@@ -19,11 +19,13 @@ public class Cachorro {
     private String dogPorte;
     private String dogRaca;
     private String dogCel;
+    private String dogNick;
+    private String dogNotify;
 
     public Cachorro(){
     }
 
-    public Cachorro(String latitude, String longitude, String dogData, String dogDesc, String dogFoto, String dogNome, String dogHash, String dogCor, String dogRaca, String dogPorte, String dogCel){
+    public Cachorro(String latitude, String longitude, String dogData, String dogDesc, String dogFoto, String dogNome, String dogHash, String dogCor, String dogRaca, String dogPorte, String dogCel, String dogNick, String dogNotify){
         this.latitude  = latitude;
         this.longitude = longitude;
         this.dogData   = dogData;
@@ -35,6 +37,8 @@ public class Cachorro {
         this.dogPorte  = dogPorte;
         this.dogRaca    = dogRaca;
         this.dogCel    = dogCel;
+        this.dogNick = dogNick;
+        this.dogNotify = dogNotify;
     }
 
 
@@ -80,5 +84,12 @@ public class Cachorro {
 
     public String getDogCel() {
         return dogCel;
+    }
+
+    public String getDogNick(){
+        return dogNick;
+    }
+    public String getDogNotify(){
+        return dogNotify;
     }
 }

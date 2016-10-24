@@ -52,6 +52,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
     private ProgressDialog progress;
     List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
     public Bitmap[] bitarray = new Bitmap[4];
+    private String data[] = new String[4];
 
     private Firebase mRef;
     public TextView txt_nenhum;
@@ -199,8 +200,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             TextView textview = (TextView) itemView.findViewById(R.id.num);
             textview.setText(cus.getDex());
 
+            TextView textView_data = (TextView) itemView.findViewById(R.id.data);
+            textView_data.setText(cus.getData());
+
             TextView textView_hash = (TextView) itemView.findViewById(R.id.hash);
             textView_hash.setText(cus.getHash());
+
 
             return itemView;
         }
@@ -249,11 +254,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
             public void run() {
 
                 //começa o run--------------------------------------------------------------------------
-
+                String email = MapsActivity.accountName.replace(".", "@");
 
                 mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-                mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+                mRef.child(email).child("ownDog").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -265,10 +270,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
                             teste_hash[x] = cachorro.getDogHash();
                             teste[x] = cachorro.getDogNome();
+                            data[x] = cachorro.getDogData();
+
                             imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
                             bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x]));
+                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x], data[x]));
 
                             //       x=+x;
 

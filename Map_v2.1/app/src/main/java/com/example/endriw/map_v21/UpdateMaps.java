@@ -211,8 +211,9 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
 
                     Emails email = dataSnapshot.getValue(Emails.class);
                     String stEmail = email.getEmail();
+                    String account_email = MapsActivity.accountName.replace(".", "@");
 
-                    mRef.child("vaanhalen00@gmail@com").child("ownDog").child(hashzin).addListenerForSingleValueEvent(new ValueEventListener() {
+                    mRef.child(account_email).child("ownDog").child(hashzin).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
 
                         public void onDataChange(DataSnapshot dataSnapshots) {

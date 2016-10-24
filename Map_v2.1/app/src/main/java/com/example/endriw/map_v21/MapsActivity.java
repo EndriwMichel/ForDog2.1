@@ -96,6 +96,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Firebase mRef;
     Bitmap myBitmap;
 
+    private Intent i;
+
     private ImageView iv;
 
     private CircleOptions circle;
@@ -104,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton Cambtn;
     private boolean suces = true;
     private File imageFile;
-
+    private File imgFile;
     public String nick;
 
     private Firebase firebase;
@@ -315,9 +317,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             suces = direct.mkdir();
 
             File imageFile = new File(Environment.getExternalStoragePublicDirectory("/Pictures/findog"), "dogphoto.png");
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-            startActivity(i);
+            startActivityForResult(i, 3);
 
         } else {
 
@@ -329,7 +331,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        File imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
+    /*    imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
 
         if (imgFile.exists()) {
 
@@ -339,11 +341,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             final Intent intentCad = new Intent(this, LostDog.class);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-            builder.setMessage("Deseja cadastrarum novo dog ?");
-            builder.setPositiveButton("sim", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
 
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -354,26 +351,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     intentCad.putExtra("bitmap", bytearray);
                     startActivity(intentCad);
                 }
-            });
-            builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        this.finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }
-            });
-            builder.show();
+*/
         }
-
-
-
-
-
-    }
-
 
         public void SetUpMapIfNeeded() {
         final Intent intent_info  = new Intent(this, InfoWindowPhoto.class);
@@ -625,7 +604,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
            accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             textEmail.setText(accountName);
 
+        }else if(requestCode == 2 && resultCode == RESULT_OK){
+           imageLost();
+            i = null;
+        }else if(requestCode == 3 && resultCode == RESULT_OK){
+            imageLost();
+            i = null;
         }
+
     }
     protected void startLocationUpdates(){
         Log.d("TAG","startLocationUpdates");
@@ -655,6 +641,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         id = user.getId();
         markerUser.put(id, "user");
+    }
+
+    public void imageLost(){
+
+        imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
+        String namePath = "/sdcard//Pictures/findog/dogphoto.png";
+        if (imgFile.exists()) {
+
+
+            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //     iv.setImageBitmap(myBitmap);
+
+            final Intent intentCad = new Intent(this, LostDog.class);
+
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bytearray = stream.toByteArray();
+
+            intentCad.putExtra("latitude", latitude);
+            intentCad.putExtra("longitude", longitude);
+            intentCad.putExtra("bitmap", namePath);
+            startActivity(intentCad);
+        }
     }
 
 }

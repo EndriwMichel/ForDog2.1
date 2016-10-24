@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -55,8 +56,13 @@ public class LostDog extends FragmentActivity {
         Bundle extras = getIntent().getExtras();
 
 //        myBitmap = (Bitmap) getIntent().getParcelableExtra("bitmap");
-        byte[] bytearray = getIntent().getByteArrayExtra("bitmap");
+
+       /* byte[] bytearray = getIntent().getByteArrayExtra("bitmap");
         myBitmap = BitmapFactory.decodeByteArray(bytearray, 0, bytearray.length);
+       */
+        String namePath = extras.getString("bitmap");
+        File imgFile = new File(namePath);
+        myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         im.setImageBitmap(myBitmap);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -155,11 +161,6 @@ public class LostDog extends FragmentActivity {
 
     public void ClickSalvar(View view) {
 
-        //valores
-
-        String stHash = String.valueOf(latitude) + String.valueOf(longitude);
-        int key = stHash.hashCode();
-
          if(sp_cor.getSelectedItem().equals("Selecione uma cor")){
             Toast.makeText(this, "Por favor selecione uma cor !",
                     Toast.LENGTH_SHORT).show();
@@ -167,7 +168,6 @@ public class LostDog extends FragmentActivity {
             Toast.makeText(this, "Por favor selecione um porte !",
                     Toast.LENGTH_SHORT).show();
         }
-
         else{
              Bundle extras = getIntent().getExtras();
 
@@ -180,7 +180,10 @@ public class LostDog extends FragmentActivity {
              date = day+" / "+month+" / "+year;
              String elementoDesc = stDesc.getText().toString();
 
-            String email = MapsActivity.accountName.replace(".", "@");
+             String stHash = String.valueOf(date)+ String.valueOf(latitude) + String.valueOf(longitude);
+             int key = stHash.hashCode();
+
+             String email = MapsActivity.accountName.replace(".", "@");
             dogFirebase fireData = new dogFirebase();
             fireData.gravaLost(email, key, elementoDesc, date, String.valueOf(latitude), String.valueOf(longitude), base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 

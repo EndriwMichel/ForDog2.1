@@ -31,6 +31,8 @@ import android.util.Base64;
 
 import com.firebase.client.Firebase;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 
@@ -95,7 +97,7 @@ public class CadDog extends AppCompatActivity {
         sp_porte = (Spinner) findViewById(R.id.dogPorte);
 
         ArrayAdapter<String> dogCor_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
-
+/*
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -107,7 +109,7 @@ public class CadDog extends AppCompatActivity {
 
                 return v;
             }
-
+*/
             @Override
             public int getCount() {
                 return super.getCount()-1; // you dont display last item. It is used as hint.
@@ -118,7 +120,7 @@ public class CadDog extends AppCompatActivity {
         //------------------------------------------------------------------------------------------------------------
         ArrayAdapter<String> dogPorte_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1) {
 
-            @Override
+/*            @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
@@ -129,7 +131,7 @@ public class CadDog extends AppCompatActivity {
 
                 return v;
             }
-
+*/
             @Override
             public int getCount() {
                 return super.getCount()-1; // you dont display last item. It is used as hint.

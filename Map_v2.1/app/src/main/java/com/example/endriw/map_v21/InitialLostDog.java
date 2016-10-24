@@ -28,6 +28,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
     private ProgressDialog progress;
     List<ItemObjectInitial> allItems = new ArrayList<ItemObjectInitial>();
     public Bitmap[] bitarray = new Bitmap[4];
+    private String[] desc = new String[4];
 
     private Firebase mRef;
     public TextView txt_nenhum;
@@ -122,7 +125,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
                 dogFirebase fireData = new dogFirebase();
-                fireData.deleteDog("vaanhalen00@gmail@com", "ownDog", itemHash, mRef);
+                fireData.deleteDog("vaanhalen00@gmail@com", "lostDog", itemHash, mRef);
                 Toast.makeText(this, "Deleted! position:" + itemHash, Toast.LENGTH_SHORT).show();
                 custom.clear();
                 mode.finish(); // Action picked, so close the CAB
@@ -160,11 +163,12 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Intent intent  = new Intent(this, UpdateMaps.class);
+/*        final Intent intent  = new Intent(this, UpdateMaps.class);
         TextView hash = (TextView)view.findViewById(R.id.hash);
         intent.putExtra("foto", imageAsBytes);
         intent.putExtra("hash", hash.getText().toString());
-        startActivity(intent);
+        startActivity(intent);*/
+        Toast.makeText(this, "clicou !", Toast.LENGTH_SHORT);
     }
 
     private class MyListViewMaps extends ArrayAdapter<ListViewInitialCad> {
@@ -185,6 +189,9 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
             TextView textview = (TextView) itemView.findViewById(R.id.num);
             textview.setText(cus.getDex());
+
+            TextView textView_desc = (TextView) itemView.findViewById(R.id.data);
+            textView_desc.setText(cus.getData());
 
             TextView textView_hash = (TextView) itemView.findViewById(R.id.hash);
             textView_hash.setText(cus.getHash());
@@ -237,10 +244,11 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
                 //começa o run--------------------------------------------------------------------------
 
+                String email = MapsActivity.accountName.replace(".", "@");
 
                 mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-                mRef.child("vaanhalen00@gmail@com").child("lostDog").addValueEventListener(new ValueEventListener() {
+                mRef.child(email).child("lostDog").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -252,10 +260,11 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
                             teste_hash[x] = cachorro.getDogHash();
                             teste[x] = cachorro.getDogData();
+                            desc[x] = cachorro.getDogDesc();
                             imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
                             bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x]));
+                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x], desc[x]));
 
                             //       x=+x;
 
