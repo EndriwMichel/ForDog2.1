@@ -3,6 +3,9 @@ package com.example.endriw.map_v21;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +34,7 @@ public class UserOptions extends AppCompatActivity {
     private Switch aSwitch;
     private Spinner userSpinner;
     private Firebase mRef;
-
+    private static final String mask11 = "(##) #####-####";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,9 @@ public class UserOptions extends AppCompatActivity {
         numero = (TextView)findViewById(R.id.user_numero);
         sn = (TextView)findViewById(R.id.simNao);
         tx_email = (TextView)findViewById(R.id.user_email);
-        tx_email.setText("Olá "+email);
+        tx_email.setText("Olá " + email);
+
+    //    PhoneNumberUtils.formatNumber(numero.getText().toString());
 
         fireB();
 
@@ -55,6 +60,23 @@ public class UserOptions extends AppCompatActivity {
                 }else{
                     sn.setText("Não");
                 }
+            }
+        });
+
+        numero.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

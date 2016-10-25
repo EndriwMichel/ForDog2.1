@@ -98,7 +98,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Intent i;
 
-    private ImageView iv;
+    private String hashOwn;
+    private String hashLost;
+    private String lostDog = "lostDog";
+    private String ownDog = "ownDog";
+    private String userDog;
 
     private CircleOptions circle;
     private Circle cir;
@@ -117,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     HashMap<String, String> markerUser = new HashMap<String, String>();
 
     private Map<String, String> cirMap = new HashMap<String, String>();
+    private Map<String, String> EmailMap = new HashMap<String, String>();
 
     private Marker dogs;
     private Marker user;
@@ -412,7 +417,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 //aqui
-                intent_info.putExtra("DogFoto", imageAsBytes);
+/*                String userEmail = marker.getTitle();
+                String[] valorNuncaFixo = userEmail.split("%");
+ */               intent_info.putExtra("DogFoto", imageAsBytes);
+                intent_info.putExtra("UserEmail", EmailMap.get(marker.getId()));
+
+                //  intent_info.putExtra("hash", )
                 startActivity(intent_info);
             }
         });
@@ -433,7 +443,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(m.equals("dogs")) {
                         View v = getLayoutInflater().inflate(R.layout.info_window, null);
                         TextView tx = (TextView) v.findViewById(R.id.txt_view);
+                        TextView tx_dog = (TextView) v.findViewById(R.id.txt_dog);
+                        TextView tx_user = (TextView) v.findViewById(R.id.txt_email);
                         ImageView image = (ImageView) v.findViewById(R.id.image1);
+                        userDog = tx_user.getText().toString();
 
                         imageAsBytes = Base64.decode(mapa.get(marker.getId()).getBytes(), Base64.DEFAULT);
                         image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
@@ -476,7 +489,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (DataSnapshot dataSnapshot : data.getChildren()) {
 
                     Emails email = dataSnapshot.getValue(Emails.class);
-                    String stEmail = email.getEmail();
+                    final String stEmail = email.getEmail();
 
                     mRef.child(stEmail).child("lostDog").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -488,6 +501,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
+                                hashLost = cachorro.getDogHash();
                                 dogs = mMap.addMarker(new MarkerOptions()
                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.purppet))
                                                    .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
@@ -495,6 +509,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                    .title(cachorro.getDogDesc())
                                               );
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
+                                EmailMap.put(dogs.getId(), (String) stEmail);
                                 id = dogs.getId();
                                 markerUser.put(id, "dogs");
 
@@ -515,6 +530,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
+                                hashOwn = cachorro.getDogHash();
                                 dogs = mMap.addMarker(new MarkerOptions().
                                         icon(BitmapDescriptorFactory.fromResource(R.drawable.redpet))
                                         .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
@@ -522,6 +538,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         .title(cachorro.getDogNome()));
 
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
+                                EmailMap.put(dogs.getId(), (String) stEmail);
                                 id = dogs.getId();
                                 markerUser.put(id, "dogs");
                             }
@@ -557,16 +574,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        user.remove();
 
-    /*    latitude = location.getLatitude();
+        latitude = location.getLatitude();
         longitude = location.getLongitude();
+        UserPosition = new LatLng(latitude, longitude);
+       // CameraUpdate update = CameraUpdateFactory.newLatLngZoom(UserPosition, 15);
+        user = mMap.addMarker(new MarkerOptions().position(UserPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+       // mMap.animateCamera(update);
 
-        LatLng UserPosition = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(UserPosition)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                .setTitle("Bora salva uns dog caraio !");
-        System.out.println(latitude+":"+longitude);
-*/
+        id = user.getId();
+        markerUser.put(id, "user");
+
     }
 
 
@@ -649,12 +669,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String namePath = "/sdcard//Pictures/findog/dogphoto.png";
         if (imgFile.exists()) {
 
-
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             //     iv.setImageBitmap(myBitmap);
 
             final Intent intentCad = new Intent(this, LostDog.class);
-
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

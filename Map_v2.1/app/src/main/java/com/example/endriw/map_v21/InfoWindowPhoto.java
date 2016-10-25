@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -18,6 +21,10 @@ public class InfoWindowPhoto extends AppCompatActivity {
     private TextView tx_tel;
     private ImageView imageView;
     private String photo;
+    private Firebase mRef;
+    private String userEmail;
+    private String dogCel;
+    private String dogNick;
 
     private byte[] imageDog;
 
@@ -33,11 +40,37 @@ public class InfoWindowPhoto extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         imageDog = extras.getByteArray("DogFoto");
+        userEmail = extras.getString("UserEmail");
 
         Bitmap bmp = BitmapFactory.decodeByteArray(imageDog, 0, imageDog.length);
 
+        FireB();
+
         imageView.setImageBitmap(bmp);
-        tx_accont.setText(ma.accountName);
-        tx_tel.setText("telefone do maluko");
+        tx_accont.setText(userEmail);
+        tx_tel.setText(dogCel);
+        System.out.println("nome do maluko: "+dogNick);
     }
+
+    private void FireB(){
+        mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+
+         mRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                     userDog userDog = dataSnapshot1.getValue(userDog.class);
+
+                     dogCel = userDog.getDogCel();
+                     dogNick = userDog.getDogNick();
+                 }
+             }
+             @Override
+             public void onCancelled(FirebaseError firebaseError) {
+
+             }
+         });
+    }
+
 }
