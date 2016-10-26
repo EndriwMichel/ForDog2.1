@@ -15,10 +15,10 @@ import java.util.Map;
  * Created by eder on 09/09/2016.
  */
 public class smartDog {
+//    public var
+    private int i = 0;
+    public void buscarDogNoBanco(final Map<String, String> mapa, final Firebase mRef ){
 
-    public void buscarDogNoBanco(final Map<String, String> mapa ){
-
-        final Firebase mRef = new Firebase("https://dog-603e7.firebaseio.com/");
         final Map<String, String> regDog = new HashMap<>();
 
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -39,7 +39,6 @@ public class smartDog {
                                 Cachorro dog = dataSnapshot.getValue(Cachorro.class);
                                 boolean corMatch = false;
                                 boolean porteMatch = false;
-                                boolean racaMatch = false;
 
                                 if( dog.getDogCor() == mapa.get("dogCor") )
                                     corMatch = true;
@@ -54,22 +53,12 @@ public class smartDog {
                                         (( mapa.get("dogPorte") == "grande" ) && ( dog.getDogPorte() == "medio"))    ) {
                                     porteMatch = true;
                                 }
-
-                                if( dog.getDogRaca() == mapa.get("dogRaca") )
-                                    racaMatch = true;
-
-                                String msg = "Encontramos o cadastro deste dog em nosso banco de dados por ter "
-                                        + (racaMatch ? ("a raça") : "") + ( porteMatch ? ("o porte") : "")
-                                        + "compativel com o seu dog perdido.";
-
-                                regDog.put("latitude", dog.getLatitude());
-                                regDog.put("longitude", dog.getLongitude());
-                                regDog.put("hash", dog.getDogHash());
-                                //regDog.put("email", dog.getdogEmail());
-                                regDog.put("cel", dog.getDogCel());
-                                regDog.put("mensagem", msg);
-                                //não pare o loop, outras pessoas podem ter cadastrado o mesmo animal por engano ou pq é bocoh mesmo.
-
+                                i = i+1;
+                                if( porteMatch && corMatch ) {
+                                    regDog.put("hash" + i, dog.getDogHash());
+                                    System.out.println( "teste hash " + regDog.get("hash" + i));
+                                }
+                                System.out.println( "nada");
                             }
                         }
 

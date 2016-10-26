@@ -7,6 +7,10 @@ public class userDog {
     private String dogNick;
     private String dogNotify;
 
+    public userDog(){
+
+    }
+
     public userDog(String dogCel, String dogNick, String dogNotify){
         this.dogCel = dogCel;
         this.dogNick = dogNick;

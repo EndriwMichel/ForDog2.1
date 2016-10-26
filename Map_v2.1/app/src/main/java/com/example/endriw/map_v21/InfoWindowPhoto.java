@@ -55,22 +55,22 @@ public class InfoWindowPhoto extends AppCompatActivity {
     private void FireB(){
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-         mRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
+                mRef.child(userEmail).child("userDog").addListenerForSingleValueEvent(new ValueEventListener() {
 
-                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                     userDog userDog = dataSnapshot1.getValue(userDog.class);
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                     dogCel = userDog.getDogCel();
-                     dogNick = userDog.getDogNick();
-                 }
-             }
-             @Override
-             public void onCancelled(FirebaseError firebaseError) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            userDog user = dataSnapshot1.getValue(userDog.class);
 
-             }
-         });
-    }
+                            dogCel = user.getDogCel();
+                            dogNick = user.getDogNick();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
 
-}
+                    }
+                });
+            }
+        }

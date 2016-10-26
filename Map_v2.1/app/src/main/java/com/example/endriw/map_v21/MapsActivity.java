@@ -175,6 +175,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firebase.setAndroidContext(this);
         firebase = new Firebase("https://dog-603e7.firebaseio.com/");
 
+
+
      /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
@@ -214,6 +216,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
+        //-------------------------------------------------smart----------------------------
+        Map<String, String> vaiDados = new HashMap<>();
+        vaiDados.put("dogCor", "Preto");
+        vaiDados.put("dogPorte", "Grande");
+        Map<String, String> vemDados = new HashMap<>();
+        smartDog smtDog = new smartDog();
+        smtDog.buscarDogNoBanco( vaiDados, mRef );
+        //-------------------------------------------------smart----------------------------
+
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent = new Intent(this, InitialCadDog.class);
