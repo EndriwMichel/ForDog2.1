@@ -119,7 +119,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Map<String, String> mapa = new HashMap<>();
     HashMap<String, String> markerUser = new HashMap<String, String>();
-    public Map<String, String> smart = new HashMap<>();
+    public Map<String, String> smart = new HashMap<String, String>();
+
+    public Map<String, String> smart_teste = new HashMap<String, String>();
+
     private Map<String, String> cirMap = new HashMap<String, String>();
     private Map<String, String> EmailMap = new HashMap<String, String>();
 
@@ -221,9 +224,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vaiDados.put("dogCor", "Branco");
         vaiDados.put("dogPorte", "Grande");
         smartDog smtDog = new smartDog();
-        smtDog.buscarDogNoBanco( vaiDados, mRef );
+        smtDog.buscarDogNoBanco(vaiDados, mRef);
         //-------------------------------------------------smart----------------------------
-
+       // smart_teste.put(vaiDados.put("dogCor", "Branco"), vaiDados.put("dogPorte", "Grande"));
+       // System.out.println("vai dados: " + vaiDados);
+       // System.out.println("vai smart teste "+smart_teste);
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent = new Intent(this, InitialCadDog.class);
@@ -507,20 +512,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onDataChange(DataSnapshot dataSnapshots) {
 
                             CountFb += dataSnapshots.getChildrenCount();
+
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
                                 hashLost = cachorro.getDogHash();
                                 dogs = mMap.addMarker(new MarkerOptions()
-                                                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.purppet))
-                                                   .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
-                                                                 Double.parseDouble(cachorro.getLongitude())))
-                                                   .title(cachorro.getDogDesc())
-                                              );
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.purppet))
+                                                .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
+                                                        Double.parseDouble(cachorro.getLongitude())))
+                                                .title(cachorro.getDogDesc())
+                                );
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
                                 EmailMap.put(dogs.getId(), (String) stEmail);
                                 id = dogs.getId();
+
                                 markerUser.put(id, "dogs");
 
                             }
