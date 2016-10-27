@@ -119,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Map<String, String> mapa = new HashMap<>();
     HashMap<String, String> markerUser = new HashMap<String, String>();
-
+    public Map<String, String> smart = new HashMap<>();
     private Map<String, String> cirMap = new HashMap<String, String>();
     private Map<String, String> EmailMap = new HashMap<String, String>();
 
@@ -218,9 +218,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
         //-------------------------------------------------smart----------------------------
         Map<String, String> vaiDados = new HashMap<>();
-        vaiDados.put("dogCor", "Preto");
+        vaiDados.put("dogCor", "Branco");
         vaiDados.put("dogPorte", "Grande");
-        Map<String, String> vemDados = new HashMap<>();
         smartDog smtDog = new smartDog();
         smtDog.buscarDogNoBanco( vaiDados, mRef );
         //-------------------------------------------------smart----------------------------
