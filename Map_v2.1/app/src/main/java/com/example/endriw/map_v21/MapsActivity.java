@@ -220,11 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
         //-------------------------------------------------smart----------------------------
-        Map<String, String> vaiDados = new HashMap<>();
-        vaiDados.put("dogCor", "Branco");
-        vaiDados.put("dogPorte", "Grande");
-        smartDog smtDog = new smartDog();
-        smtDog.buscarDogNoBanco(vaiDados, mRef);
+        buscarDogNoBanco();
         //-------------------------------------------------smart----------------------------
        // smart_teste.put(vaiDados.put("dogCor", "Branco"), vaiDados.put("dogPorte", "Grande"));
        // System.out.println("vai dados: " + vaiDados);
@@ -701,6 +697,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startActivity(intentCad);
         }
     }
+
+    public void buscarDogNoBanco(){
+        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+
+//            int y=0;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+
+                    Map<String, String> vaiDados = new HashMap<>();
+                    vaiDados.put("dogCor", cachorro.getDogCor());
+                    vaiDados.put("dogPorte", cachorro.getDogPorte());
+                    smartDog smtDog = new smartDog();
+                    smtDog.buscarDogNoBanco(vaiDados, mRef);
+//                    teste_hash[y] = cachorro.getDogHash();
+//                    mapDog.put(x++, cachorro.getDogHash());
+//                    //     System.out.println("cachorros do cadastro map" + mapDog);
+                }
+            //    y++;
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+//        System.out.println("cachorros do cadastro map 2 " + mapDog.get(2));
+//        System.out.println("valor de vetor de cachorros: "+teste_hash[2]);
+    }
+
 
 }
 

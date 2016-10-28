@@ -17,13 +17,12 @@ import java.util.Map;
 public class smartDog {
 //    public var
     private int i = 0;
-    static int x = 1;
+    static int x = 0;
     MapsActivity ma = new MapsActivity();
-    public static Map<Integer, String> mapDog = new HashMap<>();
-    public String [] teste_hash = new String[4];
-    public void buscarDogNoBanco(final Map<String, String> mapa, final Firebase mRef ){
 
-        final Map<String, String> regDog = new HashMap<>();
+    public void buscarDogNoBanco(final Map<String, String> mapa, final Firebase mRef ) {
+
+        final String[] teste_hash = new String[100];
 
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -48,32 +47,30 @@ public class smartDog {
                                 String stMapDogCor = mapa.get("dogCor");
                                 String stMapDogPorte = mapa.get("dogPorte");
 
-                                if (stDogCor.trim().toLowerCase() == stMapDogCor.trim().toLowerCase()) {
+                                if (stDogCor.trim().toLowerCase().equals(stMapDogCor.trim().toLowerCase())) {
                                     corMatch = true;
                                 }
 
-                                if (stMapDogPorte.trim().toLowerCase() == stDogPorte.trim().toLowerCase()) {
+                                if (stMapDogPorte.trim().toLowerCase().equals(stDogPorte.trim().toLowerCase())) {
                                     porteMatch = true;
                                 }
 
-//                                if( (( mapa.get("dogPorte") == "pequeno" ) && ( dog.getDogPorte() == "medio")) ||
-//                                        (( mapa.get("dogPorte") == "medio" ) && ( dog.getDogPorte() == "pequeno")) ||
-//                                        (( mapa.get("dogPorte") == "medio" ) && ( dog.getDogPorte() == "grande"))  ||
-//                                        (( mapa.get("dogPorte") == "grande" ) && ( dog.getDogPorte() == "medio"))    ) {
-//                                    porteMatch = true;
-//                                }
+                                if (((stMapDogPorte.trim().toLowerCase().equals("pequeno")) && (stMapDogPorte.trim().toLowerCase().equals("medio"))) ||
+                                        ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("pequeno"))) ||
+                                        ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("grande"))) ||
+                                        ((stMapDogPorte.trim().toLowerCase().equals("grande")) && (stMapDogPorte.trim().toLowerCase().equals("medio")))) {
+                                    porteMatch = true;
+                                }
 
-                                System.out.println("1º " + mapa.get("dogPorte") + " " + mapa.get("dogCor"));
-                                System.out.println("2º " + dog.getDogPorte() + " " + dog.getDogCor());
-                                System.out.println("3º " + corMatch + " " + porteMatch);
                                 i = i + 1;
                                 if (porteMatch && corMatch) {
-                                    ma.smart.put("hash" + i, dog.getDogHash());
-                                    System.out.println("teste hash " + regDog.get("hash" + i));
-                                } else {
-                                    System.out.println("nada");
+                                    teste_hash[x] = dog.getDogHash();
+                                    System.out.println("bora vetor: "+teste_hash[x]);
+                                    x++;
                                 }
+
                             }
+
                         }
 
                         @Override
@@ -91,31 +88,6 @@ public class smartDog {
         });
 
 
-//        String email = MapsActivity.accountName.replace(".", "@");
-        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
-
-            int y=0;
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-
-                    teste_hash[y] = cachorro.getDogHash();
-                    mapDog.put(x++, cachorro.getDogHash());
-                    System.out.println("cachorros do cadastro map" + mapDog);
-                }
-                y++;
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-        System.out.println("cachorros do cadastro map 2 " + mapDog.get(2));
-        System.out.println("valor de vetor de cachorros: "+teste_hash[2]);
     }
 
 }
