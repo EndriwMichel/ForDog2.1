@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ public class smartDog extends IntentService{
     private int y = 0;
     private int x = 0;
     MapsActivity ma = new MapsActivity();
-    final static HashMap<String, String> mapa = new HashMap<String, String>();
-    final static String[] vet_cor = new String[3];
-    final static String[] vet_porte = new String[3];
+    final HashMap<String, String> mapa = new HashMap<String, String>();
+    final static String[] vet_cor = new String[100];
+    final static String[] vet_porte = new String[100];
+    final ArrayList<String> listCor = new ArrayList<String>();
+    final ArrayList<String> listPorte = new ArrayList<String>();
     Firebase mRef;
 
     public smartDog() {
@@ -46,35 +49,40 @@ public class smartDog extends IntentService{
 
         final String[] teste_hash = new String[100];
 
-//        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
-//
-//            //            int y=0;
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-//
-//                   //] Map<String, String> vaiDados = new HashMap<>();
-//                    mapa.put("dogCor", cachorro.getDogCor());
-//                    mapa.put("dogPorte", cachorro.getDogPorte());
-//
-//                    vet_cor[y] = String.valueOf(cachorro.getDogCor());
-//                    vet_porte[y] = String.valueOf(cachorro.getDogPorte());
-//
-//                    System.out.println("dog cor fora: "+vet_cor[y]);
-//
-//                    // smartDog smtDog = new smartDog();
-//                    //buscarDogNoBanco(vaiDados, mRef);
-//                }
-//                y++;
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        });
+        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+
+                   // Map<String, String> vaiDados = new HashMap<>();
+                    mapa.put("dogCor", cachorro.getDogCor());
+                    mapa.put("dogPorte", cachorro.getDogPorte());
+
+
+
+                    vet_cor[y] = String.valueOf(cachorro.getDogCor());
+                    vet_porte[y] = String.valueOf(cachorro.getDogPorte());
+
+            y++;
+
+                    System.out.println("dog cor fora: "+mapa);
+
+                    // smartDog smtDog = new smartDog();
+                    //buscarDogNoBanco(vaiDados, mRef);
+                }
+            //    y++;
+                System.out.println("vetor cor aleatoria: "+vet_cor[2]);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         //-------------------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +93,7 @@ public class smartDog extends IntentService{
 
                     Emails email = dataSnapshot.getValue(Emails.class);
                     String stEmail = email.getEmail();
-                    System.out.println(stEmail);
+                   // System.out.println(stEmail);
 
                         mRef.child(stEmail).child("lostDog").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -94,38 +102,43 @@ public class smartDog extends IntentService{
 
                                     for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 //                                        for (i = 0; i <= vet_cor.length; i++) {
+                                        i = 0;
                                         Cachorro dog = dataSnapshot.getValue(Cachorro.class);
                                         boolean corMatch = false;
                                         boolean porteMatch = false;
                                         String stDogCor = dog.getDogCor();
                                         String stDogPorte = dog.getDogPorte();
-                                        String stMapDogCor = mapa.get("dogCor");
-                                        String stMapDogPorte = mapa.get("dogPorte");
-//                                        String stMapDogCor = vet_cor[i];
-//                                        String stMapDogPorte = vet_porte[i];
-                                        System.out.println("dog cor dentro: " + vet_cor[i]);
+//                                        String stMapDogCor = mapa.get("dogCor");
+//                                        String stMapDogPorte = mapa.get("dogPorte");
+                                        for(i=0;i<=3;i++) {
+                                            String stMapDogCor = vet_cor[i];
+                                            String stMapDogPorte = vet_porte[i];
 
-                                        if (stDogCor.trim().toLowerCase().equals(stMapDogCor.trim().toLowerCase())) {
-                                            corMatch = true;
-                                        }
+                                            System.out.println("dog cor dentro: " + vet_cor[i]);
+                                            System.out.println("dog cor dentro: " + vet_porte[i]);
 
-                                        if (stMapDogPorte.trim().toLowerCase().equals(stDogPorte.trim().toLowerCase())) {
-                                            porteMatch = true;
-                                        }
+                                            if (stDogCor.trim().toLowerCase().equals(stMapDogCor.trim().toLowerCase())) {
+                                                corMatch = true;
+                                            }
 
-                                        if (((stMapDogPorte.trim().toLowerCase().equals("pequeno")) && (stMapDogPorte.trim().toLowerCase().equals("medio"))) ||
-                                                ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("pequeno"))) ||
-                                                ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("grande"))) ||
-                                                ((stMapDogPorte.trim().toLowerCase().equals("grande")) && (stMapDogPorte.trim().toLowerCase().equals("medio")))) {
-                                            porteMatch = true;
-                                        }
+                                            if (stMapDogPorte.trim().toLowerCase().equals(stDogPorte.trim().toLowerCase())) {
+                                                porteMatch = true;
+                                            }
 
-                                       // i = i + 1;
-                                        if (porteMatch && corMatch) {
-                                            teste_hash[x] = dog.getDogHash();
-                                            System.out.println("bora vetor: " + teste_hash[x]);
-                                            x++;
+                                            if (((stMapDogPorte.trim().toLowerCase().equals("pequeno")) && (stMapDogPorte.trim().toLowerCase().equals("medio"))) ||
+                                                    ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("pequeno"))) ||
+                                                    ((stMapDogPorte.trim().toLowerCase().equals("medio")) && (stMapDogPorte.trim().toLowerCase().equals("grande"))) ||
+                                                    ((stMapDogPorte.trim().toLowerCase().equals("grande")) && (stMapDogPorte.trim().toLowerCase().equals("medio")))) {
+                                                porteMatch = true;
+                                            }
                                         }
+                                            // i = i + 1;
+                                            if (porteMatch && corMatch) {
+                                                teste_hash[x] = dog.getDogHash();
+                                                System.out.println("bora vetor: " + teste_hash[x]);
+                                                x++;
+                                            }
+//                                            i++;
 
                                     }
                                 }
