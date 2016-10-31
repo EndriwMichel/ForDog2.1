@@ -1,5 +1,6 @@
 package com.example.endriw.map_v21;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import java.util.Calendar;
 
 /**
  * Created by Endriw on 02/09/2016.
@@ -57,8 +60,16 @@ public class UserOptions extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(aSwitch.isChecked()){
                     sn.setText("Sim");
+
+                    Intent intent = new Intent(Noty.ACTION);
+                    Alarm.schedule(UserOptions.this, intent, getRealTime());
+                    Toast.makeText(UserOptions.this, "Alarme Agendado", Toast.LENGTH_SHORT).show();
                 }else{
                     sn.setText("Não");
+
+                    Intent intent = new Intent(Noty.ACTION);
+                    Alarm.cancel(UserOptions.this, intent);
+                    Toast.makeText(UserOptions.this, "Alarme Cancelado", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -121,7 +132,7 @@ public class UserOptions extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshots) {
 
                             final Cachorro cachorro = dataSnapshots.getValue(Cachorro.class);
-                            System.out.println("dados do usuario: "+cachorro.getDogNick()+" / "+cachorro.getDogCel()+" / "+cachorro.getDogNotify());
+                         //   System.out.println("dados do usuario: "+cachorro.getDogNick()+" / "+cachorro.getDogCel()+" / "+cachorro.getDogNotify());
 
                             if(cachorro.getDogNick() != null){
                                 apelido.setText(cachorro.getDogNick());
@@ -154,5 +165,14 @@ public class UserOptions extends AppCompatActivity {
         });
     }
 
+    public long getRealTime(){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
 
+//        c.set(Calendar.HOUR_OF_DAY, 19);
+//        c.set(Calendar.MINUTE, 5);
+        c.add(Calendar.SECOND, 10);
+        long time = c.getTimeInMillis();
+        return time;
+    }
 }

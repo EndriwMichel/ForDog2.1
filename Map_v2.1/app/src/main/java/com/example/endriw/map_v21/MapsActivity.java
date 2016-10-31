@@ -220,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
         //-------------------------------------------------smart----------------------------
-        buscarDogNoBanco();
+       // buscarDogNoBanco();
         //-------------------------------------------------smart----------------------------
        // smart_teste.put(vaiDados.put("dogCor", "Branco"), vaiDados.put("dogPorte", "Grande"));
        // System.out.println("vai dados: " + vaiDados);
@@ -712,10 +712,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     vaiDados.put("dogCor", cachorro.getDogCor());
                     vaiDados.put("dogPorte", cachorro.getDogPorte());
                     smartDog smtDog = new smartDog();
-                    smtDog.buscarDogNoBanco(vaiDados, mRef);
-//                    teste_hash[y] = cachorro.getDogHash();
-//                    mapDog.put(x++, cachorro.getDogHash());
-//                    //     System.out.println("cachorros do cadastro map" + mapDog);
+                    //smtDog.buscarDogNoBanco(vaiDados, mRef);
                 }
             //    y++;
             }
@@ -726,8 +723,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-//        System.out.println("cachorros do cadastro map 2 " + mapDog.get(2));
-//        System.out.println("valor de vetor de cachorros: "+teste_hash[2]);
     }
 
 
