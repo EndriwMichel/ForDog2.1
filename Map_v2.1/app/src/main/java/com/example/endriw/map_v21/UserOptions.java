@@ -62,7 +62,7 @@ public class UserOptions extends AppCompatActivity {
                     sn.setText("Sim");
 
                     Intent intent = new Intent(Noty.ACTION);
-                    Alarm.schedule(UserOptions.this, intent, getRealTime());
+                    Alarm.scheduleRepeat(UserOptions.this, intent, getRealTime(), 30 * 1000);
                     Toast.makeText(UserOptions.this, "Alarme Agendado", Toast.LENGTH_SHORT).show();
                 }else{
                     sn.setText("Não");

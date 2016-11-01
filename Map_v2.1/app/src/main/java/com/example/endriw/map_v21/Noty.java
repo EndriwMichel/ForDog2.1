@@ -17,8 +17,6 @@ public class Noty extends BroadcastReceiver{
 
     @Override
     public void onReceive(android.content.Context context, Intent intent) {
-        Intent intent_serviceOwn = new Intent(context, SmartOwn.class);
-        context.startService(intent_serviceOwn);
 
         Intent intent_service = new Intent(context, smartDog.class);
         context.startService(intent_service);
@@ -45,6 +43,7 @@ public class Noty extends BroadcastReceiver{
 
             //disparar a notificação
             Notification n = builder.build();
+
             manager.notify(id, n);
         }
     }

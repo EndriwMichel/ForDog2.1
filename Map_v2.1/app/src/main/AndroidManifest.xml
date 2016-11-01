@@ -50,6 +50,7 @@
         <activity android:name=".Update_CadDog"></activity>
         <activity android:name=".LostDog"></activity>
         <activity android:name=".InitialLostDog"></activity>
+        <activity android:name=".smartOwn"></activity>
         <service android:name=".smartDog"></service>
         <receiver android:name=".Noty">
             <intent-filter>
