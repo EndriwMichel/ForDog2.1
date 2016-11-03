@@ -178,41 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firebase.setAndroidContext(this);
         firebase = new Firebase("https://dog-603e7.firebaseio.com/");
 
-
-
-     /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
-
-                if (parent.getItemAtPosition(pos) == "Cadastrar Lost Dog") {
-                    startActivity(intent);
-
-                } else if (parent.getItemAtPosition(pos) == "eita porra") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("ta saino da jaula u muonstro");
-                    ad.show();
-                } else if (parent.getItemAtPosition(pos) == "Hurgggg") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("A qui é bori bilder porra");
-                    ad.show();
-                } else if (parent.getItemAtPosition(pos) == "sabeoqueéissoaqui?") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("Trapéziu des sem dente");
-                    ad.show();
-                }
-
-                dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        super.onDrawerClosed(drawerView);
-
-                    }
-                });
-            }
-        });
-
-*/
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -263,20 +228,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 //-------------------------------------------------------------------------------------------------------------
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mGoogleapiClient.connect();
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         stopLocationUpdates();
+        user.remove();
           mGoogleapiClient.disconnect();
+
     }
+//    @Override
+//    public void onPause(){
+//        super.onPause();
+//        stopLocationUpdates();
+//        user.remove();
+//        mGoogleapiClient.disconnect();
+//    }
 
 
     private void populateList() {
@@ -318,7 +294,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected void onResume() {
         super.onResume();
-
         SetUpMapIfNeeded();
         fireB();
 
@@ -418,6 +393,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     cirMap.put(marker.getId(), cir.getId());
                 }else if(m.equals("user")){
+                    if(cir!=null) {
+                        for (Circle circle : cirList) {
+                            circle.remove();
+                        }
+                        cirList.clear();
+                    }
+
                     System.out.println("oi eu sou o usuario!");
                 }
                 return false;
@@ -608,6 +590,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
  /*       Toast.makeText(this, "Connected !!",
                 Toast.LENGTH_LONG).show();
 */
+
         AddUserMarker();
     }
 
@@ -650,8 +633,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("TAG","startLocationUpdates");
 
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2500);//1s
-        mLocationRequest.setFastestInterval(2500);//1s
+        mLocationRequest.setInterval(25000);//1s
+        mLocationRequest.setFastestInterval(25000);//1s
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleapiClient,mLocationRequest,this);
     }
@@ -661,8 +644,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void AddUserMarker(){
-        startLocationUpdates();
 
+        startLocationUpdates();
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -678,6 +661,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void imageLost(){
 
+//        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
+//        latitude = location.getLatitude();
+//        longitude = location.getLongitude();
+//
         imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
         String namePath = "/sdcard//Pictures/findog/dogphoto.png";
         if (imgFile.exists()) {
@@ -687,9 +674,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             final Intent intentCad = new Intent(this, LostDog.class);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytearray = stream.toByteArray();
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//            byte[] bytearray = stream.toByteArray();
 
             intentCad.putExtra("latitude", latitude);
             intentCad.putExtra("longitude", longitude);
@@ -698,32 +685,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void buscarDogNoBanco(){
-        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
-
-//            int y=0;
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-
-                    Map<String, String> vaiDados = new HashMap<>();
-                    vaiDados.put("dogCor", cachorro.getDogCor());
-                    vaiDados.put("dogPorte", cachorro.getDogPorte());
-                    smartDog smtDog = new smartDog();
-                    //smtDog.buscarDogNoBanco(vaiDados, mRef);
-                }
-            //    y++;
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-    }
+//    public void buscarDogNoBanco(){
+//        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+//
+////            int y=0;
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+//
+//                    Map<String, String> vaiDados = new HashMap<>();
+//                    vaiDados.put("dogCor", cachorro.getDogCor());
+//                    vaiDados.put("dogPorte", cachorro.getDogPorte());
+//                    smartDog smtDog = new smartDog();
+//                    //smtDog.buscarDogNoBanco(vaiDados, mRef);
+//                }
+//            //    y++;
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//
+//    }
 
 
 }

@@ -61,21 +61,14 @@ public class LostDog extends FragmentActivity {
         myBitmap = BitmapFactory.decodeByteArray(bytearray, 0, bytearray.length);
        */
         String namePath = extras.getString("bitmap");
+        latitude = extras.getDouble("latitude");
+        longitude = extras.getDouble("longitude");
+
         File imgFile = new File(namePath);
         myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         im.setImageBitmap(myBitmap);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap resized = Bitmap.createScaledBitmap(myBitmap, 200, 200, true);
-        resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        bytes = baos.toByteArray();
-        base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-        try {
-            baos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
@@ -161,6 +154,18 @@ public class LostDog extends FragmentActivity {
 
     public void ClickSalvar(View view) {
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap resized = Bitmap.createScaledBitmap(myBitmap, 200, 200, true);
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bytes = baos.toByteArray();
+        base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        try {
+            baos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
          if(sp_cor.getSelectedItem().equals("Selecione uma cor")){
             Toast.makeText(this, "Por favor selecione uma cor !",
                     Toast.LENGTH_SHORT).show();
@@ -170,9 +175,6 @@ public class LostDog extends FragmentActivity {
         }
         else{
              Bundle extras = getIntent().getExtras();
-
-             latitude = extras.getDouble("latitude");
-             longitude = extras.getDouble("longitude");
 
              day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
              month = String.valueOf(c.get(Calendar.MONTH)+1);

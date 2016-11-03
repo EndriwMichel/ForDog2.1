@@ -37,8 +37,10 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/user_numero"
-        android:inputType="number"
+        android:inputType="phone"
         android:digits="0123456789+"
+        android:lines="1"
+        android:maxLength="12"
         android:hint="Numero do celular/telefone"/>
 
         </android.support.design.widget.TextInputLayout>

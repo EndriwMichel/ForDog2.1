@@ -62,7 +62,7 @@ public class UserOptions extends AppCompatActivity {
                     sn.setText("Sim");
 
                     Intent intent = new Intent(Noty.ACTION);
-                    Alarm.scheduleRepeat(UserOptions.this, intent, getRealTime(), 30 * 1000);
+                    Alarm.schedule(UserOptions.this, intent, getRealTime());
                     Toast.makeText(UserOptions.this, "Alarme Agendado", Toast.LENGTH_SHORT).show();
                 }else{
                     sn.setText("Não");
@@ -134,12 +134,9 @@ public class UserOptions extends AppCompatActivity {
                             final Cachorro cachorro = dataSnapshots.getValue(Cachorro.class);
                          //   System.out.println("dados do usuario: "+cachorro.getDogNick()+" / "+cachorro.getDogCel()+" / "+cachorro.getDogNotify());
 
-                            if(cachorro.getDogNick() != null){
                                 apelido.setText(cachorro.getDogNick());
-                            }
-                            if(cachorro.getDogCel() != null){
                                 numero.setText(cachorro.getDogCel());
-                            }
+
                             if(cachorro.getDogNotify() != null) {
                                 if (cachorro.getDogNotify().equals("Sim")){
                                     aSwitch.setChecked(true);

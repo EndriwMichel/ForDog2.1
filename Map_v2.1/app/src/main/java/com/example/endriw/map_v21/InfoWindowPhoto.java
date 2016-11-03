@@ -24,7 +24,7 @@ public class InfoWindowPhoto extends AppCompatActivity {
     private Firebase mRef;
     private String userEmail;
     private String dogCel;
-    private String dogNick;
+    String dogNick = null;
 
     private byte[] imageDog;
 
@@ -47,30 +47,51 @@ public class InfoWindowPhoto extends AppCompatActivity {
         FireB();
 
         imageView.setImageBitmap(bmp);
-        tx_accont.setText(userEmail);
-        tx_tel.setText(dogCel);
-        System.out.println("nome do maluko: "+dogNick);
+
+        System.out.println("Nome do usuário: "+dogNick);
+
     }
 
-    private void FireB(){
+    public void FireB() {
+
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
+        mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot data) {
+                for (DataSnapshot dataSnapshot : data.getChildren()) {
 
-                mRef.child(userEmail).child("userDog").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Emails email = dataSnapshot.getValue(Emails.class);
+                    String stEmail = email.getEmail();
+                    String account_email = MapsActivity.accountName.replace(".", "@");
 
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    mRef.child(userEmail).child("userDog").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
 
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            userDog user = dataSnapshot1.getValue(userDog.class);
+                        public void onDataChange(DataSnapshot dataSnapshots) {
 
-                            dogCel = user.getDogCel();
-                            dogNick = user.getDogNick();
+                            final Cachorro cachorro = dataSnapshots.getValue(Cachorro.class);
+                            //   System.out.println("dados do usuario: "+cachorro.getDogNick()+" / "+cachorro.getDogCel()+" / "+cachorro.getDogNotify());
+
+                            dogNick = cachorro.getDogNick();
+                            dogCel = cachorro.getDogCel();
+                            tx_accont.setText(dogNick);
+                            tx_tel.setText("Tel: "+dogCel);
+
+                            }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
                         }
-                    }
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
+                    });
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+}
