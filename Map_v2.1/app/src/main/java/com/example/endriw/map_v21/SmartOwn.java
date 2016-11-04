@@ -121,20 +121,28 @@ public class smartOwn extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-
+                    System.out.println("valor de y inicial "+y);
                     // Map<String, String> vaiDados = new HashMap<>();
                     mapa.put("dogCor", cachorro.getDogCor());
                     mapa.put("dogPorte", cachorro.getDogPorte());
 
+                    if(y > 0){
+                        if(!vet_cor[y-1].equals(cachorro.getDogCor()) && !vet_porte[y-1].equals(cachorro.getDogPorte())){
 
+                                vet_cor[y] = String.valueOf(cachorro.getDogCor());
+                                vet_porte[y] = String.valueOf(cachorro.getDogPorte());
 
-                    vet_cor[y] = String.valueOf(cachorro.getDogCor());
-                    vet_porte[y] = String.valueOf(cachorro.getDogPorte());
+                        }else{
+                            System.out.println("cor igual e porte igual "+cachorro.getDogCor()+" : "+cachorro.getDogPorte());
+                            y--;
+                        }
+                    }else {
 
+                        vet_cor[y] = String.valueOf(cachorro.getDogCor());
+                        vet_porte[y] = String.valueOf(cachorro.getDogPorte());
+                    }
                     y++;
-
-                    System.out.println("dog cor fora: "+mapa);
-
+                    System.out.println("valor de y final "+y);
                     // smartDog smtDog = new smartDog();
                     //buscarDogNoBanco(vaiDados, mRef);
                 }
@@ -148,7 +156,10 @@ public class smartOwn extends AppCompatActivity {
 
             }
         });
-
+for(int z=0;z<=3;z++){
+    System.out.println("valor de vetor cor"+vet_cor[z]);
+    System.out.println("valor de vetor porte"+vet_porte[z]);
+}
         //-------------------------------------------------------------------------------------------------------------------------
 
         mRef.child("emails").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -175,7 +186,7 @@ public class smartOwn extends AppCompatActivity {
                                 String stDogPorte = dog.getDogPorte();
 //                                        String stMapDogCor = mapa.get("dogCor");
 //                                        String stMapDogPorte = mapa.get("dogPorte");
-                                for(i=0;i<=3;i++) {
+                                for(i=0;i<=(y-1);i++) {
                                     String stMapDogCor = vet_cor[i];
                                     String stMapDogPorte = vet_porte[i];
 
@@ -207,8 +218,8 @@ public class smartOwn extends AppCompatActivity {
                                         bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
                                         custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x], desc[x]));
+
 //--------------------------------------------------------------------------------------------------------------------------
-                                        teste_hash[x] = dog.getDogHash();
                                         System.out.println("bora vetor smartOwn: " + teste_hash[x]);
                                         x++;
                                     }

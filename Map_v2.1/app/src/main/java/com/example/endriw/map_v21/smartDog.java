@@ -137,7 +137,7 @@ public class smartDog extends IntentService{
                                             // i = i + 1;
                                             if (porteMatch && corMatch) {
                                                 teste_hash[x] = dog.getDogHash();
-                                                System.out.println("bora vetor: " + teste_hash[x]);
+                                            //    System.out.println("bora vetor: " + teste_hash[x]);
                                                 x++;
                                             }
                                         }
