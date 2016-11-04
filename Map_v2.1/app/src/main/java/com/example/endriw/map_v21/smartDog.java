@@ -163,11 +163,10 @@ public class smartDog extends IntentService{
 
 
    // }
-        if(teste_hash != null && teste_hash.length>0) {
             Intent mapsIntent = new Intent(this, smartOwn.class);
           //  mapsIntent.putExtra("vetor", teste_hash);
             Noty.NotificationUtil.create(this, 1, mapsIntent, "Importante !", "Veja cadastros de cachoros parecidos com os seus");
-        }
+
 
     }
 

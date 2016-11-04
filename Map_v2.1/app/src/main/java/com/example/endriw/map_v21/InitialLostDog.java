@@ -97,6 +97,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
 
+
         // populateList();
     }
 
@@ -249,6 +250,8 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
                 mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
                 mRef.child(email).child("lostDog").addValueEventListener(new ValueEventListener() {
+
+                    String valiDog;
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -257,7 +260,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
                             conta = count;
                             Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
                             System.out.println("dogNome: " + cachorro.getDogNome());
-
+                            valiDog = cachorro.getDogNome();
                             teste_hash[x] = cachorro.getDogHash();
                             teste[x] = cachorro.getDogData();
                             desc[x] = cachorro.getDogDesc();
@@ -269,9 +272,15 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
                             //       x=+x;
 
                         }
+
                         adapter = new MyListViewMaps();
                         lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-                        lv.setAdapter(adapter);
+                        if(adapter.getCount() != 0){
+                            lv.setAdapter(adapter);
+                        }else{
+                            Toast.makeText(InitialLostDog.this, "Não ha cadastros !", Toast.LENGTH_LONG).show();
+                        }
+
                     }
 
                     @Override
@@ -289,6 +298,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
             }
         }).start();
+
     }
 
 }

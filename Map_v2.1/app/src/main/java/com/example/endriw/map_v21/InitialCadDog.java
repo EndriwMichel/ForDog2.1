@@ -282,7 +282,12 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                         }
                         adapter = new MyListViewMaps();
                         lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-                        lv.setAdapter(adapter);
+                        if(adapter.getCount() != 0){
+                            lv.setAdapter(adapter);
+                        }else{
+                            Toast.makeText(InitialCadDog.this, "Não ha cadastros !", Toast.LENGTH_LONG).show();
+                        }
+
                     }
 
                     @Override

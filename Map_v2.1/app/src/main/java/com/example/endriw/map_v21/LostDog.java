@@ -172,7 +172,10 @@ public class LostDog extends FragmentActivity {
         }else if(sp_porte.getSelectedItem().equals("Selecione o porte")){
             Toast.makeText(this, "Por favor selecione um porte !",
                     Toast.LENGTH_SHORT).show();
-        }
+        }else if(latitude == 0.0 || longitude == 0.0){
+             Toast.makeText(this, "Sua localização não está atualizada, por favor se o erro persistir reinicie o aplicativo !",
+                     Toast.LENGTH_LONG).show();
+         }
         else{
              Bundle extras = getIntent().getExtras();
 
