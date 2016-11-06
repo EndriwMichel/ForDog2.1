@@ -59,6 +59,7 @@ public class smartOwn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.initial_match);
 
+        Firebase.setAndroidContext(this);
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
 
@@ -113,8 +114,8 @@ public class smartOwn extends AppCompatActivity {
 
         final String[] teste_hash = new String[100];
         final String[] teste_email = new String[100];
-
-        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+     //   String email = MapsActivity.accountName.replace(".", "@");
+        mRef.child("endriwmichel@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

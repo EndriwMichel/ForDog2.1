@@ -125,8 +125,9 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
+                String email = MapsActivity.accountName.replace(".", "@");
                 dogFirebase fireData = new dogFirebase();
-                fireData.deleteDog("vaanhalen00@gmail@com", "lostDog", itemHash, mRef);
+                fireData.deleteDog(email, "lostDog", itemHash, mRef);
                 Toast.makeText(this, "Deleted! position:" + itemHash, Toast.LENGTH_SHORT).show();
                 custom.clear();
                 mode.finish(); // Action picked, so close the CAB

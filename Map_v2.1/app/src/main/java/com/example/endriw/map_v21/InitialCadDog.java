@@ -130,9 +130,10 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
+                String email = MapsActivity.accountName.replace(".", "@");
                 dogFirebase fireData = new dogFirebase();
-                fireData.deleteDog("vaanhalen00@gmail@com", "ownDog", itemHash, mRef);
-                Toast.makeText(this, "Deleted! position:" + itemHash, Toast.LENGTH_SHORT).show();
+                fireData.deleteDog(email, "ownDog", itemHash, mRef);
+                Toast.makeText(this, "Cadastro deletado !", Toast.LENGTH_SHORT).show();
                 custom.clear();
                 mode.finish(); // Action picked, so close the CAB
                 v.setSelected(false);
@@ -261,35 +262,37 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                 mRef.child(email).child("ownDog").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                count = (int) dataSnapshot.getChildrenCount();
+                                conta = count;
+                                Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+                                System.out.println("dogNome: " + cachorro.getDogNome());
 
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            count = (int) dataSnapshot.getChildrenCount();
-                            conta = count;
-                            Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
-                            System.out.println("dogNome: " + cachorro.getDogNome());
+                                teste_hash[x] = cachorro.getDogHash();
+                                teste[x] = cachorro.getDogNome();
+                                data[x] = cachorro.getDogData();
 
-                            teste_hash[x] = cachorro.getDogHash();
-                            teste[x] = cachorro.getDogNome();
-                            data[x] = cachorro.getDogData();
+                                imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
+                                bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                            imageAsBytes = Base64.decode(cachorro.getDogFoto().getBytes(), Base64.DEFAULT);
-                            bitarray[x] = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                                custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x], data[x]));
 
-                            custom.add(new ListViewInitialCad(teste[x], teste_hash[x], bitarray[x], data[x]));
+                                //       x=+x;
 
-                            //       x=+x;
+                            }
+                            adapter = new MyListViewMaps();
+                            lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
+                            if (adapter.getCount() != 0) {
+                                lv.setAdapter(adapter);
+                            } else {
+                                Toast.makeText(InitialCadDog.this, "Não ha cadastros !", Toast.LENGTH_LONG).show();
+                            }
 
+                        }catch (Exception e){
+                            System.out.println("erro: "+e);
                         }
-                        adapter = new MyListViewMaps();
-                        lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
-                        if(adapter.getCount() != 0){
-                            lv.setAdapter(adapter);
-                        }else{
-                            Toast.makeText(InitialCadDog.this, "Não ha cadastros !", Toast.LENGTH_LONG).show();
-                        }
-
                     }
-
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
 

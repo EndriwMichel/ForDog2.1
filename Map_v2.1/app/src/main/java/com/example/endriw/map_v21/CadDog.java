@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,6 +76,8 @@ public class CadDog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_cad_dog);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         dogFoto = (ImageView) findViewById(R.id.dogFoto);
         sp_cor = (Spinner) findViewById(R.id.dogCor);
@@ -140,8 +144,7 @@ public class CadDog extends AppCompatActivity {
         };
 
         //adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-
-        dogCor_adapter.add("Selecione a cor");
+        dogCor_adapter.add("Selecione uma cor");
         dogCor_adapter.add("Preto");
         dogCor_adapter.add("Branco");
         dogCor_adapter.add("Marrom");
@@ -155,6 +158,7 @@ public class CadDog extends AppCompatActivity {
         dogPorte_adapter.add("Médio");
         dogPorte_adapter.add("Pequeno");
         dogPorte_adapter.add("Selecione o porte");
+
 
         sp_cor.setAdapter(dogCor_adapter);
         sp_cor.setSelection(dogCor_adapter.getCount()); //display hint
@@ -224,17 +228,17 @@ public class CadDog extends AppCompatActivity {
 
         else{
 
+                String email = MapsActivity.accountName.replace(".", "@");
+                dogFirebase fireData = new dogFirebase();
+                fireData.gravaOwn(email, key, stDogNome, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 
-            String email = MapsActivity.accountName.replace(".", "@");
-            dogFirebase fireData = new dogFirebase();
-            fireData.gravaOwn(email, key, stDogNome, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+                Toast.makeText(this, "Cadastro efetuado",
+                        Toast.LENGTH_LONG).show();
 
-            Toast.makeText(this, "Cadastro efetuado",
-                    Toast.LENGTH_LONG).show();
-            this.finish();
+ //           this.finish();
+
         }
-    }
-
+        }
 
     public void ClickCancelar(View view) {
         this.finish();
@@ -291,7 +295,6 @@ public class CadDog extends AppCompatActivity {
                         base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
                         baos.close();
-
                     } else {
                         Toast.makeText(this, "You haven't picked Image",
                                 Toast.LENGTH_LONG).show();

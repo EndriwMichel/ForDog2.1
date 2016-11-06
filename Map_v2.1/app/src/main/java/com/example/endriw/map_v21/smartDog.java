@@ -46,8 +46,8 @@ public class smartDog extends IntentService{
       //  public void buscarDogNoBanco(final Map<String, String> mapa, final Firebase mRef ) {
 
         final String[] teste_hash = new String[100];
-
-        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+       // String email = MapsActivity.accountName.replace(".", "@");
+        mRef.child("endriwmichel@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -161,12 +161,8 @@ public class smartDog extends IntentService{
             }
         });
 
-
-   // }
             Intent mapsIntent = new Intent(this, smartOwn.class);
-          //  mapsIntent.putExtra("vetor", teste_hash);
             Noty.NotificationUtil.create(this, 1, mapsIntent, "Importante !", "Veja cadastros de cachoros parecidos com os seus");
-
 
     }
 

@@ -39,12 +39,14 @@ public class Noty extends BroadcastReceiver{
                     .setContentTitle(contentTitle)      //titulo
                     .setContentText(contentText)        //texto
                     .setSmallIcon(R.mipmap.ic_launcher)  //icone
-                    .setAutoCancel(true);              //remove a notificação
-                 //   .setVibrate(new long[]{ 1000, 1000, 1000, 1000, 1000});   //vibração
+                    .setAutoCancel(true);                 //remove a notificação
+               //     .setVibrate(new long[]{ 1000, 1000, 1000, 1000, 1000});   //vibração
 
 
             //disparar a notificação
             Notification n = builder.build();
+            n.defaults |= Notification.DEFAULT_SOUND;
+            n.defaults |= Notification.DEFAULT_VIBRATE;
 
             manager.notify(id, n);
         }
