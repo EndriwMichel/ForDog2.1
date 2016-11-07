@@ -73,10 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private List<Circle> cirList = new ArrayList<Circle>();
 
-    public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Opções do usuario", "Sair"};
+    public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Lista de cachorros compativeis", "Opçoes do usuario"};
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse, R.drawable.dogavatar};
+    private int[] vetor = new int[]{R.drawable.ic_pets_black_24dp, R.drawable.ic_recent_actors_black_24dp, R.drawable.ic_line_style_black_24dp, R.drawable.ic_account_circle_black_24dp};
 
     public DrawerLayout dl;
     public ListView lv;
@@ -195,6 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final Intent intent = new Intent(this, InitialCadDog.class);
         final Intent intent_user = new Intent(this, UserOptions.class);
         final Intent intent_lost = new Intent(this, InitialLostDog.class);
+        final Intent intent_smart = new Intent(this, smartOwn.class);
 
         ListView lv = (ListView) findViewById(R.id.drawerList);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -206,16 +207,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if (lvm.getDex() == "Cadastrar um cachorro perdido") {
                     startActivity(intent);
-                } else if (lvm.getDex() == "Opções do usuario") {
-                    startActivity(intent_user);
                 } else if (lvm.getDex() == "Listar meus cachorros encontrados") {
                     startActivity(intent_lost);
-                }else if(lvm.getDex() == "Sair"){
-                    try {
-                        this.finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
+                }else if(lvm.getDex() == "Lista de cachorros compativeis"){
+                    startActivity(intent_smart);
+                } else if (lvm.getDex() == "Opçoes do usuario") {
+                    startActivity(intent_user);
                 }
 
                 dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -273,7 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.listviewmaps, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.listviewmapsnavi, parent, false);
             }
             ListViewMaps cus = custom.get(position);
 

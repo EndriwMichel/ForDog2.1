@@ -104,9 +104,6 @@ public class smartOwn extends AppCompatActivity {
 
     }
 
-
-
-
     public void FireB(){
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
