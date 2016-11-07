@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class smartOwn extends AppCompatActivity {
 
-
     private Firebase mRef;
     private int i = 0;
     private int y = 0;
@@ -43,6 +42,7 @@ public class smartOwn extends AppCompatActivity {
     private int x = 0;
 
     ArrayAdapter<ListViewInitialCad> adapter;
+
     private String[] desc = new String[100];
     public byte[] imageAsBytes;
     public Bitmap[] bitarray = new Bitmap[100];

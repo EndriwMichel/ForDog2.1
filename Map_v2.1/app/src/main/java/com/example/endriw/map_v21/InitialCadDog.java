@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -98,7 +99,6 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
 //        ArrayAdapter<String> adaptBora = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, bora);
 
-
         lv = (ListView) findViewById(R.id.ListDog);
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
@@ -127,6 +127,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Aqui vai a função de deletar do firebase
@@ -148,6 +149,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
+        v.setSelected(false);
         mActionMode = null;
     }
 
