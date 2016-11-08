@@ -12,6 +12,7 @@ import android.util.Base64;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * Created by Endriw on 30/10/2016.
  */
-public class smartOwn extends AppCompatActivity {
+public class smartOwn extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private Firebase mRef;
     private int i = 0;
@@ -58,12 +59,12 @@ public class smartOwn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.initial_match);
-
+        custom.clear();
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 
-
         lv = (ListView) findViewById(R.id.ListDog);
+        lv.setOnItemClickListener(this);
 
     }
 
@@ -72,7 +73,6 @@ public class smartOwn extends AppCompatActivity {
         custom.clear();
         FireB();
     }
-
 
     private class MyListViewMaps extends ArrayAdapter<ListViewInitialCad> {
         public MyListViewMaps() {
@@ -248,6 +248,20 @@ for(int z=0;z<=3;z++){
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Intent intent  = new Intent(this, OwnMaps.class);
+        TextView hash = (TextView)view.findViewById(R.id.hash);
+        intent.putExtra("foto", imageAsBytes);
+        intent.putExtra("hash", hash.getText().toString());
+        startActivity(intent);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        custom.clear();
     }
 
     }

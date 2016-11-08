@@ -74,6 +74,7 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.initial_lostdog);
+        setTitle("Lista de Cachorros Encontrados");
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
 

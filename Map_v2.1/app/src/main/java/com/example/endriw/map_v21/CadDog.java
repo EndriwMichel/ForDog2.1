@@ -76,6 +76,7 @@ public class CadDog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_cad_dog);
+        setTitle("Cadastro");
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -230,12 +231,12 @@ public class CadDog extends AppCompatActivity {
 
                 String email = MapsActivity.accountName.replace(".", "@");
                 dogFirebase fireData = new dogFirebase();
-                fireData.gravaOwn(email, key, stDogNome, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
+            fireData.gravaOwn(email, key, stDogNome, stDogData, latitude, longitude, base64Image, "Cel", sp_porte.getSelectedItem().toString(), sp_cor.getSelectedItem().toString());
 
                 Toast.makeText(this, "Cadastro efetuado",
                         Toast.LENGTH_LONG).show();
 
- //           this.finish();
+           // this.finish();
 
         }
         }

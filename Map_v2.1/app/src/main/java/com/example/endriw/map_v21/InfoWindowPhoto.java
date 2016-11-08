@@ -75,6 +75,7 @@ public class InfoWindowPhoto extends AppCompatActivity {
                             dogNick = cachorro.getDogNick();
                             dogCel = cachorro.getDogCel();
                             tx_accont.setText(dogNick);
+                            setTitle(dogNick);
                             tx_tel.setText("Tel: "+dogCel);
 
                             }

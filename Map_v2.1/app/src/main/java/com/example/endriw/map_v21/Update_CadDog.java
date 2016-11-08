@@ -270,8 +270,9 @@ public class Update_CadDog extends AppCompatActivity {
                 baos.close();
 
             } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "You haven't picked Image",
+//                        Toast.LENGTH_LONG).show();
+                System.out.println("nao pegou imagem !");
             }
 
 
@@ -399,16 +400,8 @@ public class Update_CadDog extends AppCompatActivity {
     }
 
     public void Toast(){
-        UpdateMaps um = new UpdateMaps();
+
         Toast.makeText(this, "Cadastro alterado!", Toast.LENGTH_SHORT).show();
         this.finish();
-        um.finish();
     }
-
-    public void Finish(){
-        UpdateMaps um = new UpdateMaps();
-        this.finish();
-        um.finish();
-    }
-
 }

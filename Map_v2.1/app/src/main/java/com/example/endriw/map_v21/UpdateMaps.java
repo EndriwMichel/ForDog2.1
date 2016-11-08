@@ -77,13 +77,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
     private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse, R.drawable.dogavatar};
 
-    public DrawerLayout dl;
-    public ListView lv;
-    public String hashPhoto;
-    private ProgressDialog progress;
     public String hashzin;
-    public static double latitude;
-    public static double longitude;
     private LatLng position;
 
     public AlertDialog dialog;
@@ -110,7 +104,9 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
       /*  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.upMap);
         mapFragment.getMapAsync(this);
 */
-        System.out.println("valor de hashzin: "+hashzin);
+        System.out.println("valor de hashzin: " + hashzin);
+//        SetUpMapIfNeeded();
+//        fireB();
     }
 
     @Override
@@ -142,7 +138,7 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                 View v = getLayoutInflater().inflate(R.layout.info_window, null);
                 TextView tx = (TextView) v.findViewById(R.id.txt_view);
                 ImageView image = (ImageView) v.findViewById(R.id.image1);
-                tx.setText("teste");
+                tx.setText(marker.getTitle());
                 image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
                 return v;
             }
@@ -256,9 +252,11 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
         });
      }
 
-    public void UpdatePosition(){
-
+    protected void onPause() {
+        super.onPause();
+        mMap.clear();
     }
+
 }
 
 

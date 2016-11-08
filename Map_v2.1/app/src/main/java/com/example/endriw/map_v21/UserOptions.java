@@ -42,6 +42,7 @@ public class UserOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.options_user);
+        setTitle("Opções do Usuario");
 
         aSwitch = (Switch)findViewById(R.id.dogSwitch);
         apelido = (TextView)findViewById(R.id.user_apelido);
@@ -63,13 +64,13 @@ public class UserOptions extends AppCompatActivity {
 
                     Intent intent = new Intent(Noty.ACTION);
                     Alarm.schedule(UserOptions.this, intent, getRealTime());
-                    Toast.makeText(UserOptions.this, "Alarme Agendado", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(UserOptions.this, "Alarme Agendado", Toast.LENGTH_SHORT).show();
                 }else{
                     sn.setText("Não");
 
                     Intent intent = new Intent(Noty.ACTION);
                     Alarm.cancel(UserOptions.this, intent);
-                    Toast.makeText(UserOptions.this, "Alarme Cancelado", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(UserOptions.this, "Alarme Cancelado", Toast.LENGTH_SHORT).show();
                 }
             }
         });

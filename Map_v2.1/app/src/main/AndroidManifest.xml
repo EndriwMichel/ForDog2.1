@@ -52,6 +52,7 @@
         <activity android:name=".LostDog"></activity>
         <activity android:name=".InitialLostDog"></activity>
         <activity android:name=".smartOwn"></activity>
+        <activity android:name=".OwnMaps"></activity>
         <service android:name=".smartDog"></service>
         <receiver android:name=".Noty">
             <intent-filter>

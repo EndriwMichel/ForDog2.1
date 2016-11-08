@@ -73,17 +73,14 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
     private int[] vetor = new int[]{R.drawable.bone};
 
-    //, R.drawable.dogbone, R.drawable.doghouse};
-   // private int[] vetor = new int[1];
-
     public ListView lv;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_cadog);
-
+        Firebase.setAndroidContext(this);
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
-
+        setTitle("Lista de Cachorros Perdidos");
 
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
@@ -102,7 +99,7 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
         lv = (ListView) findViewById(R.id.ListDog);
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
-
+       // FireB();
        // populateList();
     }
 
@@ -135,9 +132,9 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
                 dogFirebase fireData = new dogFirebase();
                 fireData.deleteDog(email, "ownDog", itemHash, mRef);
                 Toast.makeText(this, "Cadastro deletado !", Toast.LENGTH_SHORT).show();
-                custom.clear();
                 mode.finish(); // Action picked, so close the CAB
                 v.setSelected(false);
+                custom.clear();
                 return true;
             default:
                // return false;
@@ -310,6 +307,11 @@ public class InitialCadDog extends AppCompatActivity implements ActionMode.Callb
 
             }
         }).start();
+    }
+
+    protected void onPause() {
+        super.onPause();
+        custom.clear();
     }
 
 }
