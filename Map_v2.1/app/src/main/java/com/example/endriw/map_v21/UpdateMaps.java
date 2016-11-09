@@ -179,6 +179,8 @@ public class UpdateMaps extends FragmentActivity implements OnMapReadyCallback {
                             dogFirebase dogfire = new dogFirebase();
                             dogfire.updateDog(mRef, email, hashzin, "latitude", upLatitude);
                             dogfire.updateDog(mRef, email, hashzin, "longitude", upLongitude);
+                            mMap.clear();
+                            fireB();
                         }
                     });
                     builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {

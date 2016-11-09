@@ -1,17 +1,12 @@
 package com.example.endriw.map_v21;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -24,20 +19,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 /**
- * Created by endriw on 08/11/2016.
+ * Created by Endriw on 09/11/2016.
  */
-public class OwnMaps extends FragmentActivity implements OnMapReadyCallback {
+public class LostMaps extends FragmentActivity implements OnMapReadyCallback {
     public String hashzin;
     private LatLng position;
     final int x = 0;
@@ -56,7 +45,7 @@ public class OwnMaps extends FragmentActivity implements OnMapReadyCallback {
 
         Bundle extras = getIntent().getExtras();
         Firebase.setAndroidContext(this);
-      //  mRef = new Firebase("https://dog-603e7.firebaseio.com");
+        //  mRef = new Firebase("https://dog-603e7.firebaseio.com");
         hashzin = extras.getString("hash");
 //        SetUpMapIfNeeded();
 
@@ -133,12 +122,13 @@ public class OwnMaps extends FragmentActivity implements OnMapReadyCallback {
                                     mMap.addMarker(new MarkerOptions()
                                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                                             .position(position)
-                                            .title(cachorro.getDogNome())
+                                            .title(cachorro.getDogDesc())
                                     );
                                     mMap.animateCamera(update);
                                     System.out.println("dogHashIF: " + cachorro.getDogHash());
                                     break;
                                 }
+//                                x = x+1;
                             }
 
                         }

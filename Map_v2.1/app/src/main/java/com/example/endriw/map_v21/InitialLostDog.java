@@ -166,12 +166,11 @@ public class InitialLostDog extends AppCompatActivity implements ActionMode.Call
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-/*        final Intent intent  = new Intent(this, UpdateMaps.class);
+        final Intent intent  = new Intent(this, LostMaps.class);
         TextView hash = (TextView)view.findViewById(R.id.hash);
-        intent.putExtra("foto", imageAsBytes);
         intent.putExtra("hash", hash.getText().toString());
-        startActivity(intent);*/
-        Toast.makeText(this, "clicou !", Toast.LENGTH_SHORT);
+        startActivity(intent);
+        custom.clear();
     }
 
     private class MyListViewMaps extends ArrayAdapter<ListViewInitialCad> {

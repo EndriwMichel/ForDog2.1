@@ -42,7 +42,7 @@ public class UserOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.options_user);
-        setTitle("Opções do Usuario");
+        setTitle("Opções do Usuário");
 
         aSwitch = (Switch)findViewById(R.id.dogSwitch);
         apelido = (TextView)findViewById(R.id.user_apelido);

@@ -85,6 +85,7 @@ public class Update_CadDog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_dog);
+        setTitle("Alterar Cadastro");
 
         Bundle extras = getIntent().getExtras();
         hashzin = extras.getString("hash");
@@ -196,20 +197,6 @@ public class Update_CadDog extends AppCompatActivity {
 
        //UPDATE----------------------------------------------------------------------------------------------------
 
-      /*  Toast.makeText(this, "Eder eu sei que você tentou salvar dados....!!",
-                Toast.LENGTH_LONG).show();
-        Toast.makeText(this, "Mas....!!",
-                Toast.LENGTH_LONG).show();
-        Toast.makeText(this, "A unica coisa que tu salvou....!!",
-                Toast.LENGTH_LONG).show();
-        Toast.makeText(this, "foi uma....!!",
-                Toast.LENGTH_LONG).show();
-        Toast.makeText(this, "PARMEJIANA MULEKE !!!!....!!",
-                Toast.LENGTH_LONG).show();
-        Toast.makeText(this, "KKKKKKKKKKKKKKKKKK !!!!....!!",
-                Toast.LENGTH_LONG).show();
-   */
-
     }
 
 
@@ -277,8 +264,9 @@ public class Update_CadDog extends AppCompatActivity {
 
 
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
+//            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+//                    .show();
+            System.out.println("Algo está errado !");
         }
     }
 

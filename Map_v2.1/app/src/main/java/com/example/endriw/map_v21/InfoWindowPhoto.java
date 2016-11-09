@@ -33,6 +33,7 @@ public class InfoWindowPhoto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_window_photo);
+        setTitle("Informações");
 
         tx_accont = (TextView)findViewById(R.id.account);
         tx_tel = (TextView)findViewById(R.id.tel);
@@ -75,7 +76,7 @@ public class InfoWindowPhoto extends AppCompatActivity {
                             dogNick = cachorro.getDogNick();
                             dogCel = cachorro.getDogCel();
                             tx_accont.setText(dogNick);
-                            setTitle(dogNick);
+
                             tx_tel.setText("Tel: "+dogCel);
 
                             }

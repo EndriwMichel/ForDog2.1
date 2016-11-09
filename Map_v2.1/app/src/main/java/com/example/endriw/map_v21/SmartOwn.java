@@ -59,6 +59,8 @@ public class smartOwn extends AppCompatActivity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.initial_match);
+        setTitle("Cachorros Compativeis");
+
         custom.clear();
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://dog-603e7.firebaseio.com/");
@@ -254,9 +256,9 @@ for(int z=0;z<=3;z++){
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final Intent intent  = new Intent(this, OwnMaps.class);
         TextView hash = (TextView)view.findViewById(R.id.hash);
-        intent.putExtra("foto", imageAsBytes);
         intent.putExtra("hash", hash.getText().toString());
         startActivity(intent);
+        custom.clear();
     }
 
     protected void onPause() {
