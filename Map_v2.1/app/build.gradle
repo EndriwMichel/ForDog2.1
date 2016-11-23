@@ -49,4 +49,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:1.2.1'
+ //   compile 'com.gogle.firebase:firebase-auth:0.4.0'
 }
+

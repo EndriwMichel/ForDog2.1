@@ -6,39 +6,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 /**
  * Created by Endriw on 01/06/2016.
  */
-public class Cachorro {
+public class ownCachorro {
 
     private String latitude;
     private String longitude;
     private String dogData;
-    private String dogDesc;
     private String dogFoto;
     private String dogNome;
     private String dogHash;
     private String dogCor;
     private String dogPorte;
-    private String dogRaca;
     private String dogCel;
-    private String dogNick;
-    private String dogNotify;
 
-    public Cachorro(){
+    public ownCachorro(){
     }
 
-    public Cachorro(String latitude, String longitude, String dogData, String dogDesc, String dogFoto, String dogNome, String dogHash, String dogCor, String dogRaca, String dogPorte, String dogCel, String dogNick, String dogNotify){
+    public ownCachorro(String latitude, String longitude, String dogData, String dogFoto, String dogNome, String dogHash, String dogCor,  String dogPorte, String dogCel){
         this.latitude  = latitude;
         this.longitude = longitude;
         this.dogData   = dogData;
-        this.dogDesc   = dogDesc;
         this.dogFoto   = dogFoto;
         this.dogNome   = dogNome;
         this.dogHash   = dogHash;
         this.dogCor    = dogCor;
         this.dogPorte  = dogPorte;
-        this.dogRaca    = dogRaca;
         this.dogCel    = dogCel;
-        this.dogNick = dogNick;
-        this.dogNotify = dogNotify;
     }
 
 
@@ -52,10 +44,6 @@ public class Cachorro {
 
     public String getDogData() {
         return dogData;
-    }
-
-    public String getDogDesc() {
-        return dogDesc;
     }
 
     public String getDogFoto() {
@@ -78,18 +66,7 @@ public class Cachorro {
         return dogPorte;
     }
 
-    public String getDogRaca() {
-        return dogRaca;
-    }
-
     public String getDogCel() {
         return dogCel;
-    }
-
-    public String getDogNick(){
-        return dogNick;
-    }
-    public String getDogNotify(){
-        return dogNotify;
     }
 }

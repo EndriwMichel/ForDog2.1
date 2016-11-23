@@ -51,8 +51,8 @@
         android:id="@+id/doguin"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/find2"
-        android:background="@drawable/back3"/>
+        android:src="@drawable/dog_icon2"
+        android:background="@color/HighGren"/>
 
     <ListView
         android:id="@+id/drawerList"
@@ -60,8 +60,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_below="@id/doguin"
-        android:background="@drawable/back3"
         android:choiceMode="singleChoice"
+        android:background="@android:color/white"
             />
 
     <TextView

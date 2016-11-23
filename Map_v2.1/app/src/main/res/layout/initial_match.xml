@@ -10,22 +10,12 @@
         android:layout_height="match_parent"
         android:id="@+id/InitialViewA">
 
-      <ListView
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="389dp"
+            android:layout_height="577dp"
             android:id="@+id/ListDog"
-          />
+            />
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:onClick="CadDog"
-            app:layout_anchor="@id/InitialViewA"
-            app:layout_anchorGravity="bottom|right|end"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_gravity="right" />
 
     </LinearLayout>
 </ScrollView>

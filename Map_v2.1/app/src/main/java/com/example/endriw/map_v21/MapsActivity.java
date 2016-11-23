@@ -1,8 +1,10 @@
 package com.example.endriw.map_v21;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,6 +59,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import android.content.Intent;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,10 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private List<Circle> cirList = new ArrayList<Circle>();
 
-    public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Opções do usuario", "Sair"};
+    public String[] teste = {"Cadastrar um cachorro perdido", "Listar meus cachorros encontrados", "Lista de cachorros compativeis", "Opçoes do usuario"};
 
     private List<ListViewMaps> custom = new ArrayList<ListViewMaps>();
-    private int[] vetor = new int[]{R.drawable.bone, R.drawable.dogbone, R.drawable.doghouse, R.drawable.dogavatar};
+    private int[] vetor = new int[]{R.drawable.ic_pets_black_24dp, R.drawable.ic_recent_actors_black_24dp, R.drawable.ic_line_style_black_24dp, R.drawable.ic_account_circle_black_24dp};
 
     public DrawerLayout dl;
     public ListView lv;
@@ -91,8 +94,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMapUser;
     private CameraUpdate up;
     private Firebase mRef;
+    Bitmap myBitmap;
 
-    private ImageView iv;
+    private Intent i;
+
+    private String hashOwn;
+    private String hashLost;
+    private String lostDog = "lostDog";
+    private String ownDog = "ownDog";
+    private String userDog;
 
     private CircleOptions circle;
     private Circle cir;
@@ -100,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton Cambtn;
     private boolean suces = true;
     private File imageFile;
-
+    private File imgFile;
     public String nick;
 
     private Firebase firebase;
@@ -109,8 +119,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Map<String, String> mapa = new HashMap<>();
     HashMap<String, String> markerUser = new HashMap<String, String>();
+    public Map<String, String> smart = new HashMap<String, String>();
+
+    public Map<String, String> smart_teste = new HashMap<String, String>();
 
     private Map<String, String> cirMap = new HashMap<String, String>();
+    private Map<String, String> EmailMap = new HashMap<String, String>();
 
     private Marker dogs;
     private Marker user;
@@ -134,6 +148,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+    /*    Intent intentSplash = new Intent(this, MapsActivity.class);
+        startActivity(intentSplash);
+        finish();
+*/
         mGoogleapiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -160,49 +178,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firebase.setAndroidContext(this);
         firebase = new Firebase("https://dog-603e7.firebaseio.com/");
 
-     /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int pos, long id) {
-
-                if (parent.getItemAtPosition(pos) == "Cadastrar Lost Dog") {
-                    startActivity(intent);
-
-                } else if (parent.getItemAtPosition(pos) == "eita porra") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("ta saino da jaula u muonstro");
-                    ad.show();
-                } else if (parent.getItemAtPosition(pos) == "Hurgggg") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("A qui é bori bilder porra");
-                    ad.show();
-                } else if (parent.getItemAtPosition(pos) == "sabeoqueéissoaqui?") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("Trapéziu des sem dente");
-                    ad.show();
-                }
-
-                dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        super.onDrawerClosed(drawerView);
-
-                    }
-                });
-            }
-        });
-
-*/
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Firebase.setAndroidContext(this);
 
         mRef = new Firebase("https://dog-603e7.firebaseio.com");
+        //-------------------------------------------------smart----------------------------
+       // buscarDogNoBanco();
+        //-------------------------------------------------smart----------------------------
+       // smart_teste.put(vaiDados.put("dogCor", "Branco"), vaiDados.put("dogPorte", "Grande"));
+       // System.out.println("vai dados: " + vaiDados);
+       // System.out.println("vai smart teste "+smart_teste);
         Cambtn = (ImageButton) findViewById(R.id.imageButton);
 
         final Intent intent = new Intent(this, InitialCadDog.class);
         final Intent intent_user = new Intent(this, UserOptions.class);
+        final Intent intent_lost = new Intent(this, InitialLostDog.class);
+        final Intent intent_smart = new Intent(this, smartOwn.class);
 
         ListView lv = (ListView) findViewById(R.id.drawerList);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -214,12 +207,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if (lvm.getDex() == "Cadastrar um cachorro perdido") {
                     startActivity(intent);
-                } else if (lvm.getDex() == "Opções do usuario") {
+                } else if (lvm.getDex() == "Listar meus cachorros encontrados") {
+                    startActivity(intent_lost);
+                }else if(lvm.getDex() == "Lista de cachorros compativeis"){
+                    startActivity(intent_smart);
+                } else if (lvm.getDex() == "Opçoes do usuario") {
                     startActivity(intent_user);
-                } else if (parent.getItemAtPosition(position) == "cadastrar3") {
-                    ad = new AlertDialog.Builder(MapsActivity.this);
-                    ad.setMessage("A qui é bori bilder porra");
-                    ad.show();
                 }
 
                 dl.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -232,20 +225,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 //-------------------------------------------------------------------------------------------------------------
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mGoogleapiClient.connect();
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         stopLocationUpdates();
+        user.remove();
           mGoogleapiClient.disconnect();
+
     }
+//    @Override
+//    public void onPause(){
+//        super.onPause();
+//        stopLocationUpdates();
+//        user.remove();
+//        mGoogleapiClient.disconnect();
+//    }
 
 
     private void populateList() {
@@ -266,7 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.listviewmaps, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.listviewmapsnavi, parent, false);
             }
             ListViewMaps cus = custom.get(position);
 
@@ -287,7 +291,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected void onResume() {
         super.onResume();
-
         SetUpMapIfNeeded();
         fireB();
 
@@ -302,31 +305,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             suces = direct.mkdir();
 
             File imageFile = new File(Environment.getExternalStoragePublicDirectory("/Pictures/findog"), "dogphoto.png");
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-            startActivity(i);
+            startActivityForResult(i, 3);
+
         } else {
 
             //  File picsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
             imageFile = new File(Environment.getExternalStoragePublicDirectory("/Pictures/findog"), "dogphoto.png");
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-            startActivity(i);
+            startActivityForResult(i, 2);
 
         }
 
-        File imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
+    /*    imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
 
         if (imgFile.exists()) {
 
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            iv.setImageBitmap(myBitmap);
 
+            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+           //     iv.setImageBitmap(myBitmap);
+
+            final Intent intentCad = new Intent(this, LostDog.class);
+
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] bytearray = stream.toByteArray();
+
+                    intentCad.putExtra("latitude", latitude);
+                    intentCad.putExtra("longitude", longitude);
+                    intentCad.putExtra("bitmap", bytearray);
+                    startActivity(intentCad);
+                }
+*/
         }
 
-    }
-
-    public void SetUpMapIfNeeded() {
+        public void SetUpMapIfNeeded() {
         final Intent intent_info  = new Intent(this, InfoWindowPhoto.class);
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
@@ -339,6 +355,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     cir = null;
                     System.out.println("valor de cir:"+cir);
                 }*/
+
                 if(cir!=null) {
                     for (Circle circle : cirList) {
                         circle.remove();
@@ -373,6 +390,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     cirMap.put(marker.getId(), cir.getId());
                 }else if(m.equals("user")){
+                    if(cir!=null) {
+                        for (Circle circle : cirList) {
+                            circle.remove();
+                        }
+                        cirList.clear();
+                    }
+
                     System.out.println("oi eu sou o usuario!");
                 }
                 return false;
@@ -383,7 +407,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 //aqui
-                intent_info.putExtra("DogFoto", imageAsBytes);
+/*                String userEmail = marker.getTitle();
+                String[] valorNuncaFixo = userEmail.split("%");
+ */               intent_info.putExtra("DogFoto", imageAsBytes);
+                intent_info.putExtra("UserEmail", EmailMap.get(marker.getId()));
+
+                //  intent_info.putExtra("hash", )
                 startActivity(intent_info);
             }
         });
@@ -404,7 +433,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(m.equals("dogs")) {
                         View v = getLayoutInflater().inflate(R.layout.info_window, null);
                         TextView tx = (TextView) v.findViewById(R.id.txt_view);
+                        TextView tx_dog = (TextView) v.findViewById(R.id.txt_dog);
+                        TextView tx_user = (TextView) v.findViewById(R.id.txt_email);
                         ImageView image = (ImageView) v.findViewById(R.id.image1);
+                        userDog = tx_user.getText().toString();
 
                         imageAsBytes = Base64.decode(mapa.get(marker.getId()).getBytes(), Base64.DEFAULT);
                         image.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
@@ -447,7 +479,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (DataSnapshot dataSnapshot : data.getChildren()) {
 
                     Emails email = dataSnapshot.getValue(Emails.class);
-                    String stEmail = email.getEmail();
+                    final String stEmail = email.getEmail();
 
                     mRef.child(stEmail).child("lostDog").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -455,18 +487,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onDataChange(DataSnapshot dataSnapshots) {
 
                             CountFb += dataSnapshots.getChildrenCount();
+
                             for (DataSnapshot dataSnapshot : dataSnapshots.getChildren()) {
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
+                                hashLost = cachorro.getDogHash();
                                 dogs = mMap.addMarker(new MarkerOptions()
-                                                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                                                   .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
-                                                                 Double.parseDouble(cachorro.getLongitude())))
-                                                   .title(cachorro.getDogNome())
-                                              );
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.purppet))
+                                                .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
+                                                        Double.parseDouble(cachorro.getLongitude())))
+                                                .title(cachorro.getDogDesc())
+                                );
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
+                                EmailMap.put(dogs.getId(), (String) stEmail);
                                 id = dogs.getId();
+
                                 markerUser.put(id, "dogs");
 
                             }
@@ -486,13 +522,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 Cachorro cachorro = dataSnapshot.getValue(Cachorro.class);
 
+                                hashOwn = cachorro.getDogHash();
                                 dogs = mMap.addMarker(new MarkerOptions().
-                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.redpet))
                                         .position(new LatLng(Double.parseDouble(cachorro.getLatitude()),
                                                 Double.parseDouble(cachorro.getLongitude())))
                                         .title(cachorro.getDogNome()));
 
                                 mapa.put(dogs.getId(), (String) cachorro.getDogFoto() );
+                                EmailMap.put(dogs.getId(), (String) stEmail);
                                 id = dogs.getId();
                                 markerUser.put(id, "dogs");
                             }
@@ -528,23 +566,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        user.remove();
 
-    /*    latitude = location.getLatitude();
+        latitude = location.getLatitude();
         longitude = location.getLongitude();
+        UserPosition = new LatLng(latitude, longitude);
+       // CameraUpdate update = CameraUpdateFactory.newLatLngZoom(UserPosition, 15);
+        user = mMap.addMarker(new MarkerOptions().position(UserPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+       // mMap.animateCamera(update);
 
-        LatLng UserPosition = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(UserPosition)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                .setTitle("Bora salva uns dog caraio !");
-        System.out.println(latitude+":"+longitude);
-*/
+        id = user.getId();
+        markerUser.put(id, "user");
+
     }
 
 
     @Override
     public void onConnected(Bundle bundle) {
-        Toast.makeText(this, "Connected !!",
+ /*       Toast.makeText(this, "Connected !!",
                 Toast.LENGTH_LONG).show();
+*/
 
         AddUserMarker();
     }
@@ -575,14 +617,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
            accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             textEmail.setText(accountName);
 
+        }else if(requestCode == 2 && resultCode == RESULT_OK){
+           imageLost();
+            i = null;
+        }else if(requestCode == 3 && resultCode == RESULT_OK){
+            imageLost();
+            i = null;
         }
+
     }
     protected void startLocationUpdates(){
         Log.d("TAG","startLocationUpdates");
 
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2500);//1s
-        mLocationRequest.setFastestInterval(2500);//1s
+        mLocationRequest.setInterval(25000);//1s
+        mLocationRequest.setFastestInterval(25000);//1s
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleapiClient,mLocationRequest,this);
     }
@@ -592,8 +641,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void AddUserMarker(){
-        startLocationUpdates();
 
+        startLocationUpdates();
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -606,6 +655,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         id = user.getId();
         markerUser.put(id, "user");
     }
+
+    public void imageLost(){
+
+//        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleapiClient);
+//        latitude = location.getLatitude();
+//        longitude = location.getLongitude();
+//
+        imgFile = new File("/sdcard//Pictures/findog/dogphoto.png");
+        String namePath = "/sdcard//Pictures/findog/dogphoto.png";
+        if (imgFile.exists()) {
+
+            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //     iv.setImageBitmap(myBitmap);
+
+            final Intent intentCad = new Intent(this, LostDog.class);
+
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//            byte[] bytearray = stream.toByteArray();
+
+            intentCad.putExtra("latitude", latitude);
+            intentCad.putExtra("longitude", longitude);
+            intentCad.putExtra("bitmap", namePath);
+            startActivity(intentCad);
+        }
+    }
+
+//    public void buscarDogNoBanco(){
+//        mRef.child("vaanhalen00@gmail@com").child("ownDog").addValueEventListener(new ValueEventListener() {
+//
+////            int y=0;
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                    Cachorro cachorro = dataSnapshot1.getValue(Cachorro.class);
+//
+//                    Map<String, String> vaiDados = new HashMap<>();
+//                    vaiDados.put("dogCor", cachorro.getDogCor());
+//                    vaiDados.put("dogPorte", cachorro.getDogPorte());
+//                    smartDog smtDog = new smartDog();
+//                    //smtDog.buscarDogNoBanco(vaiDados, mRef);
+//                }
+//            //    y++;
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//
+//    }
+
 
 }
 

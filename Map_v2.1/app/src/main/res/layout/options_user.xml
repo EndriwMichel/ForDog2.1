@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,12 +32,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <EditText
+            <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/user_numero"
-        android:inputType="number"
+        android:inputType="phone"
+        android:digits="0123456789+"
+        android:lines="1"
+        android:maxLength="12"
         android:hint="Numero do celular/telefone"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -73,48 +76,29 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Tempo de espera de notificações"/>
-    </LinearLayout>
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content">
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:spinnerMode="dialog"
-            android:id="@+id/UserSpinner">
-        </Spinner>
-      </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="130dp"
         android:background="@color/GreenBtn2"
         android:gravity="center">
         <Button
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancelar"
             android:onClick="Cancelar"
+            android:layout_weight="0.25"
             />
         <Button
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Salvar"
-            android:onClick="Salvar"/>
+            android:onClick="Salvar"
+            android:layout_weight="0.25"/>
     </LinearLayout>
 
 
